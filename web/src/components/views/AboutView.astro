@@ -2,7 +2,7 @@
 import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import LionSun from "@/components/LionSun.astro";
+import Logo from "@/components/Logo.astro";
 import PatternBackground from "@/components/PatternBackground.astro";
 
 interface Props {
@@ -21,7 +21,7 @@ const arrows = [
 <BaseLayout lang={lang} title={t("about.title")} description={t("about.lead")}>
   <article class="about">
     <header class="about-head">
-      <span class="mark"><LionSun size={72} /></span>
+      <span class="mark"><Logo size={84} /></span>
       <h1 class="title font-display">{t("about.title")}</h1>
       <p class="lead font-display">{t("about.lead")}</p>
     </header>

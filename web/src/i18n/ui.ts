@@ -7,7 +7,8 @@ import type { Locale } from "@/consts";
  */
 export const ui = {
   en: {
-    "site.name": "Final Battle Iran",
+    "site.name": "Final Battle",
+    "site.subtitle": "For Iran",
     "site.tagline": "Now it's your turn to take aim.",
 
     "nav.home": "Home",
@@ -15,7 +16,6 @@ export const ui = {
     "nav.about": "About",
     "nav.language": "Language",
 
-    "hero.title": "Iran Prosperity Project",
     "hero.subtitle.line1": "Every video is an arrow.",
     "hero.subtitle.line2": "Every share takes aim.",
     "hero.cta.watch": "Watch the Series",
@@ -62,7 +62,8 @@ export const ui = {
     "footer.rights": "Free Iran.",
   },
   fa: {
-    "site.name": "نبرد نهایی ایران",
+    "site.name": "نبرد نهایی",
+    "site.subtitle": "برای ایران",
     "site.tagline": "حالا نوبت توست که نشانه بگیری.",
 
     "nav.home": "خانه",
@@ -70,7 +71,6 @@ export const ui = {
     "nav.about": "درباره",
     "nav.language": "زبان",
 
-    "hero.title": "پروژه شکوفایی ایران",
     "hero.subtitle.line1": "هر ویدیو یک تیر است.",
     "hero.subtitle.line2": "هر هم‌رسانی نشانه می‌گیرد.",
     "hero.cta.watch": "تماشای مجموعه",

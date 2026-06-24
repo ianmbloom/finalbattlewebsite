@@ -1,7 +1,7 @@
 ---
 import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
-import LionSun from "./LionSun.astro";
+import Logo from "./Logo.astro";
 import PatternBackground from "./PatternBackground.astro";
 
 interface Props {
@@ -15,7 +15,7 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <PatternBackground color="gold" opacity={0.12} size="420px" />
   <div class="inner">
-    <span class="mark"><LionSun size={40} /></span>
+    <span class="mark"><Logo size={52} /></span>
     <p class="tagline font-display">{t("site.tagline")}</p>
     <div class="meta label">
       <a href={localizedPath("/", lang)}>{t("site.name")}</a>

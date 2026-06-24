@@ -2,7 +2,7 @@
 import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import LangSwitcher from "./LangSwitcher.astro";
-import LionSun from "./LionSun.astro";
+import Logo from "./Logo.astro";
 
 interface Props {
   lang: Locale;
@@ -19,8 +19,11 @@ const current = Astro.url.pathname.replace(/\/$/, "");
 
 <header class="site-header">
   <a class="brand" href={localizedPath("/", lang)} aria-label={t("site.name")}>
-    <span class="brand-mark"><LionSun size={26} /></span>
-    <span class="brand-name font-display">{t("site.name")}</span>
+    <span class="brand-mark"><Logo size={36} /></span>
+    <span class="brand-text">
+      <span class="brand-name font-logo">{t("site.name")}</span>
+      <span class="brand-sub label">{t("site.subtitle")}</span>
+    </span>
   </a>
 
   <nav class="primary" aria-label="Primary">
@@ -51,17 +54,28 @@ const current = Astro.url.pathname.replace(/\/$/, "");
   .brand {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.7rem;
   }
   .brand-mark {
     color: var(--color-gold);
     display: inline-flex;
   }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
   .brand-name {
-    font-weight: 600;
-    font-size: 1.25rem;
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1;
     letter-spacing: 0.01em;
     color: var(--text);
+  }
+  .brand-sub {
+    margin-top: 0.15rem;
+    font-size: 0.62rem;
+    color: var(--color-gold);
   }
   .primary {
     display: flex;

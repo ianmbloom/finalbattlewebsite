@@ -2,7 +2,7 @@
 import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import { formatDuration, getVariant, type VideoEntry } from "@/lib/videos";
-import LionSun from "./LionSun.astro";
+import Logo from "./Logo.astro";
 import PatternBackground from "./PatternBackground.astro";
 
 interface Props {
@@ -27,8 +27,9 @@ const featuredCategory = featured
 
   <div class="hero-grid">
     <div class="copy">
-      <span class="mark"><LionSun size={52} /></span>
-      <h1 class="title font-display">{t("hero.title")}</h1>
+      <span class="mark"><Logo size={72} /></span>
+      <h1 class="title font-logo">{t("site.name")}</h1>
+      <p class="brand-sub font-display">{t("site.subtitle")}</p>
       <p class="subtitle">
         <span>{t("hero.subtitle.line1")}</span>
         <span>{t("hero.subtitle.line2")}</span>
@@ -94,24 +95,33 @@ const featuredCategory = featured
   .copy {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
   .mark {
     color: var(--color-gold);
     animation: fade-in 800ms var(--ease-editorial) both;
   }
   .title {
-    font-weight: 300;
-    font-size: clamp(2.4rem, 6vw, 4.5rem);
-    line-height: 1.02;
+    font-weight: 400;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: 0.005em;
     margin: 0;
     color: var(--text);
+  }
+  .brand-sub {
+    margin: -0.5rem 0 0;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    line-height: 1;
+    color: var(--color-gold);
   }
   .subtitle {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-    margin: 0;
+    margin: 0.5rem 0 0;
     font-size: 1rem;
     letter-spacing: 0.04em;
     color: var(--text-muted);

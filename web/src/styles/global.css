@@ -2,6 +2,7 @@
 @import "@fontsource/cormorant-garamond/300.css";
 @import "@fontsource/cormorant-garamond/500.css";
 @import "@fontsource/cormorant-garamond/600.css";
+@import "@fontsource/libre-caslon-display/400.css";
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
 @import "@fontsource/vazirmatn/400.css";
@@ -24,6 +25,9 @@
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Inter", system-ui, sans-serif;
   --font-fa: "Vazirmatn", "Inter", system-ui, sans-serif;
+  /* Logo wordmark: real Big Caslon on macOS, Libre Caslon Display elsewhere. */
+  --font-logo: "Big Caslon", "Libre Caslon Display", "Cormorant Garamond",
+    Georgia, serif;
 
   /* Single permitted transition. */
   --ease-editorial: cubic-bezier(0, 0, 0.2, 1);
@@ -79,6 +83,14 @@
 @layer components {
   .font-display {
     font-family: var(--font-display);
+  }
+
+  .font-logo {
+    font-family: var(--font-logo);
+  }
+  /* The Persian wordmark uses Vazirmatn, not a Latin Caslon. */
+  html[dir="rtl"] .font-logo {
+    font-family: var(--font-fa);
   }
 
   /* Uppercase tracked label — categories, timestamps, metadata. */
