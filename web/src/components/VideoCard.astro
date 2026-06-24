@@ -1,0 +1,117 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations, localizedPath } from "@/i18n/utils";
+import { formatDuration, getVariant, type VideoEntry } from "@/lib/videos";
+import ShareBar from "./ShareBar.astro";
+
+interface Props {
+  entry: VideoEntry;
+  lang: Locale;
+}
+const { entry, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const variant = getVariant(entry, lang)!;
+const href = localizedPath(`/videos/${entry.id}`, lang);
+const duration = formatDuration(variant.durationSeconds);
+const categoryLabel = t(`category.${entry.data.category}` as const);
+---
+
+<article class="video-card" data-category={entry.data.category}>
+  <a class="thumb" href={href} aria-label={variant.title}>
+    {
+      variant.thumbnailUrl ? (
+        <img
+          src={variant.thumbnailUrl}
+          alt={variant.title}
+          loading="lazy"
+          decoding="async"
+          width="270"
+          height="480"
+        />
+      ) : (
+        <span class="thumb-fallback label">9:16</span>
+      )
+    }
+  </a>
+
+  <div class="meta">
+    <div class="meta-top">
+      <span class="label">{categoryLabel}</span>
+      {duration && <span class="label time">{duration}</span>}
+    </div>
+    <hr class="rule" />
+    <a href={href} class="title font-display">{variant.title}</a>
+    <hr class="rule" />
+    <ShareBar
+      title={variant.title}
+      platforms={variant.platforms}
+      lang={lang}
+      compact
+    />
+  </div>
+</article>
+
+<style>
+  .video-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    transition: border-color 300ms var(--ease-editorial);
+  }
+  .video-card:hover {
+    border-color: var(--line-strong);
+  }
+  .thumb {
+    position: relative;
+    display: block;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    background: #000;
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 300ms var(--ease-editorial);
+  }
+  .thumb:hover img {
+    transform: scale(1.02);
+  }
+  .thumb-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-sand);
+  }
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.25rem;
+  }
+  .meta-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .time {
+    color: var(--text-muted);
+  }
+  .title {
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 1.15;
+    color: var(--text);
+    transition: color 300ms var(--ease-editorial);
+  }
+  .title:hover {
+    color: var(--color-gold);
+  }
+  .rule {
+    margin: 0;
+  }
+</style>

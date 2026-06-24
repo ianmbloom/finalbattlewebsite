@@ -1,0 +1,60 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+import { getVideosForLocale } from "@/lib/videos";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FilterBar from "@/components/FilterBar.astro";
+import VideoGrid from "@/components/VideoGrid.astro";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const videos = await getVideosForLocale(lang);
+---
+
+<BaseLayout lang={lang} title={t("videos.title")} description={t("videos.intro")}>
+  <section class="library">
+    <header class="library-head">
+      <h1 class="title font-display">{t("videos.title")}</h1>
+      <p class="intro">{t("videos.intro")}</p>
+      <FilterBar lang={lang} />
+    </header>
+
+    <VideoGrid videos={videos} lang={lang} />
+    <p class="empty label" data-empty hidden>{t("videos.empty")}</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .library {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 0;
+  }
+  .library-head {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+  .title {
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.05;
+    margin: 0;
+    color: var(--text);
+  }
+  .intro {
+    margin: 0;
+    max-width: 48ch;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+  }
+  .empty {
+    margin-top: 3rem;
+    text-align: center;
+    color: var(--text-muted);
+  }
+</style>

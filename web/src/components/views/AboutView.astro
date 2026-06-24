@@ -1,0 +1,150 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations, localizedPath } from "@/i18n/utils";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import LionSun from "@/components/LionSun.astro";
+import PatternBackground from "@/components/PatternBackground.astro";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const arrows = [
+  { key: "truth", body: t("about.arrow.truth") },
+  { key: "myth", body: t("about.arrow.myth") },
+  { key: "project", body: t("about.arrow.project") },
+] as const;
+---
+
+<BaseLayout lang={lang} title={t("about.title")} description={t("about.lead")}>
+  <article class="about">
+    <header class="about-head">
+      <span class="mark"><LionSun size={72} /></span>
+      <h1 class="title font-display">{t("about.title")}</h1>
+      <p class="lead font-display">{t("about.lead")}</p>
+    </header>
+
+    <section class="block">
+      <span class="label">{t("about.goal.title")}</span>
+      <p>{t("about.goal.body")}</p>
+    </section>
+
+    <hr class="rule" />
+
+    <section class="block">
+      <span class="label">{t("about.method.title")}</span>
+      <p>{t("about.method.body")}</p>
+      <ol class="arrows">
+        {
+          arrows.map((a) => (
+            <li>
+              <span class="label arrow-cat">{t(`category.${a.key}` as const)}</span>
+              <span class="arrow-body">{a.body}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="tagline-block">
+      <PatternBackground color="ink" opacity={0.05} size="380px" />
+      <p class="tagline font-display">{t("site.tagline")}</p>
+      <a class="btn-outline" href={localizedPath("/videos", lang)}>
+        {t("hero.cta.watch")}
+      </a>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .about {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 0;
+  }
+  .about-head {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+  .mark {
+    color: var(--color-gold);
+  }
+  .title {
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin: 0;
+    color: var(--text);
+  }
+  .lead {
+    font-weight: 300;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1.35;
+    margin: 0;
+    color: var(--text-muted);
+  }
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2.5rem 0;
+  }
+  .block p {
+    margin: 0;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .arrows {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .arrows li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-inline-start: 1.25rem;
+    border-inline-start: 1px solid var(--color-gold);
+  }
+  .arrow-cat {
+    color: var(--color-gold);
+  }
+  .arrow-body {
+    font-size: 1.15rem;
+    color: var(--text);
+  }
+  .rule {
+    margin: 0;
+  }
+  .tagline-block {
+    position: relative;
+    overflow: hidden;
+    margin-top: 4rem;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    text-align: center;
+    border: 1px solid var(--line);
+  }
+  .tagline {
+    position: relative;
+    z-index: 1;
+    font-weight: 300;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    margin: 0;
+    color: var(--text);
+  }
+  .tagline-block .btn-outline {
+    position: relative;
+    z-index: 1;
+  }
+</style>

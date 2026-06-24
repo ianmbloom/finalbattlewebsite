@@ -1,0 +1,17 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getVideosForLocale } from "@/lib/videos";
+import VideoDetailView from "@/components/views/VideoDetailView.astro";
+
+export const getStaticPaths = (async () => {
+  const videos = await getVideosForLocale("fa");
+  return videos.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+---
+
+<VideoDetailView entry={entry} lang="fa" />

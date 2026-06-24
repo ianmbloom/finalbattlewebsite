@@ -1,0 +1,21 @@
+{
+  "series": "iran-prosperity-project",
+  "category": "project",
+  "publishedAt": "2026-07-05",
+  "featured": true,
+  "tags": ["prosperity", "future", "economy"],
+  "languages": {
+    "en": {
+      "title": "What Prosperity Actually Looks Like",
+      "streamId": "PLACEHOLDER_STREAM_UID_EN_3",
+      "durationSeconds": 58,
+      "thumbnailUrl": "/videos/thumbs/what-prosperity-looks-like.webp",
+      "script": "Imagine a Persian Gulf that trades freely with the world. Imagine the world's fourth-largest oil reserves funding schools instead of militias. Imagine eighty-five million people, half of them under thirty-five, building startups instead of fleeing. This is not a fantasy. It is arithmetic. The Iran Prosperity Project is the map. Now it's your turn to take aim.",
+      "platforms": {
+        "x": "https://x.com/finalbattleiran/status/PLACEHOLDER",
+        "instagram": "https://www.instagram.com/reel/PLACEHOLDER/",
+        "youtube": "https://youtube.com/shorts/PLACEHOLDER"
+      }
+    }
+  }
+}

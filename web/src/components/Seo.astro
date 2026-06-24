@@ -1,0 +1,72 @@
+---
+import { SITE_NAME, SITE_URL, streamIframeUrl } from "@/consts";
+import type { Locale } from "@/consts";
+
+interface VideoMeta {
+  streamId: string;
+  thumbnailUrl?: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  lang: Locale;
+  /** When present, emits video OG + Twitter player card tags. */
+  video?: VideoMeta;
+  ogType?: string;
+}
+
+const {
+  title,
+  description = "",
+  lang,
+  video,
+  ogType = video ? "video.other" : "website",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+const fullTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
+
+const absThumb = video?.thumbnailUrl
+  ? new URL(video.thumbnailUrl, SITE_URL).href
+  : undefined;
+const playerUrl = video ? streamIframeUrl(video.streamId) : undefined;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={lang === "fa" ? "fa_IR" : "en_US"} />
+{absThumb && <meta property="og:image" content={absThumb} />}
+
+{
+  video && playerUrl && (
+    <>
+      <meta property="og:video" content={playerUrl} />
+      <meta property="og:video:type" content="text/html" />
+      <meta property="og:video:width" content="1080" />
+      <meta property="og:video:height" content="1920" />
+      <meta name="twitter:card" content="player" />
+      <meta name="twitter:player" content={playerUrl} />
+      <meta name="twitter:player:width" content="360" />
+      <meta name="twitter:player:height" content="640" />
+    </>
+  )
+}
+{
+  !video && (
+    <meta
+      name="twitter:card"
+      content={absThumb ? "summary_large_image" : "summary"}
+    />
+  )
+}
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+{absThumb && <meta name="twitter:image" content={absThumb} />}

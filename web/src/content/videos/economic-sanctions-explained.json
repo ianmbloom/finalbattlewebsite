@@ -1,0 +1,33 @@
+{
+  "series": "iran-prosperity-project",
+  "category": "myth",
+  "publishedAt": "2026-07-01",
+  "featured": true,
+  "tags": ["sanctions", "economy", "iran"],
+  "languages": {
+    "en": {
+      "title": "Economic Sanctions, Explained",
+      "streamId": "PLACEHOLDER_STREAM_UID_EN_1",
+      "durationSeconds": 47,
+      "thumbnailUrl": "/videos/thumbs/economic-sanctions-explained.webp",
+      "script": "You've been told sanctions hurt the regime. They don't. They hurt the Iranian people while the rulers grow richer on the black market they control. Every barrel smuggled, every dollar laundered, flows upward. A free Iran doesn't need to be sanctioned into submission. It needs to be freed into prosperity. That's the difference. That's the project.",
+      "platforms": {
+        "x": "https://x.com/finalbattleiran/status/PLACEHOLDER",
+        "instagram": "https://www.instagram.com/reel/PLACEHOLDER/",
+        "youtube": "https://youtube.com/shorts/PLACEHOLDER"
+      }
+    },
+    "fa": {
+      "title": "تحریم‌های اقتصادی، به زبان ساده",
+      "streamId": "PLACEHOLDER_STREAM_UID_FA_1",
+      "durationSeconds": 49,
+      "thumbnailUrl": "/videos/thumbs/economic-sanctions-explained.webp",
+      "script": "به شما گفته‌اند تحریم‌ها به حکومت آسیب می‌زنند. اما این‌طور نیست. تحریم‌ها به مردم ایران آسیب می‌زنند، در حالی که حاکمان از بازار سیاهی که خود کنترل می‌کنند ثروتمندتر می‌شوند. ایرانِ آزاد نیازی به تحریم ندارد؛ نیاز به آزادی برای شکوفایی دارد. این همان تفاوت است. این همان پروژه است.",
+      "platforms": {
+        "x": "https://x.com/finalbattleiran/status/PLACEHOLDER",
+        "instagram": "https://www.instagram.com/reel/PLACEHOLDER/",
+        "youtube": "https://youtube.com/shorts/PLACEHOLDER"
+      }
+    }
+  }
+}

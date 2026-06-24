@@ -1,0 +1,95 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations, localizedPath } from "@/i18n/utils";
+import { getVariant, type VideoEntry } from "@/lib/videos";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import VideoPlayer from "@/components/VideoPlayer.astro";
+import ScriptPanel from "@/components/ScriptPanel.astro";
+
+interface Props {
+  entry: VideoEntry;
+  lang: Locale;
+}
+const { entry, lang } = Astro.props;
+const t = useTranslations(lang);
+const variant = getVariant(entry, lang)!;
+---
+
+<BaseLayout
+  lang={lang}
+  title={variant.title}
+  description={variant.script?.slice(0, 180)}
+  video={{ streamId: variant.streamId, thumbnailUrl: variant.thumbnailUrl }}
+>
+  <article class="viewer">
+    <a class="back label" href={localizedPath("/videos", lang)}>
+      ← {t("video.back")}
+    </a>
+
+    <div class="columns">
+      <div class="video-col">
+        <div class="sticky">
+          <VideoPlayer streamId={variant.streamId} title={variant.title} />
+        </div>
+      </div>
+
+      <div class="script-col">
+        <ScriptPanel
+          variant={variant}
+          category={entry.data.category}
+          tags={entry.data.tags}
+          lang={lang}
+        />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .viewer {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 0;
+  }
+  .back {
+    display: inline-block;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .back:hover {
+    color: var(--color-gold);
+  }
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .video-col {
+    /* 9:16 video kept narrow so it doesn't dominate on wide screens */
+    max-width: 420px;
+    width: 100%;
+    margin-inline: auto;
+  }
+  .script-col {
+    min-width: 0;
+  }
+  @media (min-width: 900px) {
+    .columns {
+      grid-template-columns: minmax(320px, 0.85fr) 1.15fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .video-col {
+      margin-inline: 0;
+    }
+    .sticky {
+      position: sticky;
+      top: 2rem;
+      max-height: calc(100dvh - 4rem);
+    }
+    .script-col {
+      padding-block: 1rem 5rem;
+    }
+  }
+</style>

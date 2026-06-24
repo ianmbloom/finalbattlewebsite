@@ -1,0 +1,93 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const filters = [
+  { value: "all", label: t("filter.all") },
+  { value: "truth", label: t("filter.truth") },
+  { value: "myth", label: t("filter.myth") },
+  { value: "project", label: t("filter.project") },
+];
+---
+
+<div class="filter-bar" role="tablist" aria-label={t("videos.title")}>
+  {
+    filters.map((f, i) => (
+      <button
+        type="button"
+        role="tab"
+        class:list={["pill", "label", { active: i === 0 }]}
+        data-filter={f.value}
+        aria-selected={i === 0 ? "true" : "false"}
+      >
+        {f.label}
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLDivElement>(".filter-bar");
+  if (bar) {
+    const pills = bar.querySelectorAll<HTMLButtonElement>(".pill");
+    const cards =
+      document.querySelectorAll<HTMLElement>("[data-category]");
+    const empty = document.querySelector<HTMLElement>("[data-empty]");
+
+    const apply = (value: string) => {
+      let visible = 0;
+      cards.forEach((card) => {
+        const show = value === "all" || card.dataset.category === value;
+        card.hidden = !show;
+        if (show) visible++;
+      });
+      if (empty) empty.hidden = visible !== 0;
+    };
+
+    pills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        pills.forEach((p) => {
+          p.classList.remove("active");
+          p.setAttribute("aria-selected", "false");
+        });
+        pill.classList.add("active");
+        pill.setAttribute("aria-selected", "true");
+        apply(pill.dataset.filter ?? "all");
+      });
+    });
+  }
+</script>
+
+<style>
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .pill {
+    background: none;
+    border: 1px solid var(--line-strong);
+    color: var(--text);
+    padding: 0.6rem 1.4rem;
+    cursor: pointer;
+    transition:
+      color 300ms var(--ease-editorial),
+      border-color 300ms var(--ease-editorial),
+      background-color 300ms var(--ease-editorial);
+  }
+  .pill:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+  .pill.active {
+    background: var(--color-ink);
+    color: var(--color-parchment);
+    border-color: var(--color-ink);
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+import type { Locale } from "@/consts";
+import type { VideoEntry } from "@/lib/videos";
+import VideoCard from "./VideoCard.astro";
+
+interface Props {
+  videos: VideoEntry[];
+  lang: Locale;
+}
+const { videos, lang } = Astro.props;
+---
+
+<div class="video-grid">
+  {videos.map((entry) => <VideoCard entry={entry} lang={lang} />)}
+</div>
+
+<style>
+  .video-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .video-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .video-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

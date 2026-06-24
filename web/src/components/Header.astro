@@ -1,0 +1,87 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations, localizedPath } from "@/i18n/utils";
+import LangSwitcher from "./LangSwitcher.astro";
+import LionSun from "./LionSun.astro";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const links = [
+  { href: localizedPath("/videos", lang), label: t("nav.videos") },
+  { href: localizedPath("/about", lang), label: t("nav.about") },
+];
+const current = Astro.url.pathname.replace(/\/$/, "");
+---
+
+<header class="site-header">
+  <a class="brand" href={localizedPath("/", lang)} aria-label={t("site.name")}>
+    <span class="brand-mark"><LionSun size={26} /></span>
+    <span class="brand-name font-display">{t("site.name")}</span>
+  </a>
+
+  <nav class="primary" aria-label="Primary">
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          class:list={["nav-link", "label", { active: current === link.href.replace(/\/$/, "") }]}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+    <LangSwitcher lang={lang} />
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .brand-mark {
+    color: var(--color-gold);
+    display: inline-flex;
+  }
+  .brand-name {
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: 0.01em;
+    color: var(--text);
+  }
+  .primary {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .nav-link {
+    color: var(--text-muted);
+    transition: color 300ms var(--ease-editorial);
+  }
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--color-gold);
+  }
+  @media (max-width: 640px) {
+    .primary {
+      gap: 1.25rem;
+    }
+    .brand-name {
+      font-size: 1.1rem;
+    }
+  }
+</style>

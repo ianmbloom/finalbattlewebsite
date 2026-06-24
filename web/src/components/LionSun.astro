@@ -1,0 +1,55 @@
+---
+/**
+ * Minimal radiant-sun emblem in the spirit of the Lion & Sun. Drawn with
+ * `currentColor` so callers control the color (typically `gold`). Alternating
+ * straight rays evoke the classic Iranian sun without leaning on any religious
+ * iconography.
+ */
+interface Props {
+  size?: number;
+  class?: string;
+}
+const { size = 96, class: className = "" } = Astro.props;
+
+const cx = 100;
+const cy = 100;
+const innerR = 30;
+const rayCount = 24;
+const rays = Array.from({ length: rayCount }, (_, i) => {
+  const angle = (i / rayCount) * Math.PI * 2;
+  const long = i % 2 === 0;
+  const outerR = long ? 90 : 70;
+  return {
+    x1: cx + Math.cos(angle) * (innerR + 6),
+    y1: cy + Math.sin(angle) * (innerR + 6),
+    x2: cx + Math.cos(angle) * outerR,
+    y2: cy + Math.sin(angle) * outerR,
+  };
+});
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 200 200"
+  fill="none"
+  role="img"
+  aria-label="Lion and Sun"
+  class={className}
+>
+  <circle cx={cx} cy={cy} r={innerR} stroke="currentColor" stroke-width="2" />
+  <circle cx={cx} cy={cy} r={innerR - 9} fill="currentColor" opacity="0.12" />
+  {
+    rays.map((r) => (
+      <line
+        x1={r.x1}
+        y1={r.y1}
+        x2={r.x2}
+        y2={r.y2}
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+    ))
+  }
+</svg>

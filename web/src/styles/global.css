@@ -1,0 +1,132 @@
+/* Fonts (must precede other statements). Weights chosen per the design system. */
+@import "@fontsource/cormorant-garamond/300.css";
+@import "@fontsource/cormorant-garamond/500.css";
+@import "@fontsource/cormorant-garamond/600.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/vazirmatn/400.css";
+@import "@fontsource/vazirmatn/700.css";
+
+@import "tailwindcss";
+
+/* ---- Brand palette -------------------------------------------------------- */
+@theme {
+  --color-obsidian: #0a0a0a;
+  --color-ink: #1c1814; /* warm near-black for body text */
+  --color-parchment: #f2ede4;
+  --color-bone: #faf7f1; /* lighter surface for cards */
+  --color-sand: #c8b89a;
+  --color-stone: #6e6353; /* muted warm gray for secondary text on light */
+  --color-gold: #9a7d2e; /* slightly deepened so it reads on light */
+  --color-crimson: #9b1c1c;
+  --color-carbon: #1a1a1a;
+
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-fa: "Vazirmatn", "Inter", system-ui, sans-serif;
+
+  /* Single permitted transition. */
+  --ease-editorial: cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* ---- Semantic tokens (light editorial: dark text on light) ---------------- */
+@layer base {
+  :root {
+    --bg: var(--color-parchment);
+    --surface: var(--color-bone);
+    --text: var(--color-ink);
+    --text-muted: var(--color-stone);
+    --accent: var(--color-gold);
+    --line: color-mix(in srgb, var(--color-ink) 14%, transparent);
+    --line-strong: color-mix(in srgb, var(--color-ink) 28%, transparent);
+  }
+
+  html {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Persian / RTL: swap the body face to Vazirmatn. */
+  html[dir="rtl"] {
+    font-family: var(--font-fa);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-parchment);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/* ---- Reusable editorial primitives --------------------------------------- */
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  /* Uppercase tracked label — categories, timestamps, metadata. */
+  .label {
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  html[dir="rtl"] .label {
+    /* Persian text should not be uppercased or aggressively tracked. */
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-family: var(--font-fa);
+  }
+
+  /* Outlined, sharp-edged CTA. ink -> gold on hover. No fill. */
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--text);
+    color: var(--text);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+      color 300ms var(--ease-editorial),
+      border-color 300ms var(--ease-editorial);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+
+  html[dir="rtl"] .btn-outline {
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  /* Thin hairline divider used between editorial blocks. */
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+}

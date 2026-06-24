@@ -1,0 +1,64 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations, localizedPath } from "@/i18n/utils";
+import { getFeaturedForLocale, getVideosForLocale } from "@/lib/videos";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Hero from "@/components/Hero.astro";
+import VideoGrid from "@/components/VideoGrid.astro";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const featured = await getFeaturedForLocale(lang, 1);
+const heroVideo = featured[0];
+
+// Everything except the hero video, for the grid below the fold.
+const all = await getVideosForLocale(lang);
+const rest = all.filter((v) => v.id !== heroVideo?.id).slice(0, 6);
+---
+
+<BaseLayout
+  lang={lang}
+  title={t("site.name")}
+  description={t("hero.subtitle.line1") + " " + t("hero.subtitle.line2")}
+>
+  <Hero lang={lang} featured={heroVideo} />
+
+  {
+    rest.length > 0 && (
+      <section class="more">
+        <div class="section-head">
+          <span class="label">{t("videos.title")}</span>
+          <a class="more-link label" href={localizedPath("/videos", lang)}>
+            {t("filter.all")} →
+          </a>
+        </div>
+        <VideoGrid videos={rest} lang={lang} />
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .more {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem 0;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  .more-link {
+    color: var(--text-muted);
+    transition: color 300ms var(--ease-editorial);
+  }
+  .more-link:hover {
+    color: var(--color-gold);
+  }
+</style>
