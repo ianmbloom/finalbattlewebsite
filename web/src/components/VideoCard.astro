@@ -2,7 +2,6 @@
 import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import {
-  CATEGORY_COLOR,
   formatDuration,
   getBlurb,
   getVariant,
@@ -21,13 +20,11 @@ const t = useTranslations(lang);
 const variant = getVariant(entry, lang)!;
 const href = localizedPath(`/videos/${entry.id}`, lang);
 const duration = formatDuration(variant.durationSeconds);
-const categoryLabel = t(`category.${entry.data.category}` as const);
 const blurb = getBlurb(variant);
-const catColor = CATEGORY_COLOR[entry.data.category];
 const hasPlatforms = hasShareLinks(variant.platforms);
 ---
 
-<article class="card" data-category={entry.data.category} style={`--cat:${catColor}`}>
+<article class="card" data-category={entry.data.category}>
   <a class="card-link" href={href} aria-label={variant.title}>
     <div class="thumb">
       {
@@ -53,7 +50,6 @@ const hasPlatforms = hasShareLinks(variant.platforms);
     </div>
 
     <div class="meta">
-      <span class="label cat"><span class="keyline" aria-hidden="true"></span>{categoryLabel}</span>
       <h3 class="title font-display">{variant.title}</h3>
       {blurb && <p class="blurb">{blurb}</p>}
     </div>
@@ -167,20 +163,6 @@ const hasPlatforms = hasShareLinks(variant.platforms);
     flex-direction: column;
     gap: 0.5rem;
     padding: 0 0.25rem 0.5rem;
-  }
-  .cat {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-size: 0.66rem;
-    font-weight: 600;
-    color: var(--cat);
-  }
-  .keyline {
-    width: 1.5rem;
-    height: 2px;
-    background: var(--cat);
-    flex: none;
   }
   .title {
     margin: 0;
