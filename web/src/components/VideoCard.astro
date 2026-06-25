@@ -68,10 +68,6 @@ const catColor = CATEGORY_COLOR[entry.data.category];
     gap: 0.85rem;
     background: transparent;
     border: none;
-    transition: transform 300ms var(--ease-editorial);
-  }
-  .card:hover {
-    transform: translateY(-3px);
   }
   .thumb {
     position: relative;
@@ -79,13 +75,15 @@ const catColor = CATEGORY_COLOR[entry.data.category];
     aspect-ratio: 9 / 16;
     overflow: hidden;
     background: var(--color-ink);
-    border-radius: 1.5rem;
+    border-radius: 2rem;
     box-shadow: var(--shadow-sm);
-    /* Force a compositing layer so border-radius clips scaled children correctly */
-    will-change: transform;
-    transition: box-shadow 300ms var(--ease-editorial);
+    transform-origin: center bottom;
+    transition:
+      transform 350ms var(--ease-editorial),
+      box-shadow 350ms var(--ease-editorial);
   }
   .card:hover .thumb {
+    transform: scale(1.04);
     box-shadow: var(--shadow-md);
   }
   .thumb img {
