@@ -1,5 +1,6 @@
 ---
 import type { Locale } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
 import { type VideoVariant } from "@/lib/videos";
 import ShareBar from "./ShareBar.astro";
 
@@ -8,6 +9,7 @@ interface Props {
   lang: Locale;
 }
 const { variant, lang } = Astro.props;
+const t = useTranslations(lang);
 
 // The longer-form background, set as a magazine feature: a drop-capped lead
 // paragraph followed by justified body columns.
@@ -21,6 +23,7 @@ const paragraphs = (variant.context ?? "")
   {
     paragraphs.length > 0 && (
       <div class="prose font-display">
+        <span class="label prose-label">{t("video.context")}</span>
         {paragraphs.map((p) => (
           <p>{p}</p>
         ))}
@@ -43,6 +46,11 @@ const paragraphs = (variant.context ?? "")
     display: flex;
     flex-direction: column;
     gap: 1.15rem;
+  }
+  .prose-label {
+    color: var(--text-muted);
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--line);
   }
   .prose p {
     margin: 0;
