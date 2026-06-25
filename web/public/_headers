@@ -5,9 +5,9 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Thumbnail images only — HTML under /videos/<slug>/ must not be cached as immutable.
+# Thumbnails may be updated between deployments — use a short revalidation window.
 /videos/thumbs/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=86400
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
