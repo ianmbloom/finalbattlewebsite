@@ -1,0 +1,13 @@
+{
+  "_doc": "Map each product SKU's formats/languages to its Printify product id. Run `npm run printify:list` to find product ids, paste them here, then `npm run printify:sync` to pull the per-size variant ids into src/content/products/*.json and regenerate the trusted catalog. Add an optional \"color\": \"Black\" to a block to disambiguate when a product has multiple colors.",
+  "products": {
+    "fb-free-iran": {
+      "tee": {
+        "en": { "productId": "" }
+      },
+      "poster": {
+        "en": { "productId": "" }
+      }
+    }
+  }
+}

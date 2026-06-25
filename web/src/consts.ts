@@ -3,6 +3,31 @@ export const SITE_URL = "https://finalbattleiran.org";
 export const SITE_NAME = "Final Battle Iran";
 
 /**
+ * External "impulse donation" destinations. These are plain outbound links —
+ * the project takes no payment details itself for donations. Replace the
+ * placeholder handles with the real Ko-fi / Buy Me a Coffee account URLs.
+ */
+export const DONATE_LINKS = {
+  kofi: "https://ko-fi.com/finalbattleiran",
+  buyMeACoffee: "https://buymeacoffee.com/finalbattleiran",
+} as const;
+
+/**
+ * Feature switches for the launch. Each starts OFF so the site can ship while
+ * its backend/content is still placeholder: anything not ready renders grayed
+ * out and disabled ("Soon") instead of pretending to work. Flip a flag to true
+ * once it is wired up:
+ *   - newsletter: the D1 `subscribers` database is created + bound (`DB`).
+ *   - shop:       Stripe + Printify keys are set and real products exist.
+ *   - donations:  the real Ko-fi / Buy Me a Coffee URLs above are filled in.
+ */
+export const FEATURES = {
+  newsletter: false,
+  shop: false,
+  donations: false,
+} as const;
+
+/**
  * Supported locales. `en` is the default and served at the root; every other
  * locale is served under its own `/<locale>/` prefix. Add a locale here, add a
  * strings block in `src/i18n/ui.ts`, and mirror the pages under `src/pages/<locale>/`.

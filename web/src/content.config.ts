@@ -44,4 +44,49 @@ const videos = defineCollection({
   }),
 });
 
-export const collections = { videos };
+// English is always present; a locale's copy is optional and falls back to EN.
+const bilingual = z.object({ en: z.string(), fa: z.string().optional() });
+
+// A printable variant of a design in one language. Each language version is its
+// own Printify product (different baked-in text), so it carries a Printify
+// product id and a size -> Printify variant id map. Filled in by
+// scripts/sync-printify.mjs as those products exist.
+const printEntry = z.object({
+  productId: z.string(),
+  variantIds: z.record(z.string(), z.number()),
+});
+
+// We sell DESIGNS. Each design is one product, available in two formats: a
+// T-shirt (with sizes) or a Poster. Every format is fulfilled by Printify;
+// `print` maps a language code to its Printify ids and is empty until those
+// products exist (then it's fulfilled manually / hidden from the language picker).
+const products = defineCollection({
+  loader: glob({ pattern: "**/*.json", base: "./src/content/products" }),
+  schema: z.object({
+    sku: z.string(),
+    image: z.string(), // product shot under /public
+    mockup: z.string().optional(), // alternate flat mockup under /public
+    featured: z.boolean().default(false),
+    order: z.number().default(0),
+    name: bilingual,
+    description: bilingual,
+    slogan: bilingual.optional(),
+    currency: z.string().default("USD"),
+    formats: z.object({
+      tee: z.object({
+        price: z.number().positive(),
+        sizes: z.array(z.string()).default(["S", "M", "L", "XL", "2XL"]),
+        cartImage: z.string().optional(),
+        print: z.record(z.string(), printEntry).default({}),
+      }),
+      poster: z.object({
+        price: z.number().positive(),
+        size: z.string().default("18x24"),
+        cartImage: z.string().optional(),
+        print: z.record(z.string(), printEntry).default({}),
+      }),
+    }),
+  }),
+});
+
+export const collections = { videos, products };

@@ -1,0 +1,199 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+
+interface Props {
+  lang: Locale;
+  /** Hide the headline + body blurb, leaving just the email entry bar. */
+  compact?: boolean;
+  /** Render grayed-out and inert until the D1 backend is wired up. */
+  disabled?: boolean;
+}
+
+const { lang, compact = false, disabled = false } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<form class:list={["fb-newsletter", { "is-disabled": disabled }]} novalidate data-locale={lang}>
+  {
+    !compact && (
+      <div class="intro">
+        <h2 class="headline font-display">
+          {t("newsletter.headline")}
+          {disabled && <span class="soon">{t("common.soon")}</span>}
+        </h2>
+        <p class="body">{t("newsletter.body")}</p>
+      </div>
+    )
+  }
+
+  <div class="fields" data-fields>
+    <label class="sr-only" for={`newsletter-email-${compact ? "compact" : "full"}`}>
+      {t("newsletter.placeholder")}
+    </label>
+    <input
+      id={`newsletter-email-${compact ? "compact" : "full"}`}
+      type="email"
+      name="email"
+      required
+      placeholder={t("newsletter.placeholder")}
+      class="input"
+      disabled={disabled}
+    />
+    <button type="submit" class="btn-outline-on-bar submit" disabled={disabled}>
+      {t("newsletter.subscribe")}
+    </button>
+  </div>
+
+  <p class="status success label" data-success hidden>{t("newsletter.success")}</p>
+  <p class="status error label" data-error hidden>{t("newsletter.error")}</p>
+  <p class="consent label">{t("newsletter.consent")}</p>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>(".fb-newsletter").forEach((form) => {
+    if (form.classList.contains("is-disabled")) return;
+    const fields = form.querySelector("[data-fields]");
+    const success = form.querySelector("[data-success]");
+    const error = form.querySelector("[data-error]");
+    const button = form.querySelector<HTMLButtonElement>("button[type=submit]");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const email = form.querySelector<HTMLInputElement>("input[type=email]");
+      if (!email || !email.checkValidity()) {
+        email?.reportValidity();
+        return;
+      }
+
+      error?.setAttribute("hidden", "");
+      if (button) button.disabled = true;
+
+      try {
+        const res = await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email.value.trim(),
+            locale: form.dataset.locale ?? "en",
+          }),
+        });
+        if (!res.ok) throw new Error(`subscribe failed: ${res.status}`);
+        fields?.setAttribute("hidden", "");
+        success?.removeAttribute("hidden");
+        email.value = "";
+      } catch {
+        error?.removeAttribute("hidden");
+      } finally {
+        if (button) button.disabled = false;
+      }
+    });
+  });
+</script>
+
+<style>
+  .fb-newsletter {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .fb-newsletter.is-disabled .fields {
+    opacity: 0.45;
+  }
+  .fb-newsletter.is-disabled .input,
+  .fb-newsletter.is-disabled .submit {
+    cursor: not-allowed;
+  }
+  .soon {
+    display: inline-block;
+    margin-inline-start: 0.6rem;
+    vertical-align: middle;
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--bar-line);
+    border-radius: 999px;
+    color: var(--bar-muted);
+  }
+  html[dir="rtl"] .soon {
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .headline {
+    margin: 0;
+    font-weight: 300;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.1;
+    color: var(--bar-text);
+  }
+  .body {
+    margin: 0;
+    max-width: 52ch;
+    color: var(--bar-muted);
+    line-height: 1.6;
+  }
+  .fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  @media (min-width: 540px) {
+    .fields {
+      flex-direction: row;
+    }
+  }
+  .input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.85rem 1rem;
+    background: color-mix(in srgb, var(--color-cream) 96%, transparent);
+    border: 1px solid var(--bar-line);
+    border-radius: 2px;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+  }
+  .input:focus {
+    outline: 2px solid var(--bar-accent);
+    outline-offset: 1px;
+  }
+  .submit {
+    flex: none;
+    cursor: pointer;
+    background: none;
+  }
+  .status {
+    margin: 0;
+  }
+  .success {
+    color: var(--bar-accent);
+  }
+  .error {
+    color: var(--color-rose);
+  }
+  .consent {
+    margin: 0;
+    color: var(--bar-muted);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

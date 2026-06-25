@@ -4,6 +4,7 @@ import { useTranslations } from "@/i18n/utils";
 import { getVideosForLocale } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import VideoGrid from "@/components/VideoGrid.astro";
+import PromoteBand from "@/components/PromoteBand.astro";
 
 interface Props {
   lang: Locale;
@@ -29,6 +30,8 @@ const videos = await getVideosForLocale(lang);
     </div>
     <VideoGrid videos={videos} lang={lang} />
   </section>
+
+  <PromoteBand lang={lang} />
 </BaseLayout>
 
 <style>

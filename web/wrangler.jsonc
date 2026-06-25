@@ -1,12 +1,29 @@
 {
   // Cloudflare Pages project config. The site is a static Astro build; Pages
-  // serves the contents of `dist/` directly (no Worker/adapter needed).
+  // serves the contents of `dist/` directly and runs the `functions/` folder as
+  // Pages Functions (no Worker/adapter needed).
   //
   // Dashboard (git-connected) build settings to mirror this:
   //   Root directory:        web
   //   Build command:         npm run build
   //   Build output directory: dist
+  //
+  // Bindings/secrets to set in the dashboard (Settings > Variables and Functions):
+  //   DB                    -> the "finalbattle-emails" D1 database (binding below)
+  //   STRIPE_SECRET_KEY     (secret)
+  //   STRIPE_WEBHOOK_SECRET (secret)
+  //   PRINTIFY_API_TOKEN / PRINTIFY_SHOP_ID (secrets, for fulfillment)
+  //
+  // Create the database once with `wrangler d1 create finalbattle-emails`, paste
+  // the returned database_id below, then run `npm run db:schema`.
   "name": "finalbattleiran",
   "compatibility_date": "2026-06-24",
-  "pages_build_output_dir": "./dist"
+  "pages_build_output_dir": "./dist",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "finalbattle-emails",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+    }
+  ]
 }

@@ -9,6 +9,9 @@ npm-debug.log*
 # environment variables
 .env
 .env.production
+.dev.vars
+# cloudflare / wrangler local state
+.wrangler/
 # macOS
 .DS_Store
 video-deploy/

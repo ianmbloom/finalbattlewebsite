@@ -6,8 +6,10 @@ import {
   formatDuration,
   getBlurb,
   getVariant,
+  hasShareLinks,
   type VideoEntry,
 } from "@/lib/videos";
+import ShareBar from "./ShareBar.astro";
 
 interface Props {
   entry: VideoEntry;
@@ -22,44 +24,50 @@ const duration = formatDuration(variant.durationSeconds);
 const categoryLabel = t(`category.${entry.data.category}` as const);
 const blurb = getBlurb(variant);
 const catColor = CATEGORY_COLOR[entry.data.category];
+const hasPlatforms = hasShareLinks(variant.platforms);
 ---
 
-<a
-  class="card"
-  href={href}
-  data-category={entry.data.category}
-  aria-label={variant.title}
-  style={`--cat:${catColor}`}
->
-  <div class="thumb">
-    {
-      variant.thumbnailUrl ? (
-        <img
-          src={variant.thumbnailUrl}
-          alt={variant.title}
-          loading="lazy"
-          decoding="async"
-          width="270"
-          height="480"
-        />
-      ) : (
-        <span class="thumb-fallback label">9:16</span>
-      )
-    }
-    <span class="play" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-        <path d="M8 5v14l11-7z" />
-      </svg>
-    </span>
-    {duration && <span class="duration">{duration}</span>}
-  </div>
+<article class="card" data-category={entry.data.category} style={`--cat:${catColor}`}>
+  <a class="card-link" href={href} aria-label={variant.title}>
+    <div class="thumb">
+      {
+        variant.thumbnailUrl ? (
+          <img
+            src={variant.thumbnailUrl}
+            alt={variant.title}
+            loading="lazy"
+            decoding="async"
+            width="270"
+            height="480"
+          />
+        ) : (
+          <span class="thumb-fallback label">9:16</span>
+        )
+      }
+      <span class="play" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </span>
+      {duration && <span class="duration">{duration}</span>}
+    </div>
 
-  <div class="meta">
-    <span class="label cat"><span class="keyline" aria-hidden="true"></span>{categoryLabel}</span>
-    <h3 class="title font-display">{variant.title}</h3>
-    {blurb && <p class="blurb">{blurb}</p>}
-  </div>
-</a>
+    <div class="meta">
+      <span class="label cat"><span class="keyline" aria-hidden="true"></span>{categoryLabel}</span>
+      <h3 class="title font-display">{variant.title}</h3>
+      {blurb && <p class="blurb">{blurb}</p>}
+    </div>
+  </a>
+
+  {
+    hasPlatforms && (
+      <div class="card-share">
+        <span class="card-share-label label">{t("promote.share")}</span>
+        <ShareBar title={variant.title} platforms={variant.platforms} lang={lang} compact />
+      </div>
+    )
+  }
+</article>
 
 <style>
   .card {
@@ -68,6 +76,21 @@ const catColor = CATEGORY_COLOR[entry.data.category];
     gap: 0.85rem;
     background: transparent;
     border: none;
+  }
+  .card-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .card-share {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0 0.25rem;
+  }
+  .card-share-label {
+    color: var(--text-muted);
+    font-size: 0.62rem;
   }
   .thumb {
     position: relative;

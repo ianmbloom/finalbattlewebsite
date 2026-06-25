@@ -1,5 +1,6 @@
 ---
 import type { Locale } from "@/consts";
+import { FEATURES } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import LangSwitcher from "./LangSwitcher.astro";
 import Logo from "./Logo.astro";
@@ -12,8 +13,10 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 const links = [
-  { href: localizedPath("/videos", lang), label: t("nav.videos") },
-  { href: localizedPath("/about", lang), label: t("nav.about") },
+  { href: localizedPath("/videos", lang), label: t("nav.videos"), ready: true },
+  { href: localizedPath("/shop", lang), label: t("nav.shop"), ready: FEATURES.shop },
+  { href: localizedPath("/support", lang), label: t("nav.support"), ready: true },
+  { href: localizedPath("/about", lang), label: t("nav.about"), ready: true },
 ];
 const current = Astro.url.pathname.replace(/\/$/, "");
 ---
@@ -31,19 +34,50 @@ const current = Astro.url.pathname.replace(/\/$/, "");
 
     <nav class="primary" aria-label="Primary">
       {
-        links.map((link) => (
-          <a
-            href={link.href}
-            class:list={["nav-link", "label", { active: current === link.href.replace(/\/$/, "") }]}
-          >
-            {link.label}
-          </a>
-        ))
+        links.map((link) =>
+          link.ready ? (
+            <a
+              href={link.href}
+              class:list={["nav-link", "label", { active: current === link.href.replace(/\/$/, "") }]}
+            >
+              {link.label}
+            </a>
+          ) : (
+            <span class="nav-link label disabled" aria-disabled="true">
+              {link.label}
+              <span class="soon">{t("common.soon")}</span>
+            </span>
+          ),
+        )
+      }
+      {
+        FEATURES.shop && (
+          <button type="button" class="nav-link label cart-btn" data-cart-toggle>
+            {t("nav.cart")}
+            <span class="cart-count" data-cart-count hidden>
+              0
+            </span>
+          </button>
+        )
       }
       <LangSwitcher lang={lang} />
     </nav>
   </div>
 </header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>("[data-cart-toggle]");
+  const badge = document.querySelector<HTMLElement>("[data-cart-count]");
+  toggle?.addEventListener("click", () =>
+    document.dispatchEvent(new CustomEvent("fb-cart:toggle")),
+  );
+  document.addEventListener("fb-cart:change", (event) => {
+    const count = (event as CustomEvent<{ count: number }>).detail?.count ?? 0;
+    if (!badge) return;
+    badge.textContent = String(count);
+    badge.hidden = count === 0;
+  });
+</script>
 
 <style>
   .site-header {
@@ -101,6 +135,48 @@ const current = Astro.url.pathname.replace(/\/$/, "");
   .nav-link:hover,
   .nav-link.active {
     color: var(--bar-accent);
+  }
+  .nav-link.disabled {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--bar-muted);
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .soon {
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    padding: 0.1rem 0.35rem;
+    border: 1px solid var(--bar-line);
+    border-radius: 999px;
+    color: var(--bar-muted);
+  }
+  html[dir="rtl"] .soon {
+    letter-spacing: 0;
+  }
+  .cart-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+  .cart-count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.15rem;
+    height: 1.15rem;
+    padding: 0 0.3rem;
+    border-radius: 999px;
+    background: var(--bar-accent);
+    color: var(--color-ink);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1;
   }
   @media (max-width: 640px) {
     .primary {

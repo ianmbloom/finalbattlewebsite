@@ -1,10 +1,15 @@
 ---
 import "@/styles/global.css";
 import type { Locale } from "@/consts";
+import { FEATURES } from "@/consts";
 import { dir } from "@/i18n/utils";
+import { useTranslations } from "@/i18n/utils";
 import Seo from "@/components/Seo.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import Newsletter from "@/components/Newsletter.astro";
+import BusinessPattern from "@/components/BusinessPattern.astro";
+import Cart from "@/components/Cart.astro";
 
 interface Props {
   lang: Locale;
@@ -12,10 +17,13 @@ interface Props {
   description?: string;
   video?: { src: string; thumbnailUrl?: string };
   ogType?: string;
+  /** Suppress the global newsletter band (e.g. pages that embed it inline). */
+  hideNewsletter?: boolean;
 }
 
-const { lang, title, description, video, ogType } = Astro.props;
+const { lang, title, description, video, ogType, hideNewsletter = false } = Astro.props;
 const direction = dir(lang);
+const t = useTranslations(lang);
 ---
 
 <!doctype html>
@@ -38,7 +46,18 @@ const direction = dir(lang);
     <main id="main">
       <slot />
     </main>
+    {
+      !hideNewsletter && (
+        <section class="newsletter-band business-surface">
+          <BusinessPattern />
+          <div class="newsletter-inner">
+            <Newsletter lang={lang} disabled={!FEATURES.newsletter} />
+          </div>
+        </section>
+      )
+    }
     <Footer lang={lang} />
+    {FEATURES.shop && <Cart lang={lang} />}
   </body>
 </html>
 
@@ -54,5 +73,18 @@ const direction = dir(lang);
   }
   .skip-link:focus {
     left: 1rem;
+  }
+  .newsletter-band {
+    margin-top: 6rem;
+    border-top: 1px solid var(--bar-line);
+  }
+  .newsletter-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: clamp(3rem, 6vw, 4.5rem) 1.5rem;
+  }
+  /* Footer already supplies its own top margin; avoid doubling the gap. */
+  .newsletter-band + :global(.site-footer) {
+    margin-top: 0;
   }
 </style>

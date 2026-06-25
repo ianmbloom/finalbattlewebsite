@@ -20,6 +20,29 @@ export function getVariant(
   return entry.data.languages[lang];
 }
 
+type Platforms = NonNullable<VideoVariant["platforms"]>;
+
+/**
+ * Platform links that are actually shareable: anything still set to a
+ * `PLACEHOLDER` post URL is dropped so we never ship a dead share link. Once a
+ * real post URL is filled in, that platform's share button lights up on its own.
+ */
+export function shareablePlatforms(platforms?: Platforms): Platforms {
+  const ok = (url?: string) =>
+    url && !url.includes("PLACEHOLDER") ? url : undefined;
+  return {
+    x: ok(platforms?.x),
+    instagram: ok(platforms?.instagram),
+    youtube: ok(platforms?.youtube),
+  };
+}
+
+/** Whether a video has at least one real (non-placeholder) platform link. */
+export function hasShareLinks(platforms?: Platforms): boolean {
+  const p = shareablePlatforms(platforms);
+  return Boolean(p.x || p.instagram || p.youtube);
+}
+
 /**
  * All videos that have a variant for the given locale, in series order.
  * Entries with an explicit `order` come first (ascending); the rest fall to the

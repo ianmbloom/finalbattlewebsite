@@ -1,0 +1,66 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations, localizedPath } from "@/i18n/utils";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+interface Props {
+  lang: Locale;
+  state: "success" | "cancel";
+}
+const { lang, state } = Astro.props;
+const t = useTranslations(lang);
+const title = state === "success" ? t("checkout.success.title") : t("checkout.cancel.title");
+const body = state === "success" ? t("checkout.success.body") : t("checkout.cancel.body");
+const shopHref = localizedPath("/shop", lang);
+---
+
+<BaseLayout lang={lang} title={title} description={body} hideNewsletter>
+  <section class="result">
+    <h1 class="title font-display">{title}</h1>
+    <p class="body">{body}</p>
+    <a class="btn-outline cta" href={shopHref}>{t("cart.continue")}</a>
+  </section>
+
+  {
+    state === "success" && (
+      <script is:inline>
+        // Order placed: empty the persisted cart and notify the badge.
+        try {
+          localStorage.removeItem("fb-cart");
+        } catch {}
+        document.dispatchEvent(
+          new CustomEvent("fb-cart:change", { detail: { count: 0 } }),
+        );
+      </script>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .result {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: clamp(4rem, 10vw, 7rem) 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .title {
+    margin: 0;
+    font-weight: 300;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    line-height: 1.05;
+    color: var(--text);
+  }
+  .body {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+  .cta {
+    margin-top: 1rem;
+  }
+</style>

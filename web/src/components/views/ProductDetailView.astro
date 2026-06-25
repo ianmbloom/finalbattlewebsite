@@ -1,0 +1,125 @@
+---
+import type { Locale } from "@/consts";
+import { FEATURES } from "@/consts";
+import { useTranslations, localizedPath } from "@/i18n/utils";
+import { localized, productLanguages, type ProductEntry } from "@/lib/products";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AddToCart from "@/components/AddToCart.astro";
+
+interface Props {
+  entry: ProductEntry;
+  lang: Locale;
+}
+const { entry, lang } = Astro.props;
+const t = useTranslations(lang);
+const { data } = entry;
+
+const name = localized(data.name, lang);
+const desc = localized(data.description, lang);
+const slogan = data.slogan ? localized(data.slogan, lang) : "";
+const languages = productLanguages(entry);
+const fromPrice = data.formats.tee.price;
+const cartImage = data.formats.tee.cartImage ?? data.mockup ?? data.image;
+const posterCartImage = data.formats.poster.cartImage ?? data.mockup ?? data.image;
+const shopHref = localizedPath("/shop", lang);
+---
+
+<BaseLayout lang={lang} title={name} description={desc}>
+  <div class="product">
+    <div class="gallery">
+      <img class="hero" src={data.image} alt={name} width="768" height="1152" />
+    </div>
+
+    <div class="detail">
+      <a class="back label" href={shopHref}>&larr; {t("shop.title")}</a>
+      {slogan && <p class="slogan label">{slogan}</p>}
+      <h1 class="name font-display">{name}</h1>
+      <p class="price">{t("product.from")} ${fromPrice.toFixed(2)}</p>
+      <p class="desc">{desc}</p>
+
+      <div class="atc-wrap">
+        <AddToCart
+          lang={lang}
+          sku={data.sku}
+          name={name}
+          teeImage={cartImage}
+          posterImage={posterCartImage}
+          tee={data.formats.tee}
+          poster={data.formats.poster}
+          languages={languages}
+          disabled={!FEATURES.shop}
+        />
+      </div>
+
+      <p class="note label">{t("product.shipping_note")}</p>
+      <p class="note label">{t("product.fulfillment_note")}</p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .product {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) 1.5rem 0;
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 860px) {
+    .product {
+      grid-template-columns: 1fr 1fr;
+      gap: 3.5rem;
+    }
+  }
+  .hero {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 1rem;
+    background: var(--surface-2);
+    box-shadow: var(--shadow-sm);
+  }
+  .detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .back {
+    color: var(--text-muted);
+    align-self: flex-start;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .back:hover {
+    color: var(--color-emerald);
+  }
+  .slogan {
+    margin: 0.5rem 0 0;
+    color: var(--color-gold);
+  }
+  .name {
+    margin: 0;
+    font-weight: 400;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 1.05;
+    color: var(--text);
+  }
+  .price {
+    margin: 0.25rem 0 0;
+    font-size: 1.4rem;
+    color: var(--text);
+  }
+  .desc {
+    margin: 0.5rem 0 0;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+  .atc-wrap {
+    margin-top: 1.5rem;
+  }
+  .note {
+    margin: 0.25rem 0 0;
+    color: var(--text-muted);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+</style>

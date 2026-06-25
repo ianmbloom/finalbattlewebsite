@@ -1,0 +1,24 @@
+{
+  "fb-free-iran": {
+    "slug": "free-iran-lion-and-sun",
+    "name": "Free Iran — Lion & Sun",
+    "image": "/products/placeholder.svg",
+    "currency": "usd",
+    "tee": {
+      "price": 28,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL"
+      ],
+      "print": {}
+    },
+    "poster": {
+      "price": 22,
+      "size": "18x24",
+      "print": {}
+    }
+  }
+}

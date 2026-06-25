@@ -1,0 +1,289 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+
+interface FormatProps {
+  price: number;
+  sizes?: string[];
+  size?: string;
+}
+
+interface Props {
+  lang: Locale;
+  sku: string;
+  name: string;
+  /** Cart thumbnail for a T-shirt line. */
+  teeImage?: string;
+  /** Cart thumbnail for a poster line. */
+  posterImage?: string;
+  tee: FormatProps;
+  poster: FormatProps;
+  languages?: string[];
+  /** Render grayed-out and inert until the shop backend is wired up. */
+  disabled?: boolean;
+}
+
+const {
+  lang,
+  sku,
+  name,
+  teeImage,
+  posterImage,
+  tee,
+  poster,
+  languages = ["en"],
+  disabled = false,
+} = Astro.props;
+const t = useTranslations(lang);
+
+const teeSizes = tee.sizes ?? ["S", "M", "L", "XL", "2XL"];
+const teeLabel = t("product.tee");
+const posterLabel = t("product.poster");
+
+// Offer the design in the current site language when available, else English.
+const langOptions = languages.map((code) => ({
+  code,
+  label: t(`product.lang.${code}` as "product.lang.en"),
+}));
+const defaultLang = languages.includes(lang) ? lang : "en";
+
+// All variant data the client needs to build a cart line. Prices are
+// re-validated server-side in /api/checkout, so this is display-only.
+const config = {
+  sku,
+  name,
+  tee: { price: tee.price, label: teeLabel, image: teeImage ?? "" },
+  poster: {
+    price: poster.price,
+    label: posterLabel,
+    size: poster.size ?? "18x24",
+    image: posterImage ?? "",
+  },
+  languages: langOptions,
+  defaultLang,
+};
+---
+
+<div class:list={["atc", { "is-disabled": disabled }]} data-atc>
+  <div class="group">
+    <span class="label group-label">{t("product.format")}</span>
+    <div class="choices" role="group">
+      <button type="button" data-format="tee" class="chip is-active">{teeLabel}</button>
+      <button type="button" data-format="poster" class="chip">{posterLabel}</button>
+    </div>
+  </div>
+
+  <div class="group" data-sizes>
+    <span class="label group-label">{t("product.size")}</span>
+    <div class="choices">
+      {
+        teeSizes.map((size, i) => (
+          <button
+            type="button"
+            data-size={size}
+            class:list={["chip", { "is-active": i === 0 }]}
+          >
+            {size}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  {
+    langOptions.length > 1 && (
+      <div class="group" data-langs>
+        <span class="label group-label">{t("product.language")}</span>
+        <div class="choices">
+          {langOptions.map((l) => (
+            <button
+              type="button"
+              data-lang={l.code}
+              class:list={["chip", { "is-active": l.code === defaultLang }]}
+            >
+              {l.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  <button type="button" data-atc-add class="add" disabled={disabled}>
+    {disabled ? t("common.soon") : t("product.add")} &middot;
+    <span data-atc-price>${tee.price.toFixed(2)}</span>
+  </button>
+
+  <script type="application/json" data-atc-config set:html={JSON.stringify(config)} />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-atc]").forEach((root) => {
+    if (root.classList.contains("is-disabled")) return;
+    const cfgEl = root.querySelector<HTMLScriptElement>("[data-atc-config]");
+    if (!cfgEl) return;
+    const cfg = JSON.parse(cfgEl.textContent || "{}") as {
+      sku: string;
+      name: string;
+      tee: { price: number; label: string; image: string };
+      poster: { price: number; label: string; size: string; image: string };
+      languages: { code: string; label: string }[];
+      defaultLang: string;
+    };
+
+    const addBtn = root.querySelector<HTMLButtonElement>("[data-atc-add]");
+    const priceEl = root.querySelector<HTMLElement>("[data-atc-price]");
+    const sizesWrap = root.querySelector<HTMLElement>("[data-sizes]");
+    const fmtButtons = root.querySelectorAll<HTMLButtonElement>("[data-format]");
+    const sizeButtons = root.querySelectorAll<HTMLButtonElement>("[data-size]");
+    const langButtons = root.querySelectorAll<HTMLButtonElement>("[data-lang]");
+
+    let format: "tee" | "poster" = "tee";
+    let size = sizeButtons[0]?.getAttribute("data-size") ?? "";
+    let lang = cfg.defaultLang || "en";
+
+    function paint(buttons: NodeListOf<HTMLButtonElement>, on: HTMLButtonElement) {
+      buttons.forEach((b) => b.classList.toggle("is-active", b === on));
+    }
+
+    function render() {
+      const money = format === "tee" ? cfg.tee.price : cfg.poster.price;
+      if (priceEl) priceEl.textContent = `$${money.toFixed(2)}`;
+      if (sizesWrap) sizesWrap.hidden = format !== "tee";
+    }
+
+    fmtButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        format = (btn.getAttribute("data-format") as "tee" | "poster") ?? "tee";
+        paint(fmtButtons, btn);
+        render();
+      });
+    });
+    sizeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        size = btn.getAttribute("data-size") ?? size;
+        paint(sizeButtons, btn);
+        render();
+      });
+    });
+    langButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        lang = btn.getAttribute("data-lang") ?? lang;
+        paint(langButtons, btn);
+      });
+    });
+
+    addBtn?.addEventListener("click", () => {
+      // Surface the language in the cart line only when there's a choice.
+      const langLabel =
+        cfg.languages.length > 1
+          ? cfg.languages.find((l) => l.code === lang)?.label ?? ""
+          : "";
+      const langSuffix = langLabel ? ` · ${langLabel}` : "";
+      const item =
+        format === "tee"
+          ? {
+              sku: cfg.sku,
+              format: "tee" as const,
+              size,
+              lang,
+              quantity: 1,
+              price: cfg.tee.price,
+              title: cfg.name,
+              variant: `${cfg.tee.label} (${size})${langSuffix}`,
+              image: cfg.tee.image,
+            }
+          : {
+              sku: cfg.sku,
+              format: "poster" as const,
+              size: cfg.poster.size,
+              lang,
+              quantity: 1,
+              price: cfg.poster.price,
+              title: cfg.name,
+              variant: `${cfg.poster.label}${langSuffix}`,
+              image: cfg.poster.image,
+            };
+      document.dispatchEvent(new CustomEvent("fb-cart:add", { detail: item }));
+      document.dispatchEvent(new CustomEvent("fb-cart:open"));
+    });
+
+    render();
+  });
+</script>
+
+<style>
+  .atc {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .group-label {
+    color: var(--text-muted);
+  }
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chip {
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      color 200ms var(--ease-editorial),
+      background-color 200ms var(--ease-editorial),
+      border-color 200ms var(--ease-editorial);
+  }
+  html[dir="rtl"] .chip {
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  .chip:hover {
+    border-color: var(--text);
+  }
+  .chip.is-active {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-cream);
+  }
+  .add {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 0;
+    background: var(--color-emerald);
+    color: var(--color-cream);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: filter 300ms var(--ease-editorial);
+  }
+  html[dir="rtl"] .add {
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  .add:hover {
+    filter: brightness(1.08);
+  }
+  .atc.is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .atc.is-disabled .add {
+    cursor: not-allowed;
+  }
+</style>

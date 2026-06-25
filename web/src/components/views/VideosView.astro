@@ -6,6 +6,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import FilterBar from "@/components/FilterBar.astro";
 import VideoGrid from "@/components/VideoGrid.astro";
 import BusinessPattern from "@/components/BusinessPattern.astro";
+import PromoteBand from "@/components/PromoteBand.astro";
 
 interface Props {
   lang: Locale;
@@ -29,6 +30,8 @@ const videos = await getVideosForLocale(lang);
     <VideoGrid videos={videos} lang={lang} />
     <p class="empty label" data-empty hidden>{t("videos.empty")}</p>
   </section>
+
+  <PromoteBand lang={lang} showCta={false} />
 </BaseLayout>
 
 <style>

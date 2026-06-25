@@ -1,5 +1,6 @@
 ---
 import type { Locale } from "@/consts";
+import { FEATURES } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import Logo from "./Logo.astro";
 import BusinessPattern from "./BusinessPattern.astro";
@@ -17,6 +18,18 @@ const year = new Date().getFullYear();
   <div class="inner">
     <span class="mark"><Logo size={52} /></span>
     <p class="tagline font-display">{t("site.tagline")}</p>
+    <nav class="links label" aria-label="Footer">
+      <a href={localizedPath("/videos", lang)}>{t("nav.videos")}</a>
+      {
+        FEATURES.shop ? (
+          <a href={localizedPath("/shop", lang)}>{t("nav.shop")}</a>
+        ) : (
+          <span class="disabled" aria-disabled="true">{t("nav.shop")}</span>
+        )
+      }
+      <a href={localizedPath("/support", lang)}>{t("nav.support")}</a>
+      <a href={localizedPath("/about", lang)}>{t("nav.about")}</a>
+    </nav>
     <div class="meta label">
       <a href={localizedPath("/", lang)}>{t("site.name")}</a>
       <span aria-hidden="true">·</span>
@@ -45,6 +58,25 @@ const year = new Date().getFullYear();
   }
   .mark {
     color: var(--bar-accent);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .links a {
+    color: var(--bar-text);
+    transition: color 300ms var(--ease-editorial);
+  }
+  .links a:hover {
+    color: var(--bar-accent);
+  }
+  .links .disabled {
+    color: var(--bar-muted);
+    opacity: 0.5;
+    cursor: not-allowed;
   }
   .tagline {
     font-weight: 300;

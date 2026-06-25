@@ -1,6 +1,7 @@
 ---
 import type { Locale } from "@/consts";
 import { useTranslations } from "@/i18n/utils";
+import { shareablePlatforms } from "@/lib/videos";
 
 interface Platforms {
   x?: string;
@@ -16,8 +17,10 @@ interface Props {
   compact?: boolean;
 }
 
-const { title, platforms = {}, lang, compact = false } = Astro.props;
+const { title, lang, compact = false } = Astro.props;
 const t = useTranslations(lang);
+// Drop any platform link still set to a PLACEHOLDER post URL.
+const platforms = shareablePlatforms(Astro.props.platforms);
 
 // X intent points at the *native X post* (not our URL) so shares stay in X's
 // ecosystem and feed the algorithm, per the distribution strategy.

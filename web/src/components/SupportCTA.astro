@@ -1,0 +1,135 @@
+---
+import type { Locale } from "@/consts";
+import { DONATE_LINKS } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+
+interface Props {
+  lang: Locale;
+  /** Drop the donate buttons into a single emphasized band (used on /support). */
+  variant?: "band" | "inline";
+  /** Render grayed-out and inert until the real donation URLs are set. */
+  disabled?: boolean;
+}
+
+const { lang, variant = "inline", disabled = false } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class:list={["support-cta", variant, { "is-disabled": disabled }]}>
+  <div class="copy">
+    <h2 class="title font-display">
+      {t("support.donate.title")}
+      {disabled && <span class="soon">{t("common.soon")}</span>}
+    </h2>
+    <p class="body">{t("support.donate.body")}</p>
+  </div>
+  <div class="actions">
+    {
+      disabled ? (
+        <>
+          <span class="donate-btn kofi" aria-disabled="true">{t("support.kofi")}</span>
+          <span class="donate-btn bmac" aria-disabled="true">{t("support.bmac")}</span>
+        </>
+      ) : (
+        <>
+          <a class="donate-btn kofi" href={DONATE_LINKS.kofi} target="_blank" rel="noopener">
+            {t("support.kofi")}
+          </a>
+          <a class="donate-btn bmac" href={DONATE_LINKS.buyMeACoffee} target="_blank" rel="noopener">
+            {t("support.bmac")}
+          </a>
+        </>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .support-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .title {
+    margin: 0;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .body {
+    margin: 0;
+    max-width: 52ch;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .donate-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.75rem;
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+      transform 300ms var(--ease-editorial),
+      box-shadow 300ms var(--ease-editorial),
+      filter 300ms var(--ease-editorial);
+  }
+  html[dir="rtl"] .donate-btn {
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  .donate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    filter: brightness(1.05);
+  }
+  .kofi {
+    background: var(--color-emerald);
+    color: var(--color-cream);
+  }
+  .bmac {
+    background: var(--color-canary);
+    color: var(--color-ink);
+  }
+  .support-cta.band {
+    align-items: flex-start;
+  }
+  .support-cta.is-disabled .donate-btn {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .soon {
+    display: inline-block;
+    margin-inline-start: 0.6rem;
+    vertical-align: middle;
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    color: var(--text-muted);
+  }
+  html[dir="rtl"] .soon {
+    text-transform: none;
+    letter-spacing: 0;
+  }
+</style>
