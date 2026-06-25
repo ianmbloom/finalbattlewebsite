@@ -81,6 +81,8 @@ const catColor = CATEGORY_COLOR[entry.data.category];
     background: var(--color-ink);
     border-radius: 1.5rem;
     box-shadow: var(--shadow-sm);
+    /* Force a compositing layer so border-radius clips scaled children correctly */
+    will-change: transform;
     transition: box-shadow 300ms var(--ease-editorial);
   }
   .card:hover .thumb {
@@ -91,10 +93,6 @@ const catColor = CATEGORY_COLOR[entry.data.category];
     height: 100%;
     object-fit: cover;
     object-position: center center;
-    transition: transform 450ms var(--ease-editorial);
-  }
-  .card:hover .thumb img {
-    transform: scale(1.03);
   }
   .thumb-fallback {
     position: absolute;
