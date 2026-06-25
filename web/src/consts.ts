@@ -16,23 +16,25 @@ export const DEFAULT_LOCALE: Locale = "en";
 export const RTL_LOCALES: readonly Locale[] = ["fa"];
 
 /**
- * Cloudflare Stream customer subdomain (e.g. `customer-xxxxxxxx`). Pulled from a
- * public env var so it can be swapped without code changes. Falls back to a
- * placeholder during local development.
+ * Optional origin for self-hosted video files — typically a Cloudflare R2 public
+ * bucket (e.g. `https://videos.finalbattleiran.org`). When set, root-relative
+ * `videoSrc` paths are served from here so the large media files never live in
+ * the git repo or the Pages deploy. Empty in local dev, where the files in
+ * `public/videos/` are served directly by the dev server.
  */
-export const STREAM_CUSTOMER_SUBDOMAIN =
-  import.meta.env.PUBLIC_STREAM_CUSTOMER_SUBDOMAIN ?? "customer-XXXX";
+export const VIDEO_BASE_URL = import.meta.env.PUBLIC_VIDEO_BASE_URL ?? "";
 
-/** Build the Cloudflare Stream iframe embed URL for a given Stream UID. */
-export function streamIframeUrl(
-  streamId: string,
-  opts: { autoplay?: boolean; muted?: boolean; controls?: boolean } = {},
-): string {
-  const { autoplay = false, muted = false, controls = true } = opts;
-  const params = new URLSearchParams({
-    autoplay: String(autoplay),
-    muted: String(muted),
-    controls: String(controls),
-  });
-  return `https://${STREAM_CUSTOMER_SUBDOMAIN}.cloudflarestream.com/${streamId}/iframe?${params.toString()}`;
+/**
+ * Resolve a `videoSrc` to the URL the browser should load. Absolute URLs pass
+ * through unchanged; root-relative paths get prefixed with `VIDEO_BASE_URL`
+ * when it is configured.
+ */
+export function resolveVideoSrc(src: string): string {
+  if (/^https?:\/\//.test(src)) return src;
+  return VIDEO_BASE_URL ? `${VIDEO_BASE_URL.replace(/\/$/, "")}${src}` : src;
+}
+
+/** Absolute URL form of a `videoSrc`, for social/OpenGraph metadata. */
+export function absoluteVideoUrl(src: string): string {
+  return new URL(resolveVideoSrc(src), SITE_URL).href;
 }

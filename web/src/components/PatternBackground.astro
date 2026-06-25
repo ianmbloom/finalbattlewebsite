@@ -1,18 +1,32 @@
 ---
 /**
  * Decorative Persian (non-Islamic) tiling ornament used as a low-contrast
- * background accent. The SVG is line art, so we paint it with a palette token
- * via CSS `mask-image` (the source stroke color is irrelevant) and tile it.
- * Purely decorative: never interactive, hidden from assistive tech.
+ * background accent. The SVG is line art, recolored via CSS `mask-image`.
+ *
+ * The motif's topmost scallop peaks repeat every 144.54 user units. The art
+ * is cropped to exactly 8 periods (viewBox width 1156.32) so the peak grid is
+ * continuous across the horizontal seam — adjacent tiles meet without a gap
+ * and without squishing the motif. Vertical scale is left untouched (lower
+ * curves are designed to overlap).
  */
-type PaletteColor = "ink" | "sand" | "stone" | "gold" | "crimson";
+type PaletteColor =
+  | "ink"
+  | "sand"
+  | "stone"
+  | "gold"
+  | "emerald"
+  | "crimson"
+  | "rose"
+  | "canary";
 
 interface Props {
   src?: string;
   color?: PaletteColor;
   opacity?: number;
-  /** Tile size, e.g. "480px". Larger = bigger motif. */
+  /** Tile width on screen, e.g. "480px". Height follows the SVG aspect. */
   size?: string;
+  /** Vertical offset of the tile, e.g. "-120px" to skip the top fringe. */
+  posY?: string;
   class?: string;
 }
 
@@ -21,12 +35,18 @@ const {
   color = "ink",
   opacity = 0.06,
   size = "480px",
+  posY = "0",
   class: className = "",
 } = Astro.props;
+
+/** Cropped viewBox aspect: height / width = 2005.62 / 1156.32. */
+const aspect = 2005.62 / 1156.32;
 
 const style = [
   `--pattern-src: url('${src}')`,
   `--pattern-size: ${size}`,
+  `--pattern-aspect: ${aspect}`,
+  `--pattern-pos-y: ${posY}`,
   `background-color: var(--color-${color})`,
   `opacity: ${opacity}`,
 ].join("; ");
@@ -49,9 +69,14 @@ const style = [
     mask-image: var(--pattern-src);
     -webkit-mask-repeat: repeat;
     mask-repeat: repeat;
-    -webkit-mask-size: var(--pattern-size);
-    mask-size: var(--pattern-size);
-    -webkit-mask-position: center;
-    mask-position: center;
+    /* Natural aspect (no distortion); width maps to exactly one repeat. */
+    -webkit-mask-size:
+      var(--pattern-size)
+      calc(var(--pattern-size) * var(--pattern-aspect));
+    mask-size:
+      var(--pattern-size)
+      calc(var(--pattern-size) * var(--pattern-aspect));
+    -webkit-mask-position: 0 var(--pattern-pos-y, 0);
+    mask-position: 0 var(--pattern-pos-y, 0);
   }
 </style>

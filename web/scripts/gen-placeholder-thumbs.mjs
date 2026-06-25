@@ -9,9 +9,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const THUMBS_DIR = path.resolve(__dirname, "../public/videos/thumbs");
 
 const slugs = [
-  "economic-sanctions-explained",
-  "the-lion-and-sun",
-  "what-prosperity-looks-like",
+  "iran-has-a-future",
+  "transitional-leader",
+  "returning-to-democracy",
+  "captive-nation",
+  "by-the-people",
+  "far-from-home",
 ];
 
 const W = 540;

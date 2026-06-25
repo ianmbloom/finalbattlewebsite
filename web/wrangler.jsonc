@@ -1,0 +1,12 @@
+{
+  // Cloudflare Pages project config. The site is a static Astro build; Pages
+  // serves the contents of `dist/` directly (no Worker/adapter needed).
+  //
+  // Dashboard (git-connected) build settings to mirror this:
+  //   Root directory:        web
+  //   Build command:         npm run build
+  //   Build output directory: dist
+  "name": "finalbattleiran",
+  "compatibility_date": "2026-06-24",
+  "pages_build_output_dir": "./dist"
+}

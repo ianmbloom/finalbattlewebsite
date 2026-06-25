@@ -16,12 +16,13 @@ export const ui = {
     "nav.about": "About",
     "nav.language": "Language",
 
-    "hero.subtitle.line1": "Every video is an arrow.",
-    "hero.subtitle.line2": "Every share takes aim.",
     "hero.cta.watch": "Watch the Series",
-    "hero.cta.about": "About",
 
-    "home.featured": "Featured",
+    "home.statement.p1":
+      "Most of the world knows little about Iran and the Lion and Sun Revolution. Our mission is to build the tools that help you change that — to show the world the Free Iran that will soon benefit us all.",
+    "home.statement.p2":
+      "Every piece of content we create is an arrow for your quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Iran Prosperity Project.",
+    "home.statement.p3": "Now it's your turn to take aim.",
 
     "videos.title": "The Series",
     "videos.intro": "Every piece is an arrow for the quiver.",
@@ -36,6 +37,7 @@ export const ui = {
     "category.project": "The Project",
 
     "video.script": "Transcript",
+    "video.context": "Background",
     "video.share": "Share",
     "video.watchOn": "Watch on",
     "video.back": "Back to the series",
@@ -59,7 +61,7 @@ export const ui = {
     "about.arrow.myth": "Dispels a common myth.",
     "about.arrow.project": "Unpacks a detail of the Iran Prosperity Project.",
 
-    "footer.rights": "Free Iran.",
+    "footer.rights": "See You In Free Iran.",
   },
   fa: {
     "site.name": "نبرد نهایی",
@@ -71,12 +73,13 @@ export const ui = {
     "nav.about": "درباره",
     "nav.language": "زبان",
 
-    "hero.subtitle.line1": "هر ویدیو یک تیر است.",
-    "hero.subtitle.line2": "هر هم‌رسانی نشانه می‌گیرد.",
     "hero.cta.watch": "تماشای مجموعه",
-    "hero.cta.about": "درباره",
 
-    "home.featured": "برگزیده",
+    "home.statement.p1":
+      "بیشتر جهان درباره ایران و انقلاب شیر و خورشید چیز کمی می‌داند. مأموریت ما ساختن ابزارهایی است که به شما کمک می‌کند این را تغییر دهید — تا ایرانِ آزادی را به جهان نشان دهید که به‌زودی به سود همه ما خواهد بود.",
+    "home.statement.p2":
+      "هر محتوایی که می‌سازیم تیری برای ترکش توست: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه شکوفایی ایران را شرح می‌دهد.",
+    "home.statement.p3": "حالا نوبت توست که نشانه بگیری.",
 
     "videos.title": "مجموعه",
     "videos.intro": "هر اثر تیری برای ترکش است.",
@@ -91,6 +94,7 @@ export const ui = {
     "category.project": "پروژه",
 
     "video.script": "متن",
+    "video.context": "پیشینه",
     "video.share": "هم‌رسانی",
     "video.watchOn": "تماشا در",
     "video.back": "بازگشت به مجموعه",

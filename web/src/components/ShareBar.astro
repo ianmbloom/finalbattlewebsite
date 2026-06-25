@@ -24,7 +24,7 @@ const t = useTranslations(lang);
 const xIntent = platforms.x
   ? `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       platforms.x,
-    )}&text=${encodeURIComponent(`🦁☀️ ${title} #IranProsperity #FreeIran`)}`
+    )}&text=${encodeURIComponent(`${title} #IranProsperity #FreeIran`)}`
   : null;
 
 const shareUrl = platforms.x || platforms.instagram || platforms.youtube || "";
@@ -115,7 +115,7 @@ const shareUrl = platforms.x || platforms.instagram || platforms.youtube || "";
   }
   .share-trigger[data-copied="true"]::after {
     content: " ✓";
-    color: var(--color-gold);
+    color: var(--color-emerald);
   }
   .share-link {
     color: var(--text-muted);
@@ -123,6 +123,6 @@ const shareUrl = platforms.x || platforms.instagram || platforms.youtube || "";
   }
   .share-trigger:hover,
   .share-link:hover {
-    color: var(--color-gold);
+    color: var(--color-emerald);
   }
 </style>

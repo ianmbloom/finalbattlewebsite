@@ -1,23 +1,24 @@
 ---
-import { streamIframeUrl } from "@/consts";
-
 interface Props {
-  streamId: string;
+  src: string;
   title: string;
+  poster?: string;
   autoplay?: boolean;
 }
-const { streamId, title, autoplay = false } = Astro.props;
-const src = streamIframeUrl(streamId, { autoplay, muted: autoplay, controls: true });
+const { src, title, poster, autoplay = false } = Astro.props;
 ---
 
 <div class="player">
-  <iframe
+  <video
     src={src}
     title={title}
-    loading="lazy"
-    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-    allowfullscreen
-  ></iframe>
+    poster={poster}
+    controls
+    playsinline
+    preload="metadata"
+    autoplay={autoplay}
+    muted={autoplay}
+  ></video>
 </div>
 
 <style>
@@ -29,11 +30,12 @@ const src = streamIframeUrl(streamId, { autoplay, muted: autoplay, controls: tru
     background: #000;
     border: 1px solid var(--line);
   }
-  .player iframe {
+  .player video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    border: 0;
+    object-fit: contain;
+    background: #000;
   }
 </style>

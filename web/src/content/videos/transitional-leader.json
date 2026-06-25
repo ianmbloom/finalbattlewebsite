@@ -1,0 +1,23 @@
+{
+  "series": "iran-prosperity-project",
+  "category": "project",
+  "publishedAt": "2026-07-07",
+  "order": 2,
+  "featured": true,
+  "tags": ["transition", "leadership", "democracy"],
+  "languages": {
+    "en": {
+      "title": "What Is a Transitional Leader?",
+      "videoSrc": "/videos/transitional-leader.mp4",
+      "description": "Rebuilding a nation needs someone trusted to hold power — and hand it back. Why Iranians chant Reza Pahlavi's name.",
+      "durationSeconds": 35,
+      "thumbnailUrl": "/videos/thumbs/transitional-leader.webp",
+      "script": "What is a transitional leader? Rebuilding a nation takes stability, time to write a constitution and safely hold elections. That demands someone trusted not just to hold power, but to hand it back to the people. Across Iran, crowds chant the name of Reza Pahlavi, son of the exiled King. His supporters point to decades of advocacy and a vision for democracy. Pahlavi created the Iran Prosperity Project, a roadmap for transition. The plan runs deep. Follow along as we cover it all.",
+      "context": "When the Islamic Republic falls, the question will not only be what comes next — it will be who ensures the answer isn't chaos. Transitional leadership is a recognized political science challenge: the window between the collapse of an authoritarian regime and the installation of a legitimate democratic government is precisely when new tyrannies take root. History from post-Soviet states to post-Gaddafi Libya shows that this gap, if unmanaged, swallows revolutions whole.\n\nReza Pahlavi, born in Tehran in 1960 and exiled since the 1979 revolution, has spent more than four decades positioning himself not as a claimant to power but as a steward of transition. He has been explicit that his role is to guide Iran toward free elections and then step aside — \"My focus is on the process, not the outcome,\" he told the All-In Podcast. This distinction — between a transitional figure and a ruler — is the core of his appeal to Iranians who want democracy but have learned, from 1979, to distrust revolutionary promises.\n\nThe Iran Prosperity Project, officially launched in Washington D.C. in April 2025, is the institutional expression of that promise. Created under the National Union for Democracy in Iran, it lays out a three-phase transition: an Emergency Phase covering the first 180 days, a Stabilization Phase for institution-building, and a long-term reform phase once elected government takes power. Within four months of the regime's fall, the plan calls for a national referendum in which Iranians choose between a parliamentary monarchy and a republic — both secular, both democratic. Pahlavi has pledged to be bound by the result.\n\nCrowds inside Iran chanting his name are not necessarily calling for a king. They are calling for someone they trust to hold the door open long enough for democracy to walk through.",
+      "platforms": {
+        "x": "https://x.com/finalbattleiran/status/PLACEHOLDER",
+        "youtube": "https://youtube.com/shorts/PLACEHOLDER"
+      }
+    }
+  }
+}

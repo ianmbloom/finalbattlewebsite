@@ -1,0 +1,17 @@
+---
+/**
+ * Consistent canary filigree on emerald business surfaces (nav, footer, CTAs).
+ * Defaults match the footer treatment the user approved.
+ */
+import PatternBackground from "./PatternBackground.astro";
+
+interface Props {
+  size?: string;
+  opacity?: number;
+  posY?: string;
+}
+
+const { size = "640px", opacity = 0.09, posY = "0" } = Astro.props;
+---
+
+<PatternBackground color="canary" opacity={opacity} size={size} posY={posY} />

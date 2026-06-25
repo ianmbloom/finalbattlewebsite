@@ -10,17 +10,29 @@
 
 @import "tailwindcss";
 
-/* ---- Brand palette -------------------------------------------------------- */
+/* ---- Brand palette --------------------------------------------------------
+   Emerald-anchored editorial scheme: deep-emerald bars + canary sun accent
+   over warm-ivory paper, near-black ink text. */
 @theme {
-  --color-obsidian: #0a0a0a;
-  --color-ink: #1c1814; /* warm near-black for body text */
-  --color-parchment: #f2ede4;
-  --color-bone: #faf7f1; /* lighter surface for cards */
-  --color-sand: #c8b89a;
-  --color-stone: #6e6353; /* muted warm gray for secondary text on light */
-  --color-gold: #9a7d2e; /* slightly deepened so it reads on light */
-  --color-crimson: #9b1c1c;
-  --color-carbon: #1a1a1a;
+  --color-obsidian: #0a0a0a; /* dark overlays only */
+  --color-carbon: #1a1a1a; /* dark utility surfaces (skip link) */
+
+  /* Warm ivory paper, lightest (raised) to deepest (bands). */
+  --color-surface: #fbf7ef; /* elevated surface (cards) */
+  --color-paper: #f2ebdc; /* page background */
+  --color-surface-deep: #e7ddc8; /* deep band / contrast sections */
+  --color-cream: #f6f1e6; /* light text / marks on dark bars */
+
+  --color-ink: #1d1a12; /* deep warm near-black — primary text */
+  --color-stone: #6a6147; /* muted taupe — secondary text */
+  --color-sand: #b6a47f; /* soft tan — placeholders */
+
+  /* Lion & Sun flag colors, each with a defined role. */
+  --color-emerald: #14463a; /* bars + body accent + Truth */
+  --color-crimson: #8f291f; /* Myth */
+  --color-rose: #b35f52; /* dusty rose — hero-band pattern on tan */
+  --color-gold: #97781b; /* Project keyline (legible on ivory) */
+  --color-canary: #f2cf41; /* sun: accent on emerald bars, logo, selection */
 
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Inter", system-ui, sans-serif;
@@ -36,13 +48,30 @@
 /* ---- Semantic tokens (light editorial: dark text on light) ---------------- */
 @layer base {
   :root {
-    --bg: var(--color-parchment);
-    --surface: var(--color-bone);
+    --bg: var(--color-paper);
+    --surface: var(--color-surface);
+    --surface-2: var(--color-surface-deep);
     --text: var(--color-ink);
     --text-muted: var(--color-stone);
-    --accent: var(--color-gold);
+    --accent: var(--color-emerald);
     --line: color-mix(in srgb, var(--color-ink) 14%, transparent);
     --line-strong: color-mix(in srgb, var(--color-ink) 28%, transparent);
+
+    /* Dark brand bars (nav / footer). */
+    --bar: var(--color-emerald);
+    --bar-text: var(--color-cream);
+    --bar-muted: color-mix(in srgb, var(--color-cream) 70%, transparent);
+    --bar-accent: var(--color-canary);
+    --bar-line: color-mix(in srgb, var(--color-cream) 18%, transparent);
+
+    /* Hero-band pattern — defined here so it always resolves (not only via @theme). */
+    --hero-pattern: var(--color-rose);
+
+    /* Warm, ink-tinted elevation. Soft contact shadow + diffuse cast. */
+    --shadow-sm: 0 1px 2px color-mix(in srgb, var(--color-ink) 10%, transparent),
+      0 4px 12px -6px color-mix(in srgb, var(--color-ink) 22%, transparent);
+    --shadow-md: 0 2px 4px color-mix(in srgb, var(--color-ink) 10%, transparent),
+      0 16px 32px -12px color-mix(in srgb, var(--color-ink) 30%, transparent);
   }
 
   html {
@@ -64,12 +93,12 @@
   }
 
   ::selection {
-    background-color: var(--color-gold);
-    color: var(--color-parchment);
+    background-color: var(--color-canary);
+    color: var(--color-ink);
   }
 
   :focus-visible {
-    outline: 1px solid var(--color-gold);
+    outline: 2px solid var(--color-emerald);
     outline-offset: 3px;
   }
 
@@ -110,7 +139,7 @@
     font-family: var(--font-fa);
   }
 
-  /* Outlined, sharp-edged CTA. ink -> gold on hover. No fill. */
+  /* Outlined, sharp-edged CTA. ink -> emerald on hover. No fill. */
   .btn-outline {
     display: inline-flex;
     align-items: center;
@@ -127,8 +156,8 @@
   }
 
   .btn-outline:hover {
-    border-color: var(--color-gold);
-    color: var(--color-gold);
+    border-color: var(--color-emerald);
+    color: var(--color-emerald);
   }
 
   html[dir="rtl"] .btn-outline {
@@ -140,5 +169,57 @@
   .rule {
     border: 0;
     border-top: 1px solid var(--line);
+  }
+
+  /* Emerald brand band + canary pattern (nav, footer, business CTAs). */
+  .business-surface {
+    position: relative;
+    overflow: hidden;
+    background: var(--bar);
+    color: var(--bar-text);
+  }
+
+  .business-surface > :not([aria-hidden="true"]) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Warm tan band with pastel-rose pattern (homepage mission statement). */
+  .hero-band {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero-band > :not([aria-hidden="true"]) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Outlined CTA on emerald business surfaces. */
+  .btn-outline-on-bar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--bar-text);
+    color: var(--bar-text);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+      color 300ms var(--ease-editorial),
+      border-color 300ms var(--ease-editorial);
+  }
+
+  .btn-outline-on-bar:hover {
+    border-color: var(--bar-accent);
+    color: var(--bar-accent);
+  }
+
+  html[dir="rtl"] .btn-outline-on-bar {
+    text-transform: none;
+    letter-spacing: 0.02em;
   }
 }

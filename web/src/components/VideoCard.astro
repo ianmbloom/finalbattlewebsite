@@ -1,8 +1,13 @@
 ---
 import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
-import { formatDuration, getVariant, type VideoEntry } from "@/lib/videos";
-import ShareBar from "./ShareBar.astro";
+import {
+  CATEGORY_COLOR,
+  formatDuration,
+  getBlurb,
+  getVariant,
+  type VideoEntry,
+} from "@/lib/videos";
 
 interface Props {
   entry: VideoEntry;
@@ -15,10 +20,18 @@ const variant = getVariant(entry, lang)!;
 const href = localizedPath(`/videos/${entry.id}`, lang);
 const duration = formatDuration(variant.durationSeconds);
 const categoryLabel = t(`category.${entry.data.category}` as const);
+const blurb = getBlurb(variant);
+const catColor = CATEGORY_COLOR[entry.data.category];
 ---
 
-<article class="video-card" data-category={entry.data.category}>
-  <a class="thumb" href={href} aria-label={variant.title}>
+<a
+  class="card"
+  href={href}
+  data-category={entry.data.category}
+  aria-label={variant.title}
+  style={`--cat:${catColor}`}
+>
+  <div class="thumb">
     {
       variant.thumbnailUrl ? (
         <img
@@ -33,51 +46,57 @@ const categoryLabel = t(`category.${entry.data.category}` as const);
         <span class="thumb-fallback label">9:16</span>
       )
     }
-  </a>
+    <span class="play" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+    </span>
+    {duration && <span class="duration">{duration}</span>}
+  </div>
 
   <div class="meta">
-    <div class="meta-top">
-      <span class="label">{categoryLabel}</span>
-      {duration && <span class="label time">{duration}</span>}
-    </div>
-    <hr class="rule" />
-    <a href={href} class="title font-display">{variant.title}</a>
-    <hr class="rule" />
-    <ShareBar
-      title={variant.title}
-      platforms={variant.platforms}
-      lang={lang}
-      compact
-    />
+    <span class="label cat"><span class="keyline" aria-hidden="true"></span>{categoryLabel}</span>
+    <h3 class="title font-display">{variant.title}</h3>
+    {blurb && <p class="blurb">{blurb}</p>}
   </div>
-</article>
+</a>
 
 <style>
-  .video-card {
+  .card {
     display: flex;
     flex-direction: column;
     background: var(--surface);
     border: 1px solid var(--line);
-    transition: border-color 300ms var(--ease-editorial);
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform 300ms var(--ease-editorial),
+      box-shadow 300ms var(--ease-editorial),
+      border-color 300ms var(--ease-editorial);
   }
-  .video-card:hover {
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
     border-color: var(--line-strong);
   }
   .thumb {
     position: relative;
     display: block;
-    aspect-ratio: 9 / 16;
+    /* Compact, uniform portrait crop — small thumbnails, not full 9:16. */
+    aspect-ratio: 3 / 4;
     overflow: hidden;
-    background: #000;
+    background: var(--color-ink);
   }
   .thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 300ms var(--ease-editorial);
+    object-position: center 28%;
+    transition: transform 450ms var(--ease-editorial);
   }
-  .thumb:hover img {
-    transform: scale(1.02);
+  .card:hover .thumb img {
+    transform: scale(1.04);
   }
   .thumb-fallback {
     position: absolute;
@@ -87,31 +106,84 @@ const categoryLabel = t(`category.${entry.data.category}` as const);
     justify-content: center;
     color: var(--color-sand);
   }
+  .play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-ink);
+    background: color-mix(in srgb, var(--color-cream) 90%, transparent);
+    border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+    opacity: 0;
+    transform: scale(0.85);
+    transition:
+      opacity 300ms var(--ease-editorial),
+      transform 300ms var(--ease-editorial);
+  }
+  .play svg {
+    margin-inline-start: 2px;
+  }
+  .card:hover .play {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .duration {
+    position: absolute;
+    inset-block-end: 0.6rem;
+    inset-inline-end: 0.6rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--color-cream);
+    background: color-mix(in srgb, var(--color-obsidian) 68%, transparent);
+    border-radius: 2px;
+    backdrop-filter: blur(2px);
+  }
   .meta {
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
-    padding: 1.25rem;
+    gap: 0.6rem;
+    padding: 1.1rem 1.15rem 1.25rem;
   }
-  .meta-top {
-    display: flex;
+  .cat {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 0.55rem;
+    font-size: 0.66rem;
+    font-weight: 600;
+    color: var(--cat);
   }
-  .time {
-    color: var(--text-muted);
+  .keyline {
+    width: 1.5rem;
+    height: 2px;
+    background: var(--cat);
+    flex: none;
   }
   .title {
+    margin: 0;
     font-weight: 600;
-    font-size: 1.4rem;
-    line-height: 1.15;
+    font-size: 1.2rem;
+    line-height: 1.2;
     color: var(--text);
     transition: color 300ms var(--ease-editorial);
   }
-  .title:hover {
-    color: var(--color-gold);
+  .card:hover .title {
+    color: var(--color-emerald);
   }
-  .rule {
+  .blurb {
     margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style>

@@ -3,6 +3,14 @@ import type { Locale } from "@/consts";
 
 export type VideoEntry = CollectionEntry<"videos">;
 export type VideoVariant = VideoEntry["data"]["languages"]["en"];
+export type Category = VideoEntry["data"]["category"];
+
+/** Flag-color coding for the three arrow categories (Lion & Sun palette). */
+export const CATEGORY_COLOR: Record<Category, string> = {
+  truth: "var(--color-emerald)",
+  myth: "var(--color-crimson)",
+  project: "var(--color-gold)",
+};
 
 /** The language variant for a locale, or undefined if not yet translated. */
 export function getVariant(
@@ -13,18 +21,26 @@ export function getVariant(
 }
 
 /**
- * All videos that have a variant for the given locale, sorted newest first.
- * Videos without a translation for `lang` are omitted so a locale can lag
- * behind without producing broken pages.
+ * All videos that have a variant for the given locale, in series order.
+ * Entries with an explicit `order` come first (ascending); the rest fall to the
+ * end sorted newest-first. Videos without a translation for `lang` are omitted
+ * so a locale can lag behind without producing broken pages.
  */
 export async function getVideosForLocale(lang: Locale): Promise<VideoEntry[]> {
   const all = await getCollection("videos");
   return all
     .filter((entry) => Boolean(getVariant(entry, lang)))
-    .sort(
-      (a, b) =>
-        b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
-    );
+    .sort(compareSeriesOrder);
+}
+
+/** Series ordering: explicit `order` ascending, then newest `publishedAt`. */
+function compareSeriesOrder(a: VideoEntry, b: VideoEntry): number {
+  const ao = a.data.order;
+  const bo = b.data.order;
+  if (ao != null && bo != null) return ao - bo;
+  if (ao != null) return -1;
+  if (bo != null) return 1;
+  return b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
 }
 
 /** Featured videos for a locale (falls back to most recent if none flagged). */
@@ -35,6 +51,19 @@ export async function getFeaturedForLocale(
   const videos = await getVideosForLocale(lang);
   const flagged = videos.filter((v) => v.data.featured);
   return (flagged.length > 0 ? flagged : videos).slice(0, limit);
+}
+
+/**
+ * Short blurb for a card: the authored `description`, or a trimmed first
+ * sentence of the script as a fallback so a card is never description-less.
+ */
+export function getBlurb(variant: VideoVariant, maxChars = 150): string {
+  if (variant.description) return variant.description;
+  const script = variant.script?.trim();
+  if (!script) return "";
+  const firstSentence = script.split(/(?<=[.!?])\s/)[0] ?? script;
+  if (firstSentence.length <= maxChars) return firstSentence;
+  return firstSentence.slice(0, maxChars).replace(/\s+\S*$/, "") + "…";
 }
 
 /** Format a duration in seconds as M:SS. */

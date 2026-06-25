@@ -3,6 +3,7 @@ import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import LangSwitcher from "./LangSwitcher.astro";
 import Logo from "./Logo.astro";
+import BusinessPattern from "./BusinessPattern.astro";
 
 interface Props {
   lang: Locale;
@@ -17,39 +18,45 @@ const links = [
 const current = Astro.url.pathname.replace(/\/$/, "");
 ---
 
-<header class="site-header">
-  <a class="brand" href={localizedPath("/", lang)} aria-label={t("site.name")}>
-    <span class="brand-mark"><Logo size={36} /></span>
-    <span class="brand-text">
-      <span class="brand-name font-logo">{t("site.name")}</span>
-      <span class="brand-sub label">{t("site.subtitle")}</span>
-    </span>
-  </a>
+<header class="site-header business-surface">
+  <BusinessPattern posY="-120px" />
+  <div class="bar-inner">
+    <a class="brand" href={localizedPath("/", lang)} aria-label={t("site.name")}>
+      <span class="brand-mark"><Logo size={36} /></span>
+      <span class="brand-text">
+        <span class="brand-name font-logo">{t("site.name")}</span>
+        <span class="brand-sub label">{t("site.subtitle")}</span>
+      </span>
+    </a>
 
-  <nav class="primary" aria-label="Primary">
-    {
-      links.map((link) => (
-        <a
-          href={link.href}
-          class:list={["nav-link", "label", { active: current === link.href.replace(/\/$/, "") }]}
-        >
-          {link.label}
-        </a>
-      ))
-    }
-    <LangSwitcher lang={lang} />
-  </nav>
+    <nav class="primary" aria-label="Primary">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class:list={["nav-link", "label", { active: current === link.href.replace(/\/$/, "") }]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <LangSwitcher lang={lang} />
+    </nav>
+  </div>
 </header>
 
 <style>
   .site-header {
+    border-bottom: 1px solid var(--bar-line);
+  }
+  .bar-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
     max-width: 1280px;
     margin: 0 auto;
-    padding: 1.5rem 1.5rem;
+    padding: 1.4rem 1.5rem;
   }
   .brand {
     display: inline-flex;
@@ -57,7 +64,7 @@ const current = Astro.url.pathname.replace(/\/$/, "");
     gap: 0.7rem;
   }
   .brand-mark {
-    color: var(--color-gold);
+    color: var(--bar-accent);
     display: inline-flex;
   }
   .brand-text {
@@ -67,15 +74,20 @@ const current = Astro.url.pathname.replace(/\/$/, "");
   }
   .brand-name {
     font-weight: 400;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     line-height: 1;
-    letter-spacing: 0.01em;
-    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--bar-text);
+  }
+  html[dir="rtl"] .brand-name {
+    text-transform: none;
+    letter-spacing: 0;
   }
   .brand-sub {
-    margin-top: 0.15rem;
-    font-size: 0.62rem;
-    color: var(--color-gold);
+    margin-top: 0.25rem;
+    font-size: 0.6rem;
+    color: var(--bar-accent);
   }
   .primary {
     display: flex;
@@ -83,12 +95,12 @@ const current = Astro.url.pathname.replace(/\/$/, "");
     gap: 2rem;
   }
   .nav-link {
-    color: var(--text-muted);
+    color: var(--bar-muted);
     transition: color 300ms var(--ease-editorial);
   }
   .nav-link:hover,
   .nav-link.active {
-    color: var(--color-gold);
+    color: var(--bar-accent);
   }
   @media (max-width: 640px) {
     .primary {

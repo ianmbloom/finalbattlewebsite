@@ -1,9 +1,10 @@
 ---
 import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
+import { CATEGORY_COLOR, type Category } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Logo from "@/components/Logo.astro";
-import PatternBackground from "@/components/PatternBackground.astro";
+import BusinessPattern from "@/components/BusinessPattern.astro";
 
 interface Props {
   lang: Locale;
@@ -11,11 +12,11 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const arrows = [
+const arrows: { key: Category; body: string }[] = [
   { key: "truth", body: t("about.arrow.truth") },
   { key: "myth", body: t("about.arrow.myth") },
   { key: "project", body: t("about.arrow.project") },
-] as const;
+];
 ---
 
 <BaseLayout lang={lang} title={t("about.title")} description={t("about.lead")}>
@@ -39,23 +40,28 @@ const arrows = [
       <ol class="arrows">
         {
           arrows.map((a) => (
-            <li>
-              <span class="label arrow-cat">{t(`category.${a.key}` as const)}</span>
+            <li style={`border-color:${CATEGORY_COLOR[a.key]}`}>
+              <span class="label arrow-cat" style={`color:${CATEGORY_COLOR[a.key]}`}>
+                {t(`category.${a.key}` as const)}
+              </span>
               <span class="arrow-body">{a.body}</span>
             </li>
           ))
         }
       </ol>
     </section>
+  </article>
 
-    <section class="tagline-block">
-      <PatternBackground color="ink" opacity={0.05} size="380px" />
+  <section class="tagline-block business-surface">
+    <BusinessPattern />
+    <div class="tagline-inner">
+      <span class="mark"><Logo size={52} /></span>
       <p class="tagline font-display">{t("site.tagline")}</p>
-      <a class="btn-outline" href={localizedPath("/videos", lang)}>
+      <a class="btn-outline-on-bar" href={localizedPath("/videos", lang)}>
         {t("hero.cta.watch")}
       </a>
-    </section>
-  </article>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
@@ -71,7 +77,7 @@ const arrows = [
     margin-bottom: 3.5rem;
   }
   .mark {
-    color: var(--color-gold);
+    color: var(--color-emerald);
   }
   .title {
     font-weight: 300;
@@ -111,10 +117,10 @@ const arrows = [
     flex-direction: column;
     gap: 0.4rem;
     padding-inline-start: 1.25rem;
-    border-inline-start: 1px solid var(--color-gold);
+    border-inline-start: 2px solid var(--color-emerald);
   }
   .arrow-cat {
-    color: var(--color-gold);
+    color: var(--color-emerald);
   }
   .arrow-body {
     font-size: 1.15rem;
@@ -124,27 +130,25 @@ const arrows = [
     margin: 0;
   }
   .tagline-block {
-    position: relative;
-    overflow: hidden;
     margin-top: 4rem;
-    padding: 4rem 2rem;
+  }
+  .tagline-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.75rem;
     text-align: center;
-    border: 1px solid var(--line);
+  }
+  .tagline-block .mark {
+    color: var(--bar-accent);
   }
   .tagline {
-    position: relative;
-    z-index: 1;
     font-weight: 300;
     font-size: clamp(1.75rem, 4vw, 2.75rem);
     margin: 0;
-    color: var(--text);
-  }
-  .tagline-block .btn-outline {
-    position: relative;
-    z-index: 1;
+    color: var(--bar-text);
   }
 </style>

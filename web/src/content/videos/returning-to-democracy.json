@@ -1,0 +1,23 @@
+{
+  "series": "iran-prosperity-project",
+  "category": "truth",
+  "publishedAt": "2026-07-11",
+  "order": 3,
+  "featured": false,
+  "tags": ["history", "democracy", "constitution"],
+  "languages": {
+    "en": {
+      "title": "Returning to Democracy",
+      "videoSrc": "/videos/returning-to-democracy.mp4",
+      "description": "A century ago Iranians built a constitutional democracy. Today they are risking everything to win it back.",
+      "durationSeconds": 37,
+      "thumbnailUrl": "/videos/thumbs/returning-to-democracy.webp",
+      "script": "Iran is ready to return to democracy. Forty thousand Iranians just gave their lives to prove that. A century ago, Iranians built a constitutional democracy, today they are risking everything to win it back. Whether the world stands with them or stays silent, they will not stop until their country is free. The Iran Prosperity Project is the plan that turns that sacrifice into a bright future — a roadmap to a government that works for its people. Follow along for the details and we will see you in a free Iran.",
+      "context": "Iran's relationship with democratic governance is not an aspiration — it is a memory. In 1906, Iran became one of the first nations in Asia to establish a constitutional democracy, when the dying emperor Mozaffar ad-Din Shah Qajar signed the country's first constitution into law on December 30 of that year. Iran's parliament, the Majlis, is among the oldest in the world outside the West. Historian Fakhreddin Azimi, writing for Harvard University Press, argues that the 1979 revolution is fundamentally misunderstood as an \"Islamic\" revolution — it was, he contends, the expression of a century-long struggle for popular sovereignty that the clerical regime then hijacked.\n\nThat struggle has never stopped. The Green Movement of 2009, the November 2019 fuel price protests, the Woman, Life, Freedom uprising of 2022, and the mass unrest of late 2025 and early 2026 are not separate events — they are chapters in the same story. Each time, Iranians returned to the streets at extraordinary personal risk, and each time the regime answered with force. According to opposition estimates, over 40,000 Iranians were killed during the most recent uprising. These are not the actions of a people who have accepted their government. They are the actions of a people who have not.\n\nThe Iran Prosperity Project was built on the conviction that this sacrifice deserves a concrete plan, not just a direction. Its mission statement commits to showing that \"the aspirations millions of Iranians hold for a new Iran are not only attainable, but measurable\". The plan is not a theoretical framework handed down from outside — it was developed by over 70 Iranian experts from within Iran and the diaspora, people who know the country's institutions, its broken infrastructure, and the specific reforms needed to make democracy durable rather than decorative.",
+      "platforms": {
+        "x": "https://x.com/finalbattleiran/status/PLACEHOLDER",
+        "youtube": "https://youtube.com/shorts/PLACEHOLDER"
+      }
+    }
+  }
+}

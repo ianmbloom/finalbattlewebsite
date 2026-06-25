@@ -1,9 +1,9 @@
 ---
-import { SITE_NAME, SITE_URL, streamIframeUrl } from "@/consts";
+import { SITE_NAME, SITE_URL, absoluteVideoUrl } from "@/consts";
 import type { Locale } from "@/consts";
 
 interface VideoMeta {
-  streamId: string;
+  src: string;
   thumbnailUrl?: string;
 }
 
@@ -30,7 +30,7 @@ const fullTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
 const absThumb = video?.thumbnailUrl
   ? new URL(video.thumbnailUrl, SITE_URL).href
   : undefined;
-const playerUrl = video ? streamIframeUrl(video.streamId) : undefined;
+const absVideo = video ? absoluteVideoUrl(video.src) : undefined;
 ---
 
 <title>{fullTitle}</title>
@@ -46,27 +46,20 @@ const playerUrl = video ? streamIframeUrl(video.streamId) : undefined;
 {absThumb && <meta property="og:image" content={absThumb} />}
 
 {
-  video && playerUrl && (
+  video && absVideo && (
     <>
-      <meta property="og:video" content={playerUrl} />
-      <meta property="og:video:type" content="text/html" />
+      <meta property="og:video" content={absVideo} />
+      <meta property="og:video:secure_url" content={absVideo} />
+      <meta property="og:video:type" content="video/mp4" />
       <meta property="og:video:width" content="1080" />
       <meta property="og:video:height" content="1920" />
-      <meta name="twitter:card" content="player" />
-      <meta name="twitter:player" content={playerUrl} />
-      <meta name="twitter:player:width" content="360" />
-      <meta name="twitter:player:height" content="640" />
     </>
   )
 }
-{
-  !video && (
-    <meta
-      name="twitter:card"
-      content={absThumb ? "summary_large_image" : "summary"}
-    />
-  )
-}
+<meta
+  name="twitter:card"
+  content={absThumb ? "summary_large_image" : "summary"}
+/>
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
 {absThumb && <meta name="twitter:image" content={absThumb} />}

@@ -15,5 +15,14 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      // ~/Desktop may be iCloud-synced and dev can run in a sandbox, where
+      // native FS events are unreliable. Poll so HMR always catches edits.
+      // Dev-only; has no effect on production builds.
+      watch: {
+        usePolling: true,
+        interval: 300,
+      },
+    },
   },
 });

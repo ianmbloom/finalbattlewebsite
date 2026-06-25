@@ -2,7 +2,7 @@
 import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import Logo from "./Logo.astro";
-import PatternBackground from "./PatternBackground.astro";
+import BusinessPattern from "./BusinessPattern.astro";
 
 interface Props {
   lang: Locale;
@@ -12,8 +12,8 @@ const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
-  <PatternBackground color="gold" opacity={0.12} size="420px" />
+<footer class="site-footer business-surface">
+  <BusinessPattern />
   <div class="inner">
     <span class="mark"><Logo size={52} /></span>
     <p class="tagline font-display">{t("site.tagline")}</p>
@@ -29,10 +29,7 @@ const year = new Date().getFullYear();
 
 <style>
   .site-footer {
-    position: relative;
-    overflow: hidden;
     margin-top: 6rem;
-    border-top: 1px solid var(--line);
   }
   .inner {
     position: relative;
@@ -47,12 +44,12 @@ const year = new Date().getFullYear();
     text-align: center;
   }
   .mark {
-    color: var(--color-gold);
+    color: var(--bar-accent);
   }
   .tagline {
     font-weight: 300;
     font-size: 1.75rem;
-    color: var(--text);
+    color: var(--bar-text);
     margin: 0;
   }
   .meta {
@@ -61,12 +58,13 @@ const year = new Date().getFullYear();
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
+    color: var(--bar-muted);
   }
   .meta a {
-    color: var(--text-muted);
+    color: var(--bar-muted);
     transition: color 300ms var(--ease-editorial);
   }
   .meta a:hover {
-    color: var(--color-gold);
+    color: var(--bar-accent);
   }
 </style>

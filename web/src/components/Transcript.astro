@@ -1,0 +1,78 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+import { formatDuration, type VideoVariant } from "@/lib/videos";
+
+interface Props {
+  variant: VideoVariant;
+  lang: Locale;
+}
+const { variant, lang } = Astro.props;
+const t = useTranslations(lang);
+const duration = formatDuration(variant.durationSeconds);
+
+// The spoken script, split into paragraphs and presented beneath the player as
+// an editorial pull-quote.
+const paragraphs = (variant.script ?? "")
+  .split(/\n{2,}/)
+  .map((p) => p.trim())
+  .filter(Boolean);
+---
+
+{
+  paragraphs.length > 0 && (
+    <section class="transcript">
+      <div class="transcript-head">
+        <span class="label transcript-label">{t("video.script")}</span>
+        {duration && <span class="label time">{duration}</span>}
+      </div>
+      <div class="transcript-body font-display">
+        {paragraphs.map((p) => (
+          <p>{p}</p>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .transcript {
+    margin-top: 1.75rem;
+    padding-inline-start: 1.25rem;
+    border-inline-start: 2px solid var(--color-gold);
+  }
+  .transcript-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+  .transcript-label {
+    color: var(--text-muted);
+  }
+  .time {
+    color: var(--text-muted);
+  }
+  .transcript-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .transcript-body p {
+    margin: 0;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  html[dir="rtl"] .transcript-body {
+    /* Cormorant has no Persian glyphs; keep the body face but a touch larger. */
+    font-family: var(--font-fa);
+  }
+  html[dir="rtl"] .transcript-body p {
+    font-style: normal;
+    font-size: 1.2rem;
+    line-height: 1.85;
+  }
+</style>

@@ -1,0 +1,150 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+import { CATEGORY_COLOR, type VideoVariant } from "@/lib/videos";
+import ShareBar from "./ShareBar.astro";
+
+interface Props {
+  variant: VideoVariant;
+  category: "truth" | "myth" | "project";
+  tags?: string[];
+  lang: Locale;
+}
+const { variant, category, tags = [], lang } = Astro.props;
+const t = useTranslations(lang);
+const categoryLabel = t(`category.${category}` as const);
+
+// The longer-form background, set as a magazine feature: a drop-capped lead
+// paragraph followed by justified body columns.
+const paragraphs = (variant.context ?? "")
+  .split(/\n{2,}/)
+  .map((p) => p.trim())
+  .filter(Boolean);
+---
+
+<article class="story">
+  <header class="story-head">
+    <span class="label cat" style={`--cat:${CATEGORY_COLOR[category]}`}>
+      <span class="keyline" aria-hidden="true"></span>
+      {categoryLabel}
+    </span>
+    <h1 class="title font-display">{variant.title}</h1>
+  </header>
+
+  {
+    paragraphs.length > 0 && (
+      <div class="prose font-display">
+        <span class="label prose-label">{t("video.context")}</span>
+        {paragraphs.map((p) => (
+          <p>{p}</p>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    tags.length > 0 && (
+      <ul class="tags">
+        {tags.map((tag) => (
+          <li class="label">#{tag}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  <hr class="rule" />
+
+  <ShareBar title={variant.title} platforms={variant.platforms} lang={lang} />
+</article>
+
+<style>
+  .story {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+  .story-head {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .cat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 600;
+    color: var(--cat);
+  }
+  .keyline {
+    width: 1.5rem;
+    height: 2px;
+    background: var(--cat);
+    flex: none;
+  }
+  .title {
+    font-weight: 300;
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+    line-height: 1.04;
+    margin: 0;
+    color: var(--text);
+  }
+
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+  .prose-label {
+    color: var(--text-muted);
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .prose p {
+    margin: 0;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: var(--text);
+    text-align: justify;
+    text-wrap: pretty;
+    hyphens: auto;
+  }
+  /* Drop cap on the opening paragraph for the magazine feel. */
+  .prose p:first-of-type::first-letter {
+    float: inline-start;
+    font-size: 3.6em;
+    line-height: 0.82;
+    padding-inline-end: 0.08em;
+    margin-block-start: 0.05em;
+    font-weight: 600;
+    color: var(--color-gold);
+  }
+  html[dir="rtl"] .prose {
+    font-family: var(--font-fa);
+  }
+  html[dir="rtl"] .prose p {
+    font-size: 1.15rem;
+    line-height: 1.95;
+    hyphens: none;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .tags li {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.66rem;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    line-height: 1;
+  }
+  .rule {
+    margin: 0;
+  }
+</style>

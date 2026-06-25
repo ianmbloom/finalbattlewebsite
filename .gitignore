@@ -11,3 +11,10 @@ dist/
 *-debug.log*
 # macOS
 .DS_Store
+
+# Video masters + encodes are hosted on Cloudflare R2, never committed to git.
+/videos/
+*.mov
+*.mp4
+*.m4v
+*.webm

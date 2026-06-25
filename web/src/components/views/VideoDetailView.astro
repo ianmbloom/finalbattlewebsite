@@ -1,10 +1,11 @@
 ---
-import type { Locale } from "@/consts";
+import { resolveVideoSrc, type Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import { getVariant, type VideoEntry } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import VideoPlayer from "@/components/VideoPlayer.astro";
-import ScriptPanel from "@/components/ScriptPanel.astro";
+import Transcript from "@/components/Transcript.astro";
+import StoryPanel from "@/components/StoryPanel.astro";
 
 interface Props {
   entry: VideoEntry;
@@ -13,13 +14,14 @@ interface Props {
 const { entry, lang } = Astro.props;
 const t = useTranslations(lang);
 const variant = getVariant(entry, lang)!;
+const videoSrc = resolveVideoSrc(variant.videoSrc);
 ---
 
 <BaseLayout
   lang={lang}
   title={variant.title}
   description={variant.script?.slice(0, 180)}
-  video={{ streamId: variant.streamId, thumbnailUrl: variant.thumbnailUrl }}
+  video={{ src: videoSrc, thumbnailUrl: variant.thumbnailUrl }}
 >
   <article class="viewer">
     <a class="back label" href={localizedPath("/videos", lang)}>
@@ -28,13 +30,16 @@ const variant = getVariant(entry, lang)!;
 
     <div class="columns">
       <div class="video-col">
-        <div class="sticky">
-          <VideoPlayer streamId={variant.streamId} title={variant.title} />
-        </div>
+        <VideoPlayer
+          src={videoSrc}
+          poster={variant.thumbnailUrl}
+          title={variant.title}
+        />
+        <Transcript variant={variant} lang={lang} />
       </div>
 
-      <div class="script-col">
-        <ScriptPanel
+      <div class="story-col">
+        <StoryPanel
           variant={variant}
           category={entry.data.category}
           tags={entry.data.tags}
@@ -58,7 +63,7 @@ const variant = getVariant(entry, lang)!;
     transition: color 300ms var(--ease-editorial);
   }
   .back:hover {
-    color: var(--color-gold);
+    color: var(--color-emerald);
   }
   .columns {
     display: grid;
@@ -67,29 +72,34 @@ const variant = getVariant(entry, lang)!;
   }
   .video-col {
     /* 9:16 video kept narrow so it doesn't dominate on wide screens */
-    max-width: 420px;
+    max-width: 380px;
     width: 100%;
     margin-inline: auto;
   }
-  .script-col {
+  .story-col {
     min-width: 0;
   }
   @media (min-width: 900px) {
     .columns {
-      grid-template-columns: minmax(320px, 0.85fr) 1.15fr;
+      grid-template-columns: minmax(300px, 0.8fr) 1.2fr;
       gap: 4rem;
       align-items: start;
     }
     .video-col {
       margin-inline: 0;
-    }
-    .sticky {
+      /* Video + transcript stay pinned and scroll on their own; the article
+         column scrolls with the page, so the two move independently. */
       position: sticky;
-      top: 2rem;
-      max-height: calc(100dvh - 4rem);
+      top: 1.5rem;
+      max-height: calc(100dvh - 3rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      padding-block-end: 0.5rem;
     }
-    .script-col {
-      padding-block: 1rem 5rem;
+    .story-col {
+      min-width: 0;
+      padding-block: 0.5rem 5rem;
     }
   }
 </style>
