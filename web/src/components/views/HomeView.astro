@@ -4,7 +4,6 @@ import { useTranslations } from "@/i18n/utils";
 import { getVideosForLocale } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import VideoGrid from "@/components/VideoGrid.astro";
-import PatternBackground from "@/components/PatternBackground.astro";
 
 interface Props {
   lang: Locale;
@@ -17,10 +16,8 @@ const videos = await getVideosForLocale(lang);
 
 <BaseLayout lang={lang} title={t("site.name")} description={t("home.statement.p1")}>
   <section class="statement hero-band">
-    <PatternBackground color="rose" opacity={0.28} size="360px" />
     <div class="statement-inner">
-      <p class="lead font-display">{t("home.statement.p1")}</p>
-      <p class="lead font-display">{t("home.statement.p2")}</p>
+      <p class="lead font-display">{t("home.statement.p1")} {t("home.statement.p2")}</p>
       <p class="call font-display">{t("home.statement.p3")}</p>
     </div>
   </section>
@@ -36,12 +33,12 @@ const videos = await getVideosForLocale(lang);
 
 <style>
   .statement-inner {
-    max-width: 60rem;
+    max-width: 48rem;
     margin: 0 auto;
-    padding: clamp(3.5rem, 9vw, 7rem) 1.5rem;
+    padding: clamp(2rem, 4vw, 3.5rem) 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.75rem;
   }
   .lead {
     margin: 0;
