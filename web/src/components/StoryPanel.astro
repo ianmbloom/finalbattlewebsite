@@ -61,7 +61,7 @@ const paragraphs = (variant.context ?? "")
   .story {
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
+    gap: 2.5rem;
   }
   .story-head {
     display: flex;
@@ -83,8 +83,8 @@ const paragraphs = (variant.context ?? "")
   }
   .title {
     font-weight: 300;
-    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
-    line-height: 1.04;
+    font-size: clamp(1.5rem, 2.2vw, 2.1rem);
+    line-height: 1.08;
     margin: 0;
     color: var(--text);
   }
@@ -101,8 +101,8 @@ const paragraphs = (variant.context ?? "")
   }
   .prose p {
     margin: 0;
-    font-size: 1.3rem;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    line-height: 1.75;
     color: var(--text);
     text-align: justify;
     text-wrap: pretty;
@@ -111,10 +111,10 @@ const paragraphs = (variant.context ?? "")
   /* Drop cap on the opening paragraph for the magazine feel. */
   .prose p:first-of-type::first-letter {
     float: inline-start;
-    font-size: 3.6em;
-    line-height: 0.82;
+    font-size: 2.8em;
+    line-height: 0.84;
     padding-inline-end: 0.08em;
-    margin-block-start: 0.05em;
+    margin-block-start: 0.06em;
     font-weight: 600;
     color: var(--color-gold);
   }
@@ -122,7 +122,7 @@ const paragraphs = (variant.context ?? "")
     font-family: var(--font-fa);
   }
   html[dir="rtl"] .prose p {
-    font-size: 1.15rem;
+    font-size: 0.9rem;
     line-height: 1.95;
     hyphens: none;
   }

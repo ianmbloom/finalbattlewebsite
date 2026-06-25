@@ -23,83 +23,82 @@ const videoSrc = resolveVideoSrc(variant.videoSrc);
   description={variant.script?.slice(0, 180)}
   video={{ src: videoSrc, thumbnailUrl: variant.thumbnailUrl }}
 >
-  <article class="viewer">
-    <a class="back label" href={localizedPath("/videos", lang)}>
-      ← {t("video.back")}
-    </a>
-
-    <div class="columns">
-      <div class="video-col">
-        <VideoPlayer
-          src={videoSrc}
-          poster={variant.thumbnailUrl}
-          title={variant.title}
-        />
-        <Transcript variant={variant} lang={lang} />
-      </div>
-
-      <div class="story-col">
-        <StoryPanel
-          variant={variant}
-          category={entry.data.category}
-          tags={entry.data.tags}
-          lang={lang}
-        />
-      </div>
+  <div class="viewer">
+    <div class="video-col">
+      <VideoPlayer
+        src={videoSrc}
+        poster={variant.thumbnailUrl}
+        title={variant.title}
+      />
     </div>
-  </article>
+
+    <div class="story-col">
+      <a class="back label" href={localizedPath("/videos", lang)}>
+        ← {t("video.back")}
+      </a>
+      <Transcript variant={variant} lang={lang} />
+      <StoryPanel
+        variant={variant}
+        category={entry.data.category}
+        tags={entry.data.tags}
+        lang={lang}
+      />
+    </div>
+  </div>
 </BaseLayout>
 
 <style>
+  /* Mobile: single column, video first then content */
   .viewer {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2.5rem 1.5rem 0;
+    display: flex;
+    flex-direction: column;
   }
+
+  .video-col {
+    background: #000;
+  }
+
+  .story-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding: 2rem 1.5rem 5rem;
+  }
+
   .back {
     display: inline-block;
     color: var(--text-muted);
-    margin-bottom: 2rem;
     transition: color 300ms var(--ease-editorial);
   }
   .back:hover {
     color: var(--color-emerald);
   }
-  .columns {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-  .video-col {
-    /* 9:16 video kept narrow so it doesn't dominate on wide screens */
-    max-width: 380px;
-    width: 100%;
-    margin-inline: auto;
-  }
-  .story-col {
-    min-width: 0;
-  }
+
+  /* Desktop: locked side-by-side. Video column is exactly as wide as the 9:16
+     frame at full viewport height; story column takes the rest and scrolls
+     independently. Nothing scrolls the video off screen. */
   @media (min-width: 900px) {
-    .columns {
-      grid-template-columns: minmax(300px, 0.8fr) 1.2fr;
-      gap: 4rem;
-      align-items: start;
+    .viewer {
+      flex-direction: row;
+      height: calc(100dvh - 5rem);
+      overflow: hidden;
     }
+
     .video-col {
-      margin-inline: 0;
-      /* Video + transcript stay pinned and scroll on their own; the article
-         column scrolls with the page, so the two move independently. */
-      position: sticky;
-      top: 1.5rem;
-      max-height: calc(100dvh - 3rem);
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .story-col {
+      flex: 1;
+      min-width: 0;
       overflow-y: auto;
       overscroll-behavior: contain;
       scrollbar-width: thin;
-      padding-block-end: 0.5rem;
-    }
-    .story-col {
-      min-width: 0;
-      padding-block: 0.5rem 5rem;
+      padding: 3.5rem 4rem 6rem;
+      gap: 3.5rem;
     }
   }
 </style>
