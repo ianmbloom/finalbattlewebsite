@@ -29,6 +29,7 @@ const { src, title, poster, autoplay = false } = Astro.props;
     aspect-ratio: 9 / 16;
     background: #000;
     border: 1px solid var(--line);
+    border-radius: 0.875rem;
     overflow: hidden;
   }
   .player video {
@@ -43,7 +44,7 @@ const { src, title, poster, autoplay = false } = Astro.props;
      --header-h approximates the site header height (padding + content). */
   @media (min-width: 900px) {
     .player {
-      height: calc(100dvh - 5rem);
+      height: calc(100dvh - 5rem - 3rem); /* subtract column padding */
       width: auto;
       border: none;
     }
