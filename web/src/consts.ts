@@ -22,7 +22,9 @@ export const RTL_LOCALES: readonly Locale[] = ["fa"];
  * the git repo or the Pages deploy. Empty in local dev, where the files in
  * `public/videos/` are served directly by the dev server.
  */
-export const VIDEO_BASE_URL = import.meta.env.PUBLIC_VIDEO_BASE_URL ?? "";
+export const VIDEO_BASE_URL =
+  import.meta.env.PUBLIC_VIDEO_BASE_URL ??
+  (import.meta.env.PROD ? "https://videos.finalbattleiran.org" : "");
 
 /**
  * Resolve a `videoSrc` to the URL the browser should load. Absolute URLs pass
