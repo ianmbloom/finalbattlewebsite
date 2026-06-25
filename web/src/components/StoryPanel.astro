@@ -1,18 +1,13 @@
 ---
 import type { Locale } from "@/consts";
-import { useTranslations } from "@/i18n/utils";
-import { CATEGORY_COLOR, type VideoVariant } from "@/lib/videos";
+import { type VideoVariant } from "@/lib/videos";
 import ShareBar from "./ShareBar.astro";
 
 interface Props {
   variant: VideoVariant;
-  category: "truth" | "myth" | "project";
-  tags?: string[];
   lang: Locale;
 }
-const { variant, category, tags = [], lang } = Astro.props;
-const t = useTranslations(lang);
-const categoryLabel = t(`category.${category}` as const);
+const { variant, lang } = Astro.props;
 
 // The longer-form background, set as a magazine feature: a drop-capped lead
 // paragraph followed by justified body columns.
@@ -23,32 +18,13 @@ const paragraphs = (variant.context ?? "")
 ---
 
 <article class="story">
-  <header class="story-head">
-    <span class="label cat" style={`--cat:${CATEGORY_COLOR[category]}`}>
-      <span class="keyline" aria-hidden="true"></span>
-      {categoryLabel}
-    </span>
-    <h1 class="title font-display">{variant.title}</h1>
-  </header>
-
   {
     paragraphs.length > 0 && (
       <div class="prose font-display">
-        <span class="label prose-label">{t("video.context")}</span>
         {paragraphs.map((p) => (
           <p>{p}</p>
         ))}
       </div>
-    )
-  }
-
-  {
-    tags.length > 0 && (
-      <ul class="tags">
-        {tags.map((tag) => (
-          <li class="label">#{tag}</li>
-        ))}
-      </ul>
     )
   }
 
@@ -63,41 +39,10 @@ const paragraphs = (variant.context ?? "")
     flex-direction: column;
     gap: 2.5rem;
   }
-  .story-head {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .cat {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-weight: 600;
-    color: var(--cat);
-  }
-  .keyline {
-    width: 1.5rem;
-    height: 2px;
-    background: var(--cat);
-    flex: none;
-  }
-  .title {
-    font-weight: 300;
-    font-size: clamp(1.5rem, 2.2vw, 2.1rem);
-    line-height: 1.08;
-    margin: 0;
-    color: var(--text);
-  }
-
   .prose {
     display: flex;
     flex-direction: column;
     gap: 1.15rem;
-  }
-  .prose-label {
-    color: var(--text-muted);
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--line);
   }
   .prose p {
     margin: 0;
@@ -127,23 +72,6 @@ const paragraphs = (variant.context ?? "")
     hyphens: none;
   }
 
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .tags li {
-    padding: 0.3rem 0.7rem;
-    font-size: 0.66rem;
-    color: var(--text-muted);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    line-height: 1;
-  }
   .rule {
     margin: 0;
   }

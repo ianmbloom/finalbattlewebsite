@@ -33,16 +33,12 @@ const videoSrc = resolveVideoSrc(variant.videoSrc);
     </div>
 
     <div class="story-col">
-      <a class="back label" href={localizedPath("/videos", lang)}>
+      <h1 class="video-title font-display">{variant.title}</h1>
+      <Transcript variant={variant} lang={lang} />
+      <StoryPanel variant={variant} lang={lang} />
+      <a class="back" href={localizedPath("/videos", lang)}>
         ← {t("video.back")}
       </a>
-      <Transcript variant={variant} lang={lang} />
-      <StoryPanel
-        variant={variant}
-        category={entry.data.category}
-        tags={entry.data.tags}
-        lang={lang}
-      />
     </div>
   </div>
 </BaseLayout>
@@ -65,10 +61,21 @@ const videoSrc = resolveVideoSrc(variant.videoSrc);
     padding: 2rem 1.5rem 5rem;
   }
 
+  .video-title {
+    font-weight: 300;
+    font-size: clamp(1.5rem, 2.2vw, 2.1rem);
+    line-height: 1.08;
+    margin: 0;
+    color: var(--text);
+  }
+
   .back {
     display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
     color: var(--text-muted);
     transition: color 300ms var(--ease-editorial);
+    margin-top: 0.5rem;
   }
   .back:hover {
     color: var(--color-emerald);

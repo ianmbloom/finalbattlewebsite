@@ -22,35 +22,26 @@ const paragraphs = (variant.script ?? "")
 {
   paragraphs.length > 0 && (
     <section class="transcript">
-      <div class="transcript-head">
-        <span class="label transcript-label">{t("video.script")}</span>
-        {duration && <span class="label time">{duration}</span>}
-      </div>
       <div class="transcript-body font-display">
         {paragraphs.map((p) => (
           <p>{p}</p>
         ))}
       </div>
+      {duration && <span class="label time">{duration}</span>}
     </section>
   )
 }
 
 <style>
   .transcript {
-    margin-top: 1.75rem;
     padding-inline-start: 1.25rem;
     border-inline-start: 2px solid var(--color-gold);
-  }
-  .transcript-head {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 0.75rem;
-  }
-  .transcript-label {
-    color: var(--text-muted);
+    flex-direction: column;
+    gap: 0.75rem;
   }
   .time {
+    font-size: 0.65rem;
     color: var(--text-muted);
   }
   .transcript-body {
