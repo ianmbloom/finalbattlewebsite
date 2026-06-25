@@ -22,7 +22,7 @@ const current = Astro.url.pathname.replace(/\/$/, "");
   <BusinessPattern posY="-120px" />
   <div class="bar-inner">
     <a class="brand" href={localizedPath("/", lang)} aria-label={t("site.name")}>
-      <span class="brand-mark"><Logo size={36} /></span>
+      <span class="brand-mark"><Logo size={44} /></span>
       <span class="brand-text">
         <span class="brand-name font-logo">{t("site.name")}</span>
         <span class="brand-sub label">{t("site.subtitle")}</span>
@@ -87,7 +87,7 @@ const current = Astro.url.pathname.replace(/\/$/, "");
   .brand-sub {
     margin-top: 0.25rem;
     font-size: 0.6rem;
-    color: var(--bar-accent);
+    color: var(--color-crimson);
   }
   .primary {
     display: flex;
