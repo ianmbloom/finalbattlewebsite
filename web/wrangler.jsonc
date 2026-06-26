@@ -9,21 +9,17 @@
   //   Build output directory: dist
   //
   // Bindings/secrets to set in the dashboard (Settings > Variables and Functions):
-  //   DB                    -> the "finalbattle-emails" D1 database (binding below)
   //   STRIPE_SECRET_KEY     (secret)
   //   STRIPE_WEBHOOK_SECRET (secret)
   //   PRINTIFY_API_TOKEN / PRINTIFY_SHOP_ID (secrets, for fulfillment)
   //
-  // Create the database once with `wrangler d1 create finalbattle-emails`, paste
-  // the returned database_id below, then run `npm run db:schema`.
+  // Newsletter storage (D1) is intentionally NOT bound here yet: the email
+  // signup feature is off and the Functions handle a missing `DB` gracefully.
+  // A binding to a nonexistent database fails the Pages Function publish step
+  // and rolls back the whole deploy. To enable it later: create the database
+  // (`wrangler d1 create finalbattle-emails`), run `npm run db:schema`, then add
+  // a `d1_databases` entry with the real `database_id` (here or in the dashboard).
   "name": "finalbattleiran",
   "compatibility_date": "2026-06-24",
-  "pages_build_output_dir": "./dist",
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "finalbattle-emails",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
-    }
-  ]
+  "pages_build_output_dir": "./dist"
 }
