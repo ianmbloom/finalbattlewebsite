@@ -23,7 +23,14 @@ const year = new Date().getFullYear();
       <a href={localizedPath("/about", lang)}>{t("nav.about")}</a>
     </nav>
     <p class="contact label">
-      <a href="mailto:seeyouinfreeiran@gmail.com">seeyouinfreeiran@gmail.com</a>
+      <button
+        type="button"
+        class="copy-email"
+        data-email="seeyouinfreeiran@gmail.com"
+      >
+        <span class="copy-email-text">seeyouinfreeiran@gmail.com</span>
+        <span class="copy-email-status" aria-hidden="true"></span>
+      </button>
     </p>
     <div class="meta label">
       <a href={localizedPath("/", lang)}>{t("site.name")}</a>
@@ -82,12 +89,30 @@ const year = new Date().getFullYear();
   .contact {
     margin: 0;
   }
-  .contact a {
+  .copy-email {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
     color: var(--bar-text);
+    cursor: pointer;
     transition: color 300ms var(--ease-editorial);
   }
-  .contact a:hover {
+  .copy-email:hover {
     color: var(--bar-accent);
+  }
+  .copy-email-status {
+    color: var(--bar-accent);
+    opacity: 0;
+    transition: opacity 200ms var(--ease-editorial);
+  }
+  .copy-email.copied .copy-email-status {
+    opacity: 1;
   }
   .meta {
     display: flex;
@@ -105,3 +130,33 @@ const year = new Date().getFullYear();
     color: var(--bar-accent);
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>(".copy-email").forEach((btn) => {
+    const status = btn.querySelector<HTMLElement>(".copy-email-status");
+    let timer: number | undefined;
+    btn.addEventListener("click", async () => {
+      const email = btn.dataset.email;
+      if (!email) return;
+      try {
+        await navigator.clipboard.writeText(email);
+      } catch {
+        const range = document.createRange();
+        const textEl = btn.querySelector(".copy-email-text");
+        if (textEl) {
+          range.selectNodeContents(textEl);
+          const sel = window.getSelection();
+          sel?.removeAllRanges();
+          sel?.addRange(range);
+        }
+      }
+      if (status) status.textContent = "Copied";
+      btn.classList.add("copied");
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        btn.classList.remove("copied");
+        if (status) status.textContent = "";
+      }, 2000);
+    });
+  });
+</script>
