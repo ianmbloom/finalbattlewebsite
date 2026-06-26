@@ -22,6 +22,9 @@ const year = new Date().getFullYear();
       <a href={localizedPath("/support", lang)}>{t("nav.support")}</a>
       <a href={localizedPath("/about", lang)}>{t("nav.about")}</a>
     </nav>
+    <p class="contact label">
+      <a href="mailto:seeyouinfreeiran@gmail.com">seeyouinfreeiran@gmail.com</a>
+    </p>
     <div class="meta label">
       <a href={localizedPath("/", lang)}>{t("site.name")}</a>
       <span aria-hidden="true">·</span>
@@ -75,6 +78,16 @@ const year = new Date().getFullYear();
     font-size: 1.75rem;
     color: var(--bar-text);
     margin: 0;
+  }
+  .contact {
+    margin: 0;
+  }
+  .contact a {
+    color: var(--bar-text);
+    transition: color 300ms var(--ease-editorial);
+  }
+  .contact a:hover {
+    color: var(--bar-accent);
   }
   .meta {
     display: flex;
