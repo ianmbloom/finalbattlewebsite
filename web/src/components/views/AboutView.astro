@@ -1,154 +1,152 @@
 ---
 import type { Locale } from "@/consts";
-import { useTranslations, localizedPath } from "@/i18n/utils";
-import { CATEGORY_COLOR, type Category } from "@/lib/videos";
+import { FEATURES } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Logo from "@/components/Logo.astro";
 import BusinessPattern from "@/components/BusinessPattern.astro";
+import Newsletter from "@/components/Newsletter.astro";
 
 interface Props {
   lang: Locale;
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-
-const arrows: { key: Category; body: string }[] = [
-  { key: "truth", body: t("about.arrow.truth") },
-  { key: "myth", body: t("about.arrow.myth") },
-  { key: "project", body: t("about.arrow.project") },
-];
 ---
 
-<BaseLayout lang={lang} title={t("about.title")} description={t("about.lead")}>
+<BaseLayout lang={lang} title={t("about.title")} description={t("about.lead")} hideNewsletter>
   <article class="about">
-    <header class="about-head">
-      <span class="mark"><Logo size={84} /></span>
-      <h1 class="title font-display">{t("about.title")}</h1>
-      <p class="lead font-display">{t("about.lead")}</p>
-    </header>
+    <div class="about-grid">
+      <header class="about-head">
+        <h1 class="section-title font-display">{t("about.title")}</h1>
+        <p class="prose font-display">{t("about.lead")}</p>
+      </header>
 
-    <section class="block">
-      <span class="label">{t("about.goal.title")}</span>
-      <p>{t("about.goal.body")}</p>
-    </section>
+      <figure class="mosaic">
+        <img
+          src="/about/mosaic-flag-bearer.webp"
+          alt={t("about.image_alt")}
+          width="1400"
+          height="1875"
+          loading="eager"
+        />
+      </figure>
 
-    <hr class="rule" />
+      <div class="about-body">
+        <section class="block">
+          <h2 class="section-title font-display">{t("about.vision.title")}</h2>
+          <p class="prose font-display">{t("about.vision.body")}</p>
+        </section>
 
-    <section class="block">
-      <span class="label">{t("about.method.title")}</span>
-      <p>{t("about.method.body")}</p>
-      <ol class="arrows">
-        {
-          arrows.map((a) => (
-            <li style={`border-color:${CATEGORY_COLOR[a.key]}`}>
-              <span class="label arrow-cat" style={`color:${CATEGORY_COLOR[a.key]}`}>
-                {t(`category.${a.key}` as const)}
-              </span>
-              <span class="arrow-body">{a.body}</span>
-            </li>
-          ))
-        }
-      </ol>
-    </section>
-  </article>
+        <hr class="rule" />
 
-  <section class="tagline-block business-surface">
-    <BusinessPattern />
-    <div class="tagline-inner">
-      <span class="mark"><Logo size={52} /></span>
-      <p class="tagline font-display">{t("site.tagline")}</p>
-      <a class="btn-outline-on-bar" href={localizedPath("/videos", lang)}>
-        {t("hero.cta.watch")}
-      </a>
+        <section class="block">
+          <h2 class="section-title font-display">{t("about.mission.title")}</h2>
+          <p class="prose font-display">{t("about.mission.body")}</p>
+        </section>
+
+        <hr class="rule" />
+
+        <section class="block">
+          <h2 class="section-title font-display">{t("about.help.title")}</h2>
+          <p class="prose font-display">{t("about.help.body")}</p>
+        </section>
+
+        <section class="signup business-surface">
+          <BusinessPattern />
+          <div class="signup-inner">
+            <Newsletter lang={lang} compact disabled={!FEATURES.newsletter} />
+          </div>
+        </section>
+      </div>
     </div>
-  </section>
+  </article>
 </BaseLayout>
 
 <style>
   .about {
-    max-width: 760px;
+    max-width: 1040px;
     margin: 0 auto;
     padding: 4rem 1.5rem 0;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
   .about-head {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 3.5rem;
+    gap: 0.75rem;
   }
-  .mark {
-    color: var(--color-emerald);
-  }
-  .title {
-    font-weight: 300;
-    font-size: clamp(2.5rem, 6vw, 4rem);
+  .section-title {
     margin: 0;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    line-height: 1.2;
     color: var(--text);
   }
-  .lead {
-    font-weight: 300;
-    font-size: clamp(1.4rem, 3vw, 2rem);
-    line-height: 1.35;
+  .prose {
     margin: 0;
-    color: var(--text-muted);
+    font-weight: 400;
+    font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .mosaic {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .mosaic img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.45);
+  }
+  @media (min-width: 880px) {
+    .about-grid {
+      grid-template-columns: minmax(0, 1fr) 340px;
+      column-gap: 3.5rem;
+      row-gap: 0;
+      align-items: start;
+    }
+    .about-head {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .about-body {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .mosaic {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      position: sticky;
+      top: 6rem;
+      align-self: start;
+    }
   }
   .block {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
     padding: 2.5rem 0;
   }
-  .block p {
-    margin: 0;
-    font-size: 1.15rem;
-    line-height: 1.8;
-    color: var(--text);
+  .signup {
+    position: relative;
+    overflow: hidden;
+    margin-top: 0.5rem;
+    border: 1px solid var(--bar-line);
+    border-radius: 6px;
   }
-  .arrows {
-    list-style: none;
-    margin: 1rem 0 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-  .arrows li {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    padding-inline-start: 1.25rem;
-    border-inline-start: 2px solid var(--color-emerald);
-  }
-  .arrow-cat {
-    color: var(--color-emerald);
-  }
-  .arrow-body {
-    font-size: 1.15rem;
-    color: var(--text);
+  .signup-inner {
+    position: relative;
+    z-index: 1;
+    padding: 1.75rem 1.5rem;
   }
   .rule {
     margin: 0;
-  }
-  .tagline-block {
-    margin-top: 4rem;
-  }
-  .tagline-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.75rem;
-    text-align: center;
-  }
-  .tagline-block .mark {
-    color: var(--bar-accent);
-  }
-  .tagline {
-    font-weight: 300;
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
-    margin: 0;
-    color: var(--bar-text);
   }
 </style>

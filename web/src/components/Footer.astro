@@ -1,6 +1,5 @@
 ---
 import type { Locale } from "@/consts";
-import { FEATURES } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import Logo from "./Logo.astro";
 import BusinessPattern from "./BusinessPattern.astro";
@@ -20,13 +19,6 @@ const year = new Date().getFullYear();
     <p class="tagline font-display">{t("site.tagline")}</p>
     <nav class="links label" aria-label="Footer">
       <a href={localizedPath("/videos", lang)}>{t("nav.videos")}</a>
-      {
-        FEATURES.shop ? (
-          <a href={localizedPath("/shop", lang)}>{t("nav.shop")}</a>
-        ) : (
-          <span class="disabled" aria-disabled="true">{t("nav.shop")}</span>
-        )
-      }
       <a href={localizedPath("/support", lang)}>{t("nav.support")}</a>
       <a href={localizedPath("/about", lang)}>{t("nav.about")}</a>
     </nav>

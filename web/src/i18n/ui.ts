@@ -24,10 +24,7 @@ export const ui = {
     "hero.cta.watch": "Watch the Series",
 
     "home.statement.p1":
-      "Most of the world knows little about Iran and the Lion and Sun Revolution. Our mission is to build the tools that help you change that — to show the world the Free Iran that will soon benefit us all.",
-    "home.statement.p2":
       "Every piece of content we create is an arrow for your quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Iran Prosperity Project.",
-    "home.statement.p3": "Now it's your turn to take aim.",
 
     "videos.title": "The Series",
     "videos.intro": "Every piece is an arrow for the quiver.",
@@ -47,34 +44,46 @@ export const ui = {
     "video.watchOn": "Watch on",
     "video.back": "Back to the series",
     "video.unavailable": "This video is not yet available in this language.",
+    "video.alsoInFa": "Also available for Persian speakers.",
+    "video.alsoInEn": "Also available for English speakers.",
+    "video.faSoon": "Available for Persian speakers soon.",
+    "video.enSoon": "Available for English speakers soon.",
 
     "share.button": "Share",
     "share.x": "Post on X",
     "share.instagram": "View Reel",
     "share.youtube": "Watch Short",
 
-    "about.title": "The Mission",
+    "share.guide.title": "How to Share",
+    "share.guide.x": "Post on X.com",
+    "share.guide.instagram": "Post on Instagram",
+    "share.guide.tiktok": "Post on TikTok",
+    "share.guide.youtube": "Watch on YouTube Shorts",
+    "share.guide.reddit": "Post on Reddit",
+
+    "about.title": "Who We Are",
+    "about.image_alt":
+      "A Persian mosaic of a flag-bearer raising the Lion and Sun flag of Iran.",
     "about.lead":
-      "Most of the world knows very little about Iran or the Lion and Sun Revolution. That gap leaves room for misconceptions to spread unchallenged.",
-    "about.goal.title": "The Goal",
-    "about.goal.body":
-      "Educate a global audience about a Free Iran — one that will soon benefit the entire world.",
-    "about.method.title": "The Method",
-    "about.method.body":
-      "Short-form video content where every piece is an arrow for the quiver. Each arrow does one of three things.",
-    "about.arrow.truth": "Illuminates a hidden truth.",
-    "about.arrow.myth": "Dispels a common myth.",
-    "about.arrow.project": "Unpacks a detail of the Iran Prosperity Project.",
+      "We are a small, unlikely band of friends who met on Discord: a group of Iranians, a Jewish video editor, and an activist from Hong Kong. Among us, a true daughter of Persia whose luminous voice gives our videos their soul.",
+    "about.vision.title": "Our Vision",
+    "about.vision.body":
+      "We are an independent collaboration bound by a single shared vision: a secular, democratic Iran. We stand with Reza Pahlavi, and we bring the Iran Prosperity Project to life in content you can share. Beyond that, we stay politically neutral — the goal is to build a coalition behind a transition. We can work out our differences once Iran is free.",
+    "about.mission.title": "Our Mission",
+    "about.mission.body":
+      "Most of the world knows very little about Iran or the Lion and Sun Revolution, and that silence leaves room for misconceptions to spread unchallenged. We want to change that — to show a global audience the Free Iran that will soon benefit us all. We do it with short videos, where every piece is an arrow for the quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Iran Prosperity Project.",
+    "about.help.title": "How You Can Help",
+    "about.help.body":
+      "This is where you come in. These videos only matter if they are seen. Watch them where they live, then follow our channels, like, comment, and repost — every share pushes the message past the regime's noise and into the world. Join our email list below to catch each new video the moment it drops, and, if you are able, support the work with a donation or by wearing the message. We make it for free; you make it travel.",
 
     "promote.title": "Be the arrow.",
     "promote.body":
-      "These videos only matter if they are seen. Watch them where they live, then like, comment, and repost — every share pushes the message past the regime's noise and into the world.",
+      "These videos only matter if they are seen. Watch them where they live, then follow our channels, like, comment, and repost — every share pushes the message past the regime's noise and into the world.",
     "promote.share": "Share this video",
-    "promote.cta": "Share the series",
 
-    "newsletter.headline": "Get the next arrow.",
+    "newsletter.headline": "Get the next arrow first.",
     "newsletter.body":
-      "Join the email list. We will send you each new video the moment it drops, so you are first in line to share it.",
+      "These videos only matter if they are seen. Join the email list and we'll send each new one the moment it drops — so you're first to watch, and first to share.",
     "newsletter.placeholder": "Your email",
     "newsletter.subscribe": "Subscribe",
     "newsletter.success": "You're in. Watch your inbox.",
@@ -146,10 +155,7 @@ export const ui = {
     "hero.cta.watch": "تماشای مجموعه",
 
     "home.statement.p1":
-      "بیشتر جهان درباره ایران و انقلاب شیر و خورشید چیز کمی می‌داند. مأموریت ما ساختن ابزارهایی است که به شما کمک می‌کند این را تغییر دهید — تا ایرانِ آزادی را به جهان نشان دهید که به‌زودی به سود همه ما خواهد بود.",
-    "home.statement.p2":
       "هر محتوایی که می‌سازیم تیری برای ترکش توست: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه شکوفایی ایران را شرح می‌دهد.",
-    "home.statement.p3": "حالا نوبت توست که نشانه بگیری.",
 
     "videos.title": "مجموعه",
     "videos.intro": "هر اثر تیری برای ترکش است.",
@@ -169,34 +175,46 @@ export const ui = {
     "video.watchOn": "تماشا در",
     "video.back": "بازگشت به مجموعه",
     "video.unavailable": "این ویدیو هنوز به این زبان در دسترس نیست.",
+    "video.alsoInFa": "این ویدیو برای فارسی‌زبانان نیز در دسترس است.",
+    "video.alsoInEn": "این ویدیو برای انگلیسی‌زبانان نیز در دسترس است.",
+    "video.faSoon": "نسخه فارسی به‌زودی در دسترس قرار می‌گیرد.",
+    "video.enSoon": "نسخه انگلیسی به‌زودی در دسترس قرار می‌گیرد.",
 
     "share.button": "هم‌رسانی",
     "share.x": "انتشار در ایکس",
     "share.instagram": "دیدن ریل",
     "share.youtube": "تماشای شورت",
 
-    "about.title": "مأموریت",
+    "share.guide.title": "چگونه هم‌رسانی کنیم",
+    "share.guide.x": "انتشار در X.com",
+    "share.guide.instagram": "انتشار در اینستاگرام",
+    "share.guide.tiktok": "انتشار در تیک‌تاک",
+    "share.guide.youtube": "تماشا در یوتیوب شورتس",
+    "share.guide.reddit": "انتشار در ردیت",
+
+    "about.title": "ما که هستیم",
+    "about.image_alt":
+      "موزاییکی ایرانی از پرچم‌داری که پرچم شیر و خورشید ایران را برافراشته است.",
     "about.lead":
-      "بیشتر جهان درباره ایران یا انقلاب شیر و خورشید بسیار کم می‌داند. این شکاف فضایی می‌سازد که در آن برداشت‌های نادرست بدون چالش گسترش می‌یابند.",
-    "about.goal.title": "هدف",
-    "about.goal.body":
-      "آگاه‌سازی مخاطبان جهانی درباره ایرانی آزاد — ایرانی که به‌زودی به سود تمام جهان خواهد بود.",
-    "about.method.title": "روش",
-    "about.method.body":
-      "محتوای ویدیویی کوتاه که هر اثر، تیری برای ترکش است. هر تیر یکی از سه کار را انجام می‌دهد.",
-    "about.arrow.truth": "حقیقتی پنهان را روشن می‌کند.",
-    "about.arrow.myth": "افسانه‌ای رایج را باطل می‌کند.",
-    "about.arrow.project": "جزئیاتی از پروژه شکوفایی ایران را شرح می‌دهد.",
+      "ما گروهی کوچک و نامحتمل از دوستانی هستیم که در دیسکورد با هم آشنا شدیم: گروهی از ایرانیان، یک تدوین‌گر ویدیوی یهودی، و کنشگری از هنگ‌کنگ. در میان ما، دختری راستین از پارس که صدای درخشانش به ویدیوهای ما جان می‌بخشد.",
+    "about.vision.title": "چشم‌انداز ما",
+    "about.vision.body":
+      "ما یک همکاری مستقل هستیم که با یک چشم‌انداز مشترک به هم پیوسته‌ایم: ایرانی سکولار و دموکراتیک. ما در کنار رضا پهلوی ایستاده‌ایم و پروژه‌ی شکوفایی ایران را در قالب محتوایی که می‌توانید هم‌رسانی کنید، زنده می‌کنیم. فراتر از این، ما از نظر سیاسی بی‌طرف می‌مانیم — هدف، ساختن ائتلافی برای یک گذار است. اختلاف‌هایمان را می‌توانیم پس از آزادی ایران حل کنیم.",
+    "about.mission.title": "مأموریت ما",
+    "about.mission.body":
+      "بیشتر جهان درباره‌ی ایران و انقلاب شیر و خورشید بسیار کم می‌داند، و این سکوت فضایی می‌سازد که در آن برداشت‌های نادرست بدون چالش گسترش می‌یابند. ما می‌خواهیم این را تغییر دهیم — تا ایرانِ آزادی را به جهان نشان دهیم که به‌زودی به سود همه‌ی ما خواهد بود. این کار را با ویدیوهای کوتاه انجام می‌دهیم، جایی که هر اثر تیری برای ترکش است: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه‌ی شکوفایی ایران را شرح می‌دهد.",
+    "about.help.title": "چگونه می‌توانید کمک کنید",
+    "about.help.body":
+      "اینجا جایی است که شما وارد می‌شوید. این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. آن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، سپس کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند. در پایین به فهرست ایمیل ما بپیوندید تا هر ویدیوی تازه را همان لحظه‌ی انتشار دریافت کنید، و اگر می‌توانید، با یک کمک مالی یا پوشیدن پیام از این کار حمایت کنید. ما آن را رایگان می‌سازیم؛ شما آن را به حرکت درمی‌آورید.",
 
     "promote.title": "تو خودِ تیر باش.",
     "promote.body":
-      "این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. آن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، سپس بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند.",
+      "این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. آن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، سپس کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند.",
     "promote.share": "این ویدیو را هم‌رسانی کن",
-    "promote.cta": "هم‌رسانی مجموعه",
 
-    "newsletter.headline": "تیر بعدی را دریافت کن.",
+    "newsletter.headline": "تیر بعدی را زودتر دریافت کن.",
     "newsletter.body":
-      "به فهرست ایمیل بپیوندید. هر ویدیوی تازه را همان لحظه‌ی انتشار برایتان می‌فرستیم تا اولین کسی باشید که آن را هم‌رسانی می‌کند.",
+      "این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. به فهرست ایمیل بپیوندید تا هر ویدیوی تازه را همان لحظه‌ی انتشار برایتان بفرستیم — تا اولین کسی باشید که آن را می‌بیند و هم‌رسانی می‌کند.",
     "newsletter.placeholder": "ایمیل شما",
     "newsletter.subscribe": "عضویت",
     "newsletter.success": "ثبت شد. منتظر ایمیل ما باشید.",

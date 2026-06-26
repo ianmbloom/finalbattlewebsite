@@ -4,7 +4,6 @@ import { useTranslations } from "@/i18n/utils";
 import { getVideosForLocale } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import VideoGrid from "@/components/VideoGrid.astro";
-import PromoteBand from "@/components/PromoteBand.astro";
 
 interface Props {
   lang: Locale;
@@ -18,8 +17,9 @@ const videos = await getVideosForLocale(lang);
 <BaseLayout lang={lang} title={t("site.name")} description={t("home.statement.p1")}>
   <section class="statement hero-band">
     <div class="statement-inner">
-      <p class="lead font-display">{t("home.statement.p1")} {t("home.statement.p2")}</p>
-      <p class="call font-display">{t("home.statement.p3")}</p>
+      <p class="lead font-display">{t("home.statement.p1")}</p>
+      <p class="arrow font-display">{t("promote.title")}</p>
+      <p class="call font-display">{t("promote.body")}</p>
     </div>
   </section>
 
@@ -30,33 +30,41 @@ const videos = await getVideosForLocale(lang);
     </div>
     <VideoGrid videos={videos} lang={lang} />
   </section>
-
-  <PromoteBand lang={lang} />
 </BaseLayout>
 
 <style>
   .statement-inner {
-    max-width: 48rem;
+    max-width: 52rem;
     margin: 0 auto;
-    padding: clamp(2rem, 4vw, 3.5rem) 1.5rem;
+    padding: clamp(2.5rem, 5vw, 4.5rem) 1.5rem clamp(2rem, 4vw, 3rem);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    align-items: center;
+    gap: 1.1rem;
+    text-align: center;
   }
   .lead {
     margin: 0;
+    max-width: 52ch;
     font-weight: 300;
-    font-size: clamp(0.95rem, 1.6vw, 1.25rem);
-    line-height: 1.55;
+    font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .arrow {
+    margin: 0.5rem 0;
+    font-weight: 300;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    line-height: 1.1;
     color: var(--text);
   }
   .call {
-    margin: 0.25rem 0 0;
-    font-weight: 500;
-    font-style: italic;
-    font-size: clamp(0.9rem, 1.3vw, 1.1rem);
-    line-height: 1.4;
-    color: var(--color-gold);
+    margin: 0;
+    max-width: 52ch;
+    font-weight: 300;
+    font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--text);
   }
   .series {
     max-width: 1280px;

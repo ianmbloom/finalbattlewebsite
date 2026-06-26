@@ -4,6 +4,7 @@ import { useTranslations, localizedPath } from "@/i18n/utils";
 import { getVariant, type VideoEntry } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import VideoPlayer from "@/components/VideoPlayer.astro";
+import ShareGuide from "@/components/ShareGuide.astro";
 import Transcript from "@/components/Transcript.astro";
 import StoryPanel from "@/components/StoryPanel.astro";
 
@@ -15,6 +16,14 @@ const { entry, lang } = Astro.props;
 const t = useTranslations(lang);
 const variant = getVariant(entry, lang)!;
 const videoSrc = resolveVideoSrc(variant.videoSrc);
+
+// Sister video: the same entry in the other language. When that variant exists
+// we link to it; until then we show a muted "available soon" note in its place.
+const otherLang: Locale = lang === "en" ? "fa" : "en";
+const hasSibling = Boolean(getVariant(entry, otherLang));
+const siblingHref = localizedPath(`/videos/${entry.id}`, otherLang);
+const siblingLabel = lang === "en" ? t("video.alsoInFa") : t("video.alsoInEn");
+const soonLabel = lang === "en" ? t("video.faSoon") : t("video.enSoon");
 ---
 
 <BaseLayout
@@ -22,6 +31,7 @@ const videoSrc = resolveVideoSrc(variant.videoSrc);
   title={variant.title}
   description={variant.script?.slice(0, 180)}
   video={{ src: videoSrc, thumbnailUrl: variant.thumbnailUrl }}
+  immersive
 >
   <div class="viewer">
     <div class="video-col">
@@ -34,6 +44,16 @@ const videoSrc = resolveVideoSrc(variant.videoSrc);
 
     <div class="story-col">
       <h1 class="video-title font-display">{variant.title}</h1>
+      {
+        hasSibling ? (
+          <a class="sister-link" href={siblingHref}>
+            {siblingLabel}
+          </a>
+        ) : (
+          <span class="sister-soon">{soonLabel}</span>
+        )
+      }
+      <ShareGuide variant={variant} lang={lang} />
       <Transcript variant={variant} lang={lang} />
       <StoryPanel variant={variant} lang={lang} />
       <a class="back" href={localizedPath("/videos", lang)}>
@@ -57,14 +77,14 @@ const videoSrc = resolveVideoSrc(variant.videoSrc);
   .story-col {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
-    padding: 2rem 1.5rem 5rem;
+    gap: 1.75rem;
+    padding: 1.75rem 1.5rem 4rem;
   }
 
   .video-title {
     font-weight: 300;
-    font-size: clamp(1.5rem, 2.2vw, 2.1rem);
-    line-height: 1.08;
+    font-size: clamp(2.1rem, 3.4vw, 3rem);
+    line-height: 1.05;
     margin: 0;
     color: var(--text);
   }
@@ -79,6 +99,25 @@ const videoSrc = resolveVideoSrc(variant.videoSrc);
   }
   .back:hover {
     color: var(--color-emerald);
+  }
+
+  .sister-link,
+  .sister-soon {
+    display: inline-block;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-top: -0.75rem;
+  }
+  .sister-link {
+    transition: color 300ms var(--ease-editorial);
+  }
+  .sister-link:hover {
+    color: var(--color-emerald);
+  }
+  .sister-soon {
+    font-style: italic;
+    opacity: 0.8;
   }
 
   /* Desktop: locked side-by-side. Video column is exactly as wide as the 9:16
@@ -103,10 +142,12 @@ const videoSrc = resolveVideoSrc(variant.videoSrc);
       flex: 1;
       min-width: 0;
       overflow-y: auto;
-      overscroll-behavior: contain;
+      /* Let the scroll chain to the page when this column bottoms out, so the
+         reader continues into the newsletter/footer instead of dead-ending. */
+      overscroll-behavior: auto;
       scrollbar-width: thin;
-      padding: 3.5rem 4rem 6rem;
-      gap: 3.5rem;
+      padding: 2.5rem 3rem 2rem;
+      gap: 2rem;
     }
   }
 </style>

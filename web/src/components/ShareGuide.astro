@@ -1,0 +1,105 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+import { type VideoVariant } from "@/lib/videos";
+
+interface Props {
+  variant: VideoVariant;
+  lang: Locale;
+}
+const { variant, lang } = Astro.props;
+const t = useTranslations(lang);
+
+// The five share destinations, in display order. Each row's link comes from the
+// video's platform URLs; until a real (non-placeholder) URL is filled in, the
+// row renders disabled with a "Soon" cue.
+const platforms = variant.platforms ?? {};
+const isReal = (url?: string) => Boolean(url && !url.includes("PLACEHOLDER"));
+
+const rows = [
+  { key: "x", label: t("share.guide.x"), url: platforms.x },
+  { key: "instagram", label: t("share.guide.instagram"), url: platforms.instagram },
+  { key: "tiktok", label: t("share.guide.tiktok"), url: platforms.tiktok },
+  { key: "youtube", label: t("share.guide.youtube"), url: platforms.youtube },
+  { key: "reddit", label: t("share.guide.reddit"), url: platforms.reddit },
+];
+---
+
+<section class="share-guide">
+  <span class="label guide-label">{t("share.guide.title")}</span>
+  <ul class="rows">
+    {
+      rows.map((row) => (
+        <li class="row" data-platform={row.key}>
+          {isReal(row.url) ? (
+            <a class="row-link" href={row.url} target="_blank" rel="noopener">
+              <span class="row-name">{row.label}</span>
+              <span class="row-cue" aria-hidden="true">↗</span>
+            </a>
+          ) : (
+            <span class="row-link is-disabled" aria-disabled="true">
+              <span class="row-name">{row.label}</span>
+              <span class="row-cue label soon">{t("common.soon")}</span>
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .share-guide {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .guide-label {
+    color: var(--text-muted);
+  }
+  .rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 0.35rem;
+  }
+  @media (min-width: 1100px) {
+    .rows {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .row-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.25rem 0;
+    color: var(--text);
+    transition: color 300ms var(--ease-editorial);
+  }
+  .row-name {
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+  }
+  .row-cue {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    transition: color 300ms var(--ease-editorial);
+  }
+  a.row-link:hover {
+    color: var(--color-emerald);
+  }
+  a.row-link:hover .row-cue {
+    color: var(--color-emerald);
+  }
+  .row-link.is-disabled {
+    color: var(--text-muted);
+    cursor: default;
+  }
+  .soon {
+    color: var(--text-muted);
+    font-size: 0.58rem;
+  }
+</style>

@@ -2,7 +2,6 @@
 import type { Locale } from "@/consts";
 import { useTranslations } from "@/i18n/utils";
 import { type VideoVariant } from "@/lib/videos";
-import ShareBar from "./ShareBar.astro";
 
 interface Props {
   variant: VideoVariant;
@@ -19,28 +18,23 @@ const paragraphs = (variant.context ?? "")
   .filter(Boolean);
 ---
 
-<article class="story">
-  {
-    paragraphs.length > 0 && (
+{
+  paragraphs.length > 0 && (
+    <article class="story">
       <div class="prose font-display">
         <span class="label prose-label">{t("video.context")}</span>
         {paragraphs.map((p) => (
           <p>{p}</p>
         ))}
       </div>
-    )
-  }
-
-  <hr class="rule" />
-
-  <ShareBar title={variant.title} platforms={variant.platforms} lang={lang} />
-</article>
+    </article>
+  )
+}
 
 <style>
   .story {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
   }
   .prose {
     display: flex;
@@ -78,9 +72,5 @@ const paragraphs = (variant.context ?? "")
     font-size: 0.9rem;
     line-height: 1.95;
     hyphens: none;
-  }
-
-  .rule {
-    margin: 0;
   }
 </style>

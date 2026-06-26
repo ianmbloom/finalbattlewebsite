@@ -19,9 +19,20 @@ interface Props {
   ogType?: string;
   /** Suppress the global newsletter band (e.g. pages that embed it inline). */
   hideNewsletter?: boolean;
+  /** Full-height pages (e.g. the video viewer): tighten the gap before the
+   *  newsletter band so the email box is reached as soon as you scroll past. */
+  immersive?: boolean;
 }
 
-const { lang, title, description, video, ogType, hideNewsletter = false } = Astro.props;
+const {
+  lang,
+  title,
+  description,
+  video,
+  ogType,
+  hideNewsletter = false,
+  immersive = false,
+} = Astro.props;
 const direction = dir(lang);
 const t = useTranslations(lang);
 ---
@@ -40,7 +51,7 @@ const t = useTranslations(lang);
       ogType={ogType}
     />
   </head>
-  <body>
+  <body class={immersive ? "immersive" : undefined}>
     <a class="skip-link label" href="#main">Skip to content</a>
     <Header lang={lang} />
     <main id="main">
@@ -77,6 +88,11 @@ const t = useTranslations(lang);
   .newsletter-band {
     margin-top: 6rem;
     border-top: 1px solid var(--bar-line);
+  }
+  /* Immersive (full-viewport) pages already fill the screen; drop the big gap
+     so the newsletter sits right after the content. */
+  :global(body.immersive) .newsletter-band {
+    margin-top: 0;
   }
   .newsletter-inner {
     max-width: 720px;
