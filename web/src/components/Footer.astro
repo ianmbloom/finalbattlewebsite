@@ -22,7 +22,15 @@ const year = new Date().getFullYear();
       <a href={localizedPath("/support", lang)}>{t("nav.support")}</a>
       <a href={localizedPath("/about", lang)}>{t("nav.about")}</a>
     </nav>
+    <div class="meta label">
+      <a href={localizedPath("/", lang)}>{t("site.name")}</a>
+      <span aria-hidden="true">·</span>
+      <span>{t("footer.rights")}</span>
+      <span aria-hidden="true">·</span>
+      <span>© {year}</span>
+    </div>
     <p class="contact label">
+      <span class="contact-label">Contact</span>
       <button
         type="button"
         class="copy-email"
@@ -32,13 +40,6 @@ const year = new Date().getFullYear();
         <span class="copy-email-status" aria-hidden="true"></span>
       </button>
     </p>
-    <div class="meta label">
-      <a href={localizedPath("/", lang)}>{t("site.name")}</a>
-      <span aria-hidden="true">·</span>
-      <span>{t("footer.rights")}</span>
-      <span aria-hidden="true">·</span>
-      <span>© {year}</span>
-    </div>
   </div>
 </footer>
 
@@ -87,7 +88,16 @@ const year = new Date().getFullYear();
     margin: 0;
   }
   .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
     margin: 0;
+    color: var(--bar-muted);
+  }
+  .contact-label {
+    text-transform: uppercase;
   }
   .copy-email {
     display: inline-flex;
