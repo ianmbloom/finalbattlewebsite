@@ -14,7 +14,7 @@ export const ui = {
     "nav.home": "Home",
     "nav.videos": "Videos",
     "nav.about": "About",
-    "nav.support": "Support",
+    "nav.support": "Donate",
     "nav.shop": "Shop",
     "nav.cart": "Cart",
     "nav.language": "Language",
@@ -68,7 +68,7 @@ export const ui = {
       "We are a small, unlikely band of friends who met on Discord: a group of Iranians, a Jewish video editor, and an activist from Hong Kong. Among us, a true daughter of Persia whose luminous voice gives our videos their soul.",
     "about.vision.title": "Our Vision",
     "about.vision.body":
-      "We are an independent collaboration bound by a single shared vision: a secular, democratic Iran. We stand with Reza Pahlavi, and we bring the Iran Prosperity Project to life in content you can share. Beyond that, we stay politically neutral — the goal is to build a coalition behind a transition. We can work out our differences once Iran is free.",
+      "We are an independent collaboration bound by a single shared vision: a secular, democratic Iran. We stand with Reza Pahlavi and follow his message, and we bring the Iran Prosperity Project to life in content you can share. Beyond that, we stay politically neutral — the goal is to build a coalition behind a transition. We can work out our differences once Iran is free.",
     "about.mission.title": "Our Mission",
     "about.mission.body":
       "Most of the world knows very little about Iran or the Lion and Sun Revolution, and that silence leaves room for misconceptions to spread unchallenged. We want to change that — to show a global audience the Free Iran that will soon benefit us all. We do it with short videos, where every piece is an arrow for the quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Iran Prosperity Project.",
@@ -145,7 +145,7 @@ export const ui = {
     "nav.home": "خانه",
     "nav.videos": "ویدیوها",
     "nav.about": "درباره",
-    "nav.support": "حمایت",
+    "nav.support": "کمک مالی",
     "nav.shop": "فروشگاه",
     "nav.cart": "سبد خرید",
     "nav.language": "زبان",
@@ -199,7 +199,7 @@ export const ui = {
       "ما گروهی کوچک و نامحتمل از دوستانی هستیم که در دیسکورد با هم آشنا شدیم: گروهی از ایرانیان، یک تدوین‌گر ویدیوی یهودی، و کنشگری از هنگ‌کنگ. در میان ما، دختری راستین از پارس که صدای درخشانش به ویدیوهای ما جان می‌بخشد.",
     "about.vision.title": "چشم‌انداز ما",
     "about.vision.body":
-      "ما یک همکاری مستقل هستیم که با یک چشم‌انداز مشترک به هم پیوسته‌ایم: ایرانی سکولار و دموکراتیک. ما در کنار رضا پهلوی ایستاده‌ایم و پروژه‌ی شکوفایی ایران را در قالب محتوایی که می‌توانید هم‌رسانی کنید، زنده می‌کنیم. فراتر از این، ما از نظر سیاسی بی‌طرف می‌مانیم — هدف، ساختن ائتلافی برای یک گذار است. اختلاف‌هایمان را می‌توانیم پس از آزادی ایران حل کنیم.",
+      "ما یک همکاری مستقل هستیم که با یک چشم‌انداز مشترک به هم پیوسته‌ایم: ایرانی سکولار و دموکراتیک. ما در کنار رضا پهلوی ایستاده‌ایم و از پیام او پیروی می‌کنیم، و پروژه‌ی شکوفایی ایران را در قالب محتوایی که می‌توانید هم‌رسانی کنید، زنده می‌کنیم. فراتر از این، ما از نظر سیاسی بی‌طرف می‌مانیم — هدف، ساختن ائتلافی برای یک گذار است. اختلاف‌هایمان را می‌توانیم پس از آزادی ایران حل کنیم.",
     "about.mission.title": "مأموریت ما",
     "about.mission.body":
       "بیشتر جهان درباره‌ی ایران و انقلاب شیر و خورشید بسیار کم می‌داند، و این سکوت فضایی می‌سازد که در آن برداشت‌های نادرست بدون چالش گسترش می‌یابند. ما می‌خواهیم این را تغییر دهیم — تا ایرانِ آزادی را به جهان نشان دهیم که به‌زودی به سود همه‌ی ما خواهد بود. این کار را با ویدیوهای کوتاه انجام می‌دهیم، جایی که هر اثر تیری برای ترکش است: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه‌ی شکوفایی ایران را شرح می‌دهد.",
