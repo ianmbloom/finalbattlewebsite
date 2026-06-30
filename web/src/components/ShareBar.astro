@@ -8,6 +8,7 @@ interface Platforms {
   instagram?: string;
   tiktok?: string;
   youtube?: string;
+  linkedin?: string;
 }
 
 interface Props {
@@ -36,6 +37,7 @@ const shareUrl =
   platforms.tiktok ||
   platforms.instagram ||
   platforms.youtube ||
+  platforms.linkedin ||
   "";
 ---
 
@@ -88,6 +90,18 @@ const shareUrl =
         rel="noopener"
       >
         {compact ? "YT" : t("share.youtube")}
+      </a>
+    )
+  }
+  {
+    platforms.linkedin && (
+      <a
+        class="share-link label"
+        href={platforms.linkedin}
+        target="_blank"
+        rel="noopener"
+      >
+        {compact ? "in" : t("share.linkedin")}
       </a>
     )
   }

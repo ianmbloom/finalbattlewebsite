@@ -12,11 +12,12 @@ interface Props {
 const { variant, lang, pageUrl } = Astro.props;
 const t = useTranslations(lang);
 
-// The five share destinations, in display order. The native-post rows (X,
-// Instagram, TikTok, YouTube) link to the video's platform URLs; until a real
-// (non-placeholder) URL is filled in, the row renders disabled with a "Soon"
-// cue. Reddit has no single native post, so its row opens Reddit's submission
-// form pre-filled with this video's own page URL + title and is always enabled.
+// The share destinations, in display order. The native-post rows (X,
+// Instagram, TikTok, YouTube, LinkedIn) link to the video's platform URLs so a
+// repost stays on the original post; until a real (non-placeholder) URL is
+// filled in, the row renders disabled with a "Soon" cue. Reddit has no single
+// native post, so its row opens Reddit's submission form pre-filled with this
+// video's own page URL + title and is always enabled.
 const platforms = variant.platforms ?? {};
 const isReal = (url?: string) => Boolean(url && !url.includes("PLACEHOLDER"));
 
@@ -29,6 +30,7 @@ const rows = [
   { key: "instagram", label: t("share.guide.instagram"), url: platforms.instagram },
   { key: "tiktok", label: t("share.guide.tiktok"), url: platforms.tiktok },
   { key: "youtube", label: t("share.guide.youtube"), url: platforms.youtube },
+  { key: "linkedin", label: t("share.guide.linkedin"), url: platforms.linkedin },
   { key: "reddit", label: t("share.guide.reddit"), url: redditIntent },
 ];
 ---

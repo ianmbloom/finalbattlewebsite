@@ -57,12 +57,14 @@ export const ui = {
     "share.instagram": "View Reel",
     "share.tiktok": "Watch on TikTok",
     "share.youtube": "Watch Short",
+    "share.linkedin": "Repost on LinkedIn",
 
     "share.guide.title": "How to Share",
     "share.guide.x": "Post on X.com",
     "share.guide.instagram": "Post on Instagram",
     "share.guide.tiktok": "Post on TikTok",
     "share.guide.youtube": "Watch on YouTube Shorts",
+    "share.guide.linkedin": "Repost on LinkedIn",
     "share.guide.reddit": "Post on Reddit",
 
     "about.title": "Who We Are",
@@ -193,12 +195,14 @@ export const ui = {
     "share.instagram": "دیدن ریل",
     "share.tiktok": "تماشا در تیک‌تاک",
     "share.youtube": "تماشای شورت",
+    "share.linkedin": "بازنشر در لینکدین",
 
     "share.guide.title": "چگونه هم‌رسانی کنیم",
     "share.guide.x": "انتشار در X.com",
     "share.guide.instagram": "انتشار در اینستاگرام",
     "share.guide.tiktok": "انتشار در تیک‌تاک",
     "share.guide.youtube": "تماشا در یوتیوب شورتس",
+    "share.guide.linkedin": "بازنشر در لینکدین",
     "share.guide.reddit": "انتشار در ردیت",
 
     "about.title": "ما که هستیم",

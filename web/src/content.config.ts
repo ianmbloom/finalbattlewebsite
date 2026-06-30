@@ -25,6 +25,7 @@ const variant = z.object({
       instagram: z.string().url().optional(),
       tiktok: z.string().url().optional(),
       youtube: z.string().url().optional(),
+      linkedin: z.string().url().optional(),
     })
     .optional(),
 });

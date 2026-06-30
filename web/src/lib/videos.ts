@@ -35,13 +35,14 @@ export function shareablePlatforms(platforms?: Platforms): Platforms {
     instagram: ok(platforms?.instagram),
     tiktok: ok(platforms?.tiktok),
     youtube: ok(platforms?.youtube),
+    linkedin: ok(platforms?.linkedin),
   };
 }
 
 /** Whether a video has at least one real (non-placeholder) platform link. */
 export function hasShareLinks(platforms?: Platforms): boolean {
   const p = shareablePlatforms(platforms);
-  return Boolean(p.x || p.instagram || p.tiktok || p.youtube);
+  return Boolean(p.x || p.instagram || p.tiktok || p.youtube || p.linkedin);
 }
 
 export type VideoFormat = VideoEntry["data"]["format"];
