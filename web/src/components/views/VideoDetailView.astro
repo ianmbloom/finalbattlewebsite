@@ -1,5 +1,5 @@
 ---
-import { resolveVideoSrc, type Locale } from "@/consts";
+import { resolveVideoSrc, SITE_URL, type Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import { getVariant, getVideoCredit, type VideoEntry } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -17,6 +17,10 @@ const t = useTranslations(lang);
 const variant = getVariant(entry, lang)!;
 const videoSrc = resolveVideoSrc(variant.videoSrc);
 const creditLine = getVideoCredit(variant, t("video.narratedBy"));
+
+// Absolute URL of this video page, used to pre-fill the Reddit submit form.
+const pageUrl = new URL(localizedPath(`/videos/${entry.id}`, lang), SITE_URL)
+  .href;
 
 // Sister video: the same entry in the other language. When that variant exists
 // we link to it; until then we show a muted "available soon" note in its place.
@@ -57,7 +61,7 @@ const soonLabel = lang === "en" ? t("video.faSoon") : t("video.enSoon");
           <span class="sister-soon">{soonLabel}</span>
         )
       }
-      <ShareGuide variant={variant} lang={lang} />
+      <ShareGuide variant={variant} lang={lang} pageUrl={pageUrl} />
       <Transcript variant={variant} lang={lang} />
       <StoryPanel variant={variant} lang={lang} />
       <a class="back" href={localizedPath("/videos", lang)}>

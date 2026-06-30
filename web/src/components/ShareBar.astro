@@ -6,6 +6,7 @@ import { shareablePlatforms } from "@/lib/videos";
 interface Platforms {
   x?: string;
   instagram?: string;
+  tiktok?: string;
   youtube?: string;
 }
 
@@ -30,7 +31,12 @@ const xIntent = platforms.x
     )}&text=${encodeURIComponent(`${title} #IranProsperity #FreeIran`)}`
   : null;
 
-const shareUrl = platforms.x || platforms.instagram || platforms.youtube || "";
+const shareUrl =
+  platforms.x ||
+  platforms.tiktok ||
+  platforms.instagram ||
+  platforms.youtube ||
+  "";
 ---
 
 <div class:list={["share-bar", { compact }]}>
@@ -46,6 +52,18 @@ const shareUrl = platforms.x || platforms.instagram || platforms.youtube || "";
     xIntent && (
       <a class="share-link label" href={xIntent} target="_blank" rel="noopener">
         {compact ? "X" : t("share.x")}
+      </a>
+    )
+  }
+  {
+    platforms.tiktok && (
+      <a
+        class="share-link label"
+        href={platforms.tiktok}
+        target="_blank"
+        rel="noopener"
+      >
+        {compact ? "TT" : t("share.tiktok")}
       </a>
     )
   }

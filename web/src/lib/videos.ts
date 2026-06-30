@@ -33,6 +33,7 @@ export function shareablePlatforms(platforms?: Platforms): Platforms {
   return {
     x: ok(platforms?.x),
     instagram: ok(platforms?.instagram),
+    tiktok: ok(platforms?.tiktok),
     youtube: ok(platforms?.youtube),
   };
 }
@@ -40,7 +41,7 @@ export function shareablePlatforms(platforms?: Platforms): Platforms {
 /** Whether a video has at least one real (non-placeholder) platform link. */
 export function hasShareLinks(platforms?: Platforms): boolean {
   const p = shareablePlatforms(platforms);
-  return Boolean(p.x || p.instagram || p.youtube);
+  return Boolean(p.x || p.instagram || p.tiktok || p.youtube);
 }
 
 export type VideoFormat = VideoEntry["data"]["format"];

@@ -55,6 +55,7 @@ export const ui = {
     "share.button": "Share",
     "share.x": "Post on X",
     "share.instagram": "View Reel",
+    "share.tiktok": "Watch on TikTok",
     "share.youtube": "Watch Short",
 
     "share.guide.title": "How to Share",
@@ -190,6 +191,7 @@ export const ui = {
     "share.button": "هم‌رسانی",
     "share.x": "انتشار در ایکس",
     "share.instagram": "دیدن ریل",
+    "share.tiktok": "تماشا در تیک‌تاک",
     "share.youtube": "تماشای شورت",
 
     "share.guide.title": "چگونه هم‌رسانی کنیم",

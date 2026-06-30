@@ -6,22 +6,30 @@ import { type VideoVariant } from "@/lib/videos";
 interface Props {
   variant: VideoVariant;
   lang: Locale;
+  /** Absolute URL of this video's page, used for the Reddit submit intent. */
+  pageUrl: string;
 }
-const { variant, lang } = Astro.props;
+const { variant, lang, pageUrl } = Astro.props;
 const t = useTranslations(lang);
 
-// The five share destinations, in display order. Each row's link comes from the
-// video's platform URLs; until a real (non-placeholder) URL is filled in, the
-// row renders disabled with a "Soon" cue.
+// The five share destinations, in display order. The native-post rows (X,
+// Instagram, TikTok, YouTube) link to the video's platform URLs; until a real
+// (non-placeholder) URL is filled in, the row renders disabled with a "Soon"
+// cue. Reddit has no single native post, so its row opens Reddit's submission
+// form pre-filled with this video's own page URL + title and is always enabled.
 const platforms = variant.platforms ?? {};
 const isReal = (url?: string) => Boolean(url && !url.includes("PLACEHOLDER"));
+
+const redditIntent = `https://www.reddit.com/submit?url=${encodeURIComponent(
+  pageUrl,
+)}&title=${encodeURIComponent(variant.title)}`;
 
 const rows = [
   { key: "x", label: t("share.guide.x"), url: platforms.x },
   { key: "instagram", label: t("share.guide.instagram"), url: platforms.instagram },
   { key: "tiktok", label: t("share.guide.tiktok"), url: platforms.tiktok },
   { key: "youtube", label: t("share.guide.youtube"), url: platforms.youtube },
-  { key: "reddit", label: t("share.guide.reddit"), url: platforms.reddit },
+  { key: "reddit", label: t("share.guide.reddit"), url: redditIntent },
 ];
 ---
 
