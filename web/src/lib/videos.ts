@@ -43,6 +43,21 @@ export function hasShareLinks(platforms?: Platforms): boolean {
   return Boolean(p.x || p.instagram || p.youtube);
 }
 
+export type VideoFormat = VideoEntry["data"]["format"];
+
+/** Short-form series clips vs. longer standalone statements. */
+export function isLongForm(entry: VideoEntry): boolean {
+  return entry.data.format === "long";
+}
+
+/** Credit line under the title on a video page. */
+export function getVideoCredit(
+  variant: VideoVariant,
+  narratedBy: string,
+): string {
+  return variant.creditLine ?? narratedBy;
+}
+
 /**
  * All videos that have a variant for the given locale, in series order.
  * Entries with an explicit `order` come first (ascending); the rest fall to the
@@ -54,6 +69,22 @@ export async function getVideosForLocale(lang: Locale): Promise<VideoEntry[]> {
   return all
     .filter((entry) => Boolean(getVariant(entry, lang)))
     .sort(compareSeriesOrder);
+}
+
+/** Short-form series videos for a locale. */
+export async function getShortVideosForLocale(
+  lang: Locale,
+): Promise<VideoEntry[]> {
+  const videos = await getVideosForLocale(lang);
+  return videos.filter((entry) => !isLongForm(entry));
+}
+
+/** Long-form statements and features for a locale. */
+export async function getLongVideosForLocale(
+  lang: Locale,
+): Promise<VideoEntry[]> {
+  const videos = await getVideosForLocale(lang);
+  return videos.filter(isLongForm);
 }
 
 /** Series ordering: explicit `order` ascending, then newest `publishedAt`. */

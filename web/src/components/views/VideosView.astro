@@ -1,7 +1,7 @@
 ---
 import type { Locale } from "@/consts";
 import { useTranslations } from "@/i18n/utils";
-import { getVideosForLocale } from "@/lib/videos";
+import { getShortVideosForLocale, getLongVideosForLocale } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FilterBar from "@/components/FilterBar.astro";
 import VideoGrid from "@/components/VideoGrid.astro";
@@ -11,14 +11,33 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const videos = await getVideosForLocale(lang);
+const videos = await getShortVideosForLocale(lang);
+const longVideos = await getLongVideosForLocale(lang);
 ---
 
 <BaseLayout lang={lang} title={t("videos.title")} description={t("videos.intro")}>
   <section class="library">
-    <FilterBar lang={lang} />
-    <VideoGrid videos={videos} lang={lang} />
-    <p class="empty label" data-empty hidden>{t("videos.empty")}</p>
+    <div class="series-block">
+      <div class="series-head">
+        <h2 class="series-title font-display">{t("videos.title")}</h2>
+        <hr class="rule" />
+      </div>
+      <FilterBar lang={lang} />
+      <VideoGrid videos={videos} lang={lang} />
+      <p class="empty label" data-empty hidden>{t("videos.empty")}</p>
+    </div>
+
+    {
+      longVideos.length > 0 && (
+        <div class="series-block series-long">
+          <div class="series-head">
+            <h2 class="series-title font-display">{t("videos.longForm.title")}</h2>
+            <hr class="rule" />
+          </div>
+          <VideoGrid videos={longVideos} lang={lang} />
+        </div>
+      )
+    }
   </section>
 </BaseLayout>
 
@@ -29,7 +48,30 @@ const videos = await getVideosForLocale(lang);
     padding: clamp(2.5rem, 5vw, 3.5rem) 1.5rem 0;
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 3rem;
+  }
+  .series-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .series-long {
+    padding-bottom: 3rem;
+  }
+  .series-head {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .series-title {
+    margin: 0;
+    font-weight: 300;
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .series-head .rule {
+    margin: 0;
   }
   .empty {
     margin-top: 1rem;

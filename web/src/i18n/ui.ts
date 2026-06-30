@@ -25,9 +25,11 @@ export const ui = {
 
     "home.statement.p1":
       "Every piece of content we create is an arrow for your quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Iran Prosperity Project.",
+    "home.hero.sub": "Every video is an arrow in your quiver — a truth few outside Iran know, certainty for a bright future, a piece of the plan for a free Iran.\n\nWatch them where they live, follow our channels, like, comment, and repost — every share carries the message past the regime's noise and into the world.",
 
     "videos.title": "The Series",
     "videos.intro": "Every piece is an arrow for the quiver.",
+    "videos.longForm.title": "Long Form",
     "filter.all": "All",
     "filter.truth": "Hidden Truths",
     "filter.myth": "Common Myths",
@@ -43,6 +45,7 @@ export const ui = {
     "video.share": "Share",
     "video.watchOn": "Watch on",
     "video.back": "Back to the series",
+    "video.narratedBy": "Narrated by Daughter of Persia",
     "video.unavailable": "This video is not yet available in this language.",
     "video.alsoInFa": "Also available for Persian speakers.",
     "video.alsoInEn": "Also available for English speakers.",
@@ -68,7 +71,7 @@ export const ui = {
       "We are a small, unlikely band of friends who met on Discord: a group of Iranians, a Jewish video editor, and an activist from Hong Kong. Among us, a true daughter of Persia whose luminous voice gives our videos their soul.",
     "about.vision.title": "Our Vision",
     "about.vision.body":
-      "We are an independent collaboration bound by a single shared vision: a secular, democratic Iran. We stand with Reza Pahlavi and follow his message, and we bring the Iran Prosperity Project to life in content you can share. Beyond that, we stay politically neutral — the goal is to build a coalition behind a transition. We can work out our differences once Iran is free.",
+      "We are an independent collaboration bound by a single shared vision: a secular, democratic Iran. Our task is to bring the Iran Prosperity Project to life in content you can share. We stand with Reza Pahlavi and work to reflect his message. Beyond that, we stay politically neutral — the goal is to build a coalition behind a transition. We can work out our differences once Iran is free.",
     "about.mission.title": "Our Mission",
     "about.mission.body":
       "Most of the world knows very little about Iran or the Lion and Sun Revolution, and that silence leaves room for misconceptions to spread unchallenged. We want to change that — to show a global audience the Free Iran that will soon benefit us all. We do it with short videos, where every piece is an arrow for the quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Iran Prosperity Project.",
@@ -76,7 +79,7 @@ export const ui = {
     "about.help.body":
       "This is where you come in. These videos only matter if they are seen. Watch them where they live, then follow our channels, like, comment, and repost — every share pushes the message past the regime's noise and into the world. Join our email list below to catch each new video the moment it drops, and, if you are able, support the work with a donation or by wearing the message. We make it for free; you make it travel.",
 
-    "promote.title": "Be the arrow.",
+    "promote.title": "Be the archer.",
     "promote.body":
       "These videos only matter if they are seen. Watch them where they live, then follow our channels, like, comment, and repost — every share pushes the message past the regime's noise and into the world.",
     "promote.share": "Share this video",
@@ -157,8 +160,11 @@ export const ui = {
     "home.statement.p1":
       "هر محتوایی که می‌سازیم تیری برای ترکش توست: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه شکوفایی ایران را شرح می‌دهد.",
 
+    "home.hero.sub": "هر ویدیو تیری در ترکش توست — حقیقتی که کمتر کسی بیرون از ایران می‌داند، یقین به آینده‌ای روشن، تکه‌ای از نقشهٔ ایرانِ آزاد.\n\nآن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند.",
+
     "videos.title": "مجموعه",
     "videos.intro": "هر اثر تیری برای ترکش است.",
+    "videos.longForm.title": "فرم بلند",
     "filter.all": "همه",
     "filter.truth": "حقیقت‌های پنهان",
     "filter.myth": "افسانه‌های رایج",
@@ -174,6 +180,7 @@ export const ui = {
     "video.share": "هم‌رسانی",
     "video.watchOn": "تماشا در",
     "video.back": "بازگشت به مجموعه",
+    "video.narratedBy": "روایت دختر پارس",
     "video.unavailable": "این ویدیو هنوز به این زبان در دسترس نیست.",
     "video.alsoInFa": "این ویدیو برای فارسی‌زبانان نیز در دسترس است.",
     "video.alsoInEn": "این ویدیو برای انگلیسی‌زبانان نیز در دسترس است.",
@@ -199,7 +206,7 @@ export const ui = {
       "ما گروهی کوچک و نامحتمل از دوستانی هستیم که در دیسکورد با هم آشنا شدیم: گروهی از ایرانیان، یک تدوین‌گر ویدیوی یهودی، و کنشگری از هنگ‌کنگ. در میان ما، دختری راستین از پارس که صدای درخشانش به ویدیوهای ما جان می‌بخشد.",
     "about.vision.title": "چشم‌انداز ما",
     "about.vision.body":
-      "ما یک همکاری مستقل هستیم که با یک چشم‌انداز مشترک به هم پیوسته‌ایم: ایرانی سکولار و دموکراتیک. ما در کنار رضا پهلوی ایستاده‌ایم و از پیام او پیروی می‌کنیم، و پروژه‌ی شکوفایی ایران را در قالب محتوایی که می‌توانید هم‌رسانی کنید، زنده می‌کنیم. فراتر از این، ما از نظر سیاسی بی‌طرف می‌مانیم — هدف، ساختن ائتلافی برای یک گذار است. اختلاف‌هایمان را می‌توانیم پس از آزادی ایران حل کنیم.",
+      "ما یک همکاری مستقل هستیم که با یک چشم‌انداز مشترک به هم پیوسته‌ایم: ایرانی سکولار و دموکراتیک. مأموریت ما این است که پروژهٔ شکوفایی ایران را در قالب محتوایی که می‌توانید هم‌رسانی کنید، زنده کنیم. ما در کنار رضا پهلوی ایستاده‌ایم و کوشش می‌کنیم پیام او را بازتاب دهیم. فراتر از این، ما از نظر سیاسی بی‌طرف می‌مانیم — هدف، ساختن ائتلافی برای یک گذار است. اختلاف‌هایمان را می‌توانیم پس از آزادی ایران حل کنیم.",
     "about.mission.title": "مأموریت ما",
     "about.mission.body":
       "بیشتر جهان درباره‌ی ایران و انقلاب شیر و خورشید بسیار کم می‌داند، و این سکوت فضایی می‌سازد که در آن برداشت‌های نادرست بدون چالش گسترش می‌یابند. ما می‌خواهیم این را تغییر دهیم — تا ایرانِ آزادی را به جهان نشان دهیم که به‌زودی به سود همه‌ی ما خواهد بود. این کار را با ویدیوهای کوتاه انجام می‌دهیم، جایی که هر اثر تیری برای ترکش است: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه‌ی شکوفایی ایران را شرح می‌دهد.",
@@ -207,7 +214,7 @@ export const ui = {
     "about.help.body":
       "اینجا جایی است که شما وارد می‌شوید. این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. آن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، سپس کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند. در پایین به فهرست ایمیل ما بپیوندید تا هر ویدیوی تازه را همان لحظه‌ی انتشار دریافت کنید، و اگر می‌توانید، با یک کمک مالی یا پوشیدن پیام از این کار حمایت کنید. ما آن را رایگان می‌سازیم؛ شما آن را به حرکت درمی‌آورید.",
 
-    "promote.title": "تو خودِ تیر باش.",
+    "promote.title": "کماندار باش.",
     "promote.body":
       "این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. آن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، سپس کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند.",
     "promote.share": "این ویدیو را هم‌رسانی کن",

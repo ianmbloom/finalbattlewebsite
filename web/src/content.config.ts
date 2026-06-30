@@ -17,6 +17,8 @@ const variant = z.object({
   context: z.string().optional(),
   durationSeconds: z.number().optional(),
   thumbnailUrl: z.string().optional(),
+  /** Overrides the default narrator credit on the video page. */
+  creditLine: z.string().optional(),
   platforms: z
     .object({
       x: z.string().url().optional(),
@@ -38,6 +40,8 @@ const videos = defineCollection({
     // fall to the end, sorted newest-first.
     order: z.number().optional(),
     featured: z.boolean().optional(),
+    /** Short-form series clips vs. longer standalone statements. */
+    format: z.enum(["short", "long"]).default("short"),
     tags: z.array(z.string()).optional(),
     languages: z.object({
       en: variant,

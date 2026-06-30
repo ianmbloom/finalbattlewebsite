@@ -1,7 +1,7 @@
 ---
 import { resolveVideoSrc, type Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
-import { getVariant, type VideoEntry } from "@/lib/videos";
+import { getVariant, getVideoCredit, type VideoEntry } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import VideoPlayer from "@/components/VideoPlayer.astro";
 import ShareGuide from "@/components/ShareGuide.astro";
@@ -16,6 +16,7 @@ const { entry, lang } = Astro.props;
 const t = useTranslations(lang);
 const variant = getVariant(entry, lang)!;
 const videoSrc = resolveVideoSrc(variant.videoSrc);
+const creditLine = getVideoCredit(variant, t("video.narratedBy"));
 
 // Sister video: the same entry in the other language. When that variant exists
 // we link to it; until then we show a muted "available soon" note in its place.
@@ -43,7 +44,10 @@ const soonLabel = lang === "en" ? t("video.faSoon") : t("video.enSoon");
     </div>
 
     <div class="story-col">
-      <h1 class="video-title font-display">{variant.title}</h1>
+      <div class="title-block">
+        <h1 class="video-title font-display">{variant.title}</h1>
+        <p class="narrator">{creditLine}</p>
+      </div>
       {
         hasSibling ? (
           <a class="sister-link" href={siblingHref}>
@@ -87,6 +91,21 @@ const soonLabel = lang === "en" ? t("video.faSoon") : t("video.enSoon");
     line-height: 1.05;
     margin: 0;
     color: var(--text);
+  }
+
+  .title-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .narrator {
+    margin: 0;
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    opacity: 0.75;
   }
 
   .back {
