@@ -36,6 +36,7 @@ const soonLabel = lang === "en" ? t("video.faSoon") : t("video.enSoon");
   title={variant.title}
   description={variant.script?.slice(0, 180)}
   video={{ src: videoSrc, thumbnailUrl: variant.thumbnailUrl }}
+  trackVideoId={entry.id}
   immersive
 >
   <div class="viewer">

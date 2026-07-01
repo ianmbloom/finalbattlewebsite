@@ -26,19 +26,11 @@ const t = useTranslations(lang);
   <div class="actions">
     {
       disabled ? (
-        <>
-          <span class="donate-btn kofi" aria-disabled="true">{t("support.kofi")}</span>
-          <span class="donate-btn bmac" aria-disabled="true">{t("support.bmac")}</span>
-        </>
+        <span class="donate-btn bmac" aria-disabled="true">{t("support.bmac")}</span>
       ) : (
-        <>
-          <a class="donate-btn kofi" href={DONATE_LINKS.kofi} target="_blank" rel="noopener">
-            {t("support.kofi")}
-          </a>
-          <a class="donate-btn bmac" href={DONATE_LINKS.buyMeACoffee} target="_blank" rel="noopener">
-            {t("support.bmac")}
-          </a>
-        </>
+        <a class="donate-btn bmac" href={DONATE_LINKS.buyMeACoffee} target="_blank" rel="noopener">
+          {t("support.bmac")}
+        </a>
       )
     }
   </div>
@@ -97,10 +89,6 @@ const t = useTranslations(lang);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     filter: brightness(1.05);
-  }
-  .kofi {
-    background: var(--color-emerald);
-    color: var(--color-cream);
   }
   .bmac {
     background: var(--color-canary);

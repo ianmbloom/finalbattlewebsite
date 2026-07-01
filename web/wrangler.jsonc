@@ -13,13 +13,18 @@
   //   STRIPE_WEBHOOK_SECRET (secret)
   //   PRINTIFY_API_TOKEN / PRINTIFY_SHOP_ID (secrets, for fulfillment)
   //
-  // Newsletter storage (D1) is intentionally NOT bound here yet: the email
-  // signup feature is off and the Functions handle a missing `DB` gracefully.
-  // A binding to a nonexistent database fails the Pages Function publish step
-  // and rolls back the whole deploy. To enable it later: create the database
-  // (`wrangler d1 create finalbattle-emails`), run `npm run db:schema`, then add
-  // a `d1_databases` entry with the real `database_id` (here or in the dashboard).
+  // Newsletter storage: the `subscribers` D1 database backs /api/subscribe and
+  // the Stripe webhook's buyer-email capture. Git-connected Pages builds also
+  // need this same `DB` binding added in the dashboard
+  // (Settings > Functions > D1 database bindings) so production Functions see it.
   "name": "finalbattleiran",
   "compatibility_date": "2026-06-24",
-  "pages_build_output_dir": "./dist"
+  "pages_build_output_dir": "./dist",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "finalbattle-emails",
+      "database_id": "acdbf46c-48dc-498e-95a3-b1021238183b"
+    }
+  ]
 }

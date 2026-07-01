@@ -8,10 +8,13 @@ interface Props {
   compact?: boolean;
   /** Render grayed-out and inert until the D1 backend is wired up. */
   disabled?: boolean;
+  /** Disambiguate the field id when more than one form renders on a page. */
+  idSuffix?: string;
 }
 
-const { lang, compact = false, disabled = false } = Astro.props;
+const { lang, compact = false, disabled = false, idSuffix } = Astro.props;
 const t = useTranslations(lang);
+const fieldId = `newsletter-email-${idSuffix ?? (compact ? "compact" : "full")}`;
 ---
 
 <form class:list={["fb-newsletter", { "is-disabled": disabled }]} novalidate data-locale={lang}>
@@ -28,11 +31,11 @@ const t = useTranslations(lang);
   }
 
   <div class="fields" data-fields>
-    <label class="sr-only" for={`newsletter-email-${compact ? "compact" : "full"}`}>
+    <label class="sr-only" for={fieldId}>
       {t("newsletter.placeholder")}
     </label>
     <input
-      id={`newsletter-email-${compact ? "compact" : "full"}`}
+      id={fieldId}
       type="email"
       name="email"
       required
@@ -82,6 +85,9 @@ const t = useTranslations(lang);
         fields?.setAttribute("hidden", "");
         success?.removeAttribute("hidden");
         email.value = "";
+        // Let interested listeners (e.g. the engagement popup) react to a
+        // confirmed signup so they can stop nagging for an email.
+        document.dispatchEvent(new CustomEvent("fb-newsletter:success"));
       } catch {
         error?.removeAttribute("hidden");
       } finally {

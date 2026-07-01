@@ -9,7 +9,7 @@ export const ui = {
   en: {
     "site.name": "Final Battle",
     "site.subtitle": "For Iran",
-    "site.tagline": "Now it's your turn to take aim.",
+    "site.tagline": "Educating the world about a free Iran.",
 
     "nav.home": "Home",
     "nav.videos": "Videos",
@@ -94,18 +94,28 @@ export const ui = {
       "These videos only matter if they are seen. Join the email list and we'll send each new one the moment it drops — so you're first to watch, and first to share.",
     "newsletter.placeholder": "Your email",
     "newsletter.subscribe": "Subscribe",
-    "newsletter.success": "You're in. Watch your inbox.",
+    "newsletter.success": "You're on the list. We'll email you when the next video drops.",
     "newsletter.error": "Something went wrong. Please try again.",
     "newsletter.consent": "No spam. Unsubscribe anytime.",
 
+    "popup.close": "Close",
+    "popup.email.title": "Don't miss the next one.",
+    "popup.email.body":
+      "You've watched more than one — you get it. Join the list and every new video lands in your inbox the moment it drops.",
+    "popup.email.dismiss": "Maybe later",
+    "popup.donate.title": "Fund the next arrow.",
+    "popup.donate.body":
+      "You keep coming back. Every video is made and shared for free — a small gift keeps them coming.",
+    "popup.donate.cta": "Buy us a kotlet",
+    "popup.donate.dismiss": "Not now",
+
     "support.title": "Fund the Fight",
     "support.lead":
-      "Every video is made and shared for free. Your support pays for the next one — and the one after that.",
-    "support.donate.title": "Make a one-time gift",
+      "A free Iran is an Iranian project — not a fantasy, and not something handed down from outside. These videos make that case, and reach further only with your help.",
+    "support.donate.title": "Fuel the next video",
     "support.donate.body":
-      "A quick, no-account donation keeps the cameras rolling. Give whatever you can.",
-    "support.kofi": "Donate on Ko-fi",
-    "support.bmac": "Buy us a coffee",
+      "Your gift covers production, hosting, and reach — the difference between a video that merely exists and one the world actually sees. Give whatever you can.",
+    "support.bmac": "Buy us a kotlet",
     "support.shop.title": "Wear the message",
     "support.shop.body":
       "Grab a shirt or a print and carry the fight into the streets. Every order funds more videos.",
@@ -148,7 +158,7 @@ export const ui = {
   fa: {
     "site.name": "نبرد نهایی",
     "site.subtitle": "برای ایران",
-    "site.tagline": "حالا نوبت توست که نشانه بگیری.",
+    "site.tagline": "جهان را دربارهٔ ایرانِ آزاد آگاه می‌کنیم.",
 
     "nav.home": "خانه",
     "nav.videos": "ویدیوها",
@@ -234,18 +244,28 @@ export const ui = {
       "این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. به فهرست ایمیل بپیوندید تا هر ویدیوی تازه را همان لحظه‌ی انتشار برایتان بفرستیم — تا اولین کسی باشید که آن را می‌بیند و هم‌رسانی می‌کند.",
     "newsletter.placeholder": "ایمیل شما",
     "newsletter.subscribe": "عضویت",
-    "newsletter.success": "ثبت شد. منتظر ایمیل ما باشید.",
+    "newsletter.success": "به فهرست اضافه شدی. وقتی ویدیوی بعدی منتشر شود برایت ایمیل می‌کنیم.",
     "newsletter.error": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
     "newsletter.consent": "بدون هرزنامه. هر زمان بخواهید لغو عضویت کنید.",
 
+    "popup.close": "بستن",
+    "popup.email.title": "ویدیوی بعدی را از دست نده.",
+    "popup.email.body":
+      "بیش از یکی را تماشا کرده‌ای — پس اهلش هستی. به فهرست بپیوند تا هر ویدیوی تازه همان لحظه‌ی انتشار به ایمیلت برسد.",
+    "popup.email.dismiss": "شاید بعداً",
+    "popup.donate.title": "تیر بعدی را تأمین کن.",
+    "popup.donate.body":
+      "تو بارها برگشته‌ای. هر ویدیو رایگان ساخته و هم‌رسانی می‌شود — یک کمک کوچک آن‌ها را ادامه می‌دهد.",
+    "popup.donate.cta": "برای ما یک کتلت بخر",
+    "popup.donate.dismiss": "الان نه",
+
     "support.title": "از مبارزه حمایت کن",
     "support.lead":
-      "هر ویدیو رایگان ساخته و هم‌رسانی می‌شود. حمایت شما هزینه‌ی ویدیوی بعدی — و ویدیوی پس از آن — را تأمین می‌کند.",
-    "support.donate.title": "یک کمک یک‌باره بکن",
+      "ایرانِ آزاد یک پروژه‌ی ایرانی است — نه یک خیال، و نه چیزی که از بیرون فرو بریزد. این ویدیوها همین را ثابت می‌کنند و تنها با کمک تو دورتر می‌رسند.",
+    "support.donate.title": "سوختِ ویدیوی بعدی باش",
     "support.donate.body":
-      "یک کمک مالی سریع و بدون نیاز به حساب، دوربین‌ها را روشن نگه می‌دارد. هر چه می‌توانید ببخشید.",
-    "support.kofi": "کمک در Ko-fi",
-    "support.bmac": "برای ما یک قهوه بخر",
+      "کمک تو هزینه‌ی تولید، میزبانی و انتشار را می‌پوشاند — همان تفاوت میان ویدیویی که فقط وجود دارد و ویدیویی که جهان واقعاً آن را می‌بیند. هر چه می‌توانی ببخش.",
+    "support.bmac": "برای ما یک کتلت بخر",
     "support.shop.title": "پیام را بپوش",
     "support.shop.body":
       "یک تی‌شرت یا پوستر بگیرید و مبارزه را به خیابان‌ها ببرید. هر سفارش ویدیوهای بیشتری را ممکن می‌کند.",
