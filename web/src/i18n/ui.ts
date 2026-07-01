@@ -109,10 +109,10 @@ export const ui = {
 
     "support.title": "Fund the Fight",
     "support.lead":
-      "Every video is made and shared for free. Your support pays for the next one — and the one after that.",
-    "support.donate.title": "Make a one-time gift",
+      "A free Iran is an Iranian project — not a fantasy, and not something handed down from outside. These videos make that case, and reach further only with your help.",
+    "support.donate.title": "Fuel the next video",
     "support.donate.body":
-      "A quick, no-account donation keeps the cameras rolling. Give whatever you can.",
+      "Your gift covers production, hosting, and reach — the difference between a video that merely exists and one the world actually sees. Give whatever you can.",
     "support.bmac": "Buy us a kotlet",
     "support.shop.title": "Wear the message",
     "support.shop.body":
@@ -257,10 +257,10 @@ export const ui = {
 
     "support.title": "از مبارزه حمایت کن",
     "support.lead":
-      "هر ویدیو رایگان ساخته و هم‌رسانی می‌شود. حمایت شما هزینه‌ی ویدیوی بعدی — و ویدیوی پس از آن — را تأمین می‌کند.",
-    "support.donate.title": "یک کمک یک‌باره بکن",
+      "ایرانِ آزاد یک پروژه‌ی ایرانی است — نه یک خیال، و نه چیزی که از بیرون فرو بریزد. این ویدیوها همین را ثابت می‌کنند و تنها با کمک تو دورتر می‌رسند.",
+    "support.donate.title": "سوختِ ویدیوی بعدی باش",
     "support.donate.body":
-      "یک کمک مالی سریع و بدون نیاز به حساب، دوربین‌ها را روشن نگه می‌دارد. هر چه می‌توانید ببخشید.",
+      "کمک تو هزینه‌ی تولید، میزبانی و انتشار را می‌پوشاند — همان تفاوت میان ویدیویی که فقط وجود دارد و ویدیویی که جهان واقعاً آن را می‌بیند. هر چه می‌توانی ببخش.",
     "support.bmac": "برای ما یک کتلت بخر",
     "support.shop.title": "پیام را بپوش",
     "support.shop.body":
