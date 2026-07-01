@@ -22,10 +22,15 @@ const { src, title, poster, autoplay = false } = Astro.props;
 </div>
 
 <style>
-  /* Mobile: full width, aspect-ratio drives height */
+  /* Mobile: full width, aspect-ratio drives height. The max-width caps the
+     portrait frame at the width it reaches in the wide two-column layout
+     (height-constrained to the viewport), so it never scales larger than that
+     as the window widens — it just centers with margin to spare. */
   .player {
     width: 100%;
+    max-width: calc((100dvh - 4rem - 3rem) * 9 / 16);
     aspect-ratio: 9 / 16;
+    margin-inline: auto;
     background: #000;
     border: 1px solid var(--line);
     border-radius: 2rem;
