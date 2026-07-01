@@ -10,6 +10,7 @@
     "astro": "astro",
     "prebuild": "node scripts/gen-product-map.mjs",
     "gen:video-thumbs": "node scripts/gen-video-thumbs.js",
+    "gen:fa-thumbs": "node scripts/gen-fa-video-thumbs.mjs",
     "gen:products": "node scripts/gen-product-map.mjs",
     "printify:list": "node scripts/sync-printify.mjs --list",
     "printify:sync": "node scripts/sync-printify.mjs --sync",
