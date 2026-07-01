@@ -9,7 +9,7 @@ export const ui = {
   en: {
     "site.name": "Final Battle",
     "site.subtitle": "For Iran",
-    "site.tagline": "Now it's your turn to take aim.",
+    "site.tagline": "Educating the world about a free Iran.",
 
     "nav.home": "Home",
     "nav.videos": "Videos",
@@ -156,7 +156,7 @@ export const ui = {
   fa: {
     "site.name": "نبرد نهایی",
     "site.subtitle": "برای ایران",
-    "site.tagline": "حالا نوبت توست که نشانه بگیری.",
+    "site.tagline": "جهان را دربارهٔ ایرانِ آزاد آگاه می‌کنیم.",
 
     "nav.home": "خانه",
     "nav.videos": "ویدیوها",
