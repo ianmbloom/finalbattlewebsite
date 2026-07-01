@@ -1,0 +1,16 @@
+{
+  "rules": [
+    {
+      "AllowedOrigins": [
+        "https://finalbattleiran.org",
+        "https://www.finalbattleiran.org",
+        "http://localhost:4321",
+        "http://127.0.0.1:4321"
+      ],
+      "AllowedMethods": ["GET", "HEAD"],
+      "AllowedHeaders": ["*"],
+      "ExposeHeaders": ["Content-Length", "Content-Type", "Accept-Ranges"],
+      "MaxAgeSeconds": 86400
+    }
+  ]
+}
