@@ -102,7 +102,6 @@ export const ui = {
     "support.donate.title": "Make a one-time gift",
     "support.donate.body":
       "A quick, no-account donation keeps the cameras rolling. Give whatever you can.",
-    "support.kofi": "Donate on Ko-fi",
     "support.bmac": "Buy us a coffee",
     "support.shop.title": "Wear the message",
     "support.shop.body":
@@ -240,7 +239,6 @@ export const ui = {
     "support.donate.title": "یک کمک یک‌باره بکن",
     "support.donate.body":
       "یک کمک مالی سریع و بدون نیاز به حساب، دوربین‌ها را روشن نگه می‌دارد. هر چه می‌توانید ببخشید.",
-    "support.kofi": "کمک در Ko-fi",
     "support.bmac": "برای ما یک قهوه بخر",
     "support.shop.title": "پیام را بپوش",
     "support.shop.body":

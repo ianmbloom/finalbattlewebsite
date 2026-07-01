@@ -3,13 +3,11 @@ export const SITE_URL = "https://finalbattleiran.org";
 export const SITE_NAME = "Final Battle Iran";
 
 /**
- * External "impulse donation" destinations. These are plain outbound links —
- * the project takes no payment details itself for donations. Replace the
- * placeholder handles with the real Ko-fi / Buy Me a Coffee account URLs.
+ * External "impulse donation" destination. This is a plain outbound link —
+ * the project takes no payment details itself for donations.
  */
 export const DONATE_LINKS = {
-  kofi: "https://ko-fi.com/finalbattleiran",
-  buyMeACoffee: "https://buymeacoffee.com/finalbattleiran",
+  buyMeACoffee: "https://buymeacoffee.com/seeuinfreeiran",
 } as const;
 
 /**
@@ -19,12 +17,12 @@ export const DONATE_LINKS = {
  * once it is wired up:
  *   - newsletter: the D1 `subscribers` database is created + bound (`DB`).
  *   - shop:       Stripe + Printify keys are set and real products exist.
- *   - donations:  the real Ko-fi / Buy Me a Coffee URLs above are filled in.
+ *   - donations:  the real Buy Me a Coffee URL above is filled in.
  */
 export const FEATURES = {
   newsletter: false,
   shop: false,
-  donations: false,
+  donations: true,
 } as const;
 
 /**
