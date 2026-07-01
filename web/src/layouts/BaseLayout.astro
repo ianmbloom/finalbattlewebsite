@@ -10,6 +10,7 @@ import Footer from "@/components/Footer.astro";
 import Newsletter from "@/components/Newsletter.astro";
 import BusinessPattern from "@/components/BusinessPattern.astro";
 import Cart from "@/components/Cart.astro";
+import EngagementPopup from "@/components/EngagementPopup.astro";
 
 interface Props {
   lang: Locale;
@@ -22,6 +23,8 @@ interface Props {
   /** Full-height pages (e.g. the video viewer): tighten the gap before the
    *  newsletter band so the email box is reached as soon as you scroll past. */
   immersive?: boolean;
+  /** Video slug for this page — counted toward the engagement popup trigger. */
+  trackVideoId?: string;
 }
 
 const {
@@ -32,6 +35,7 @@ const {
   ogType,
   hideNewsletter = false,
   immersive = false,
+  trackVideoId,
 } = Astro.props;
 const direction = dir(lang);
 const t = useTranslations(lang);
@@ -69,6 +73,7 @@ const t = useTranslations(lang);
     }
     <Footer lang={lang} />
     {FEATURES.shop && <Cart lang={lang} />}
+    {FEATURES.newsletter && <EngagementPopup lang={lang} trackVideoId={trackVideoId} />}
   </body>
 </html>
 

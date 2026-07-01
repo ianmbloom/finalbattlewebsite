@@ -11,16 +11,14 @@ export const DONATE_LINKS = {
 } as const;
 
 /**
- * Feature switches for the launch. Each starts OFF so the site can ship while
- * its backend/content is still placeholder: anything not ready renders grayed
- * out and disabled ("Soon") instead of pretending to work. Flip a flag to true
- * once it is wired up:
- *   - newsletter: the D1 `subscribers` database is created + bound (`DB`).
+ * Feature switches for the launch. Anything OFF renders grayed out and disabled
+ * ("Soon") instead of pretending to work. Flip a flag to true once it is wired up:
+ *   - newsletter: the D1 `subscribers` database is created + bound (`DB`). LIVE.
  *   - shop:       Stripe + Printify keys are set and real products exist.
- *   - donations:  the real Buy Me a Coffee URL above is filled in.
+ *   - donations:  the real Buy Me a Coffee URL above is filled in. LIVE.
  */
 export const FEATURES = {
-  newsletter: false,
+  newsletter: true,
   shop: false,
   donations: true,
 } as const;

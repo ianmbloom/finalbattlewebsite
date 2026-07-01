@@ -1,0 +1,412 @@
+---
+/**
+ * Engagement-triggered popup. Watches how many distinct videos a visitor has
+ * opened (tracked in localStorage) and, once they have watched more than one,
+ * surfaces an email-capture modal — the moment intent is clearest. A rarer,
+ * secondary donation nudge appears only after the email ask is settled and the
+ * visitor is deeply engaged. All decisions are client-side; nothing renders
+ * until the thresholds are met, and each ask is capped and cooled-down so it
+ * never becomes a nag.
+ */
+import type { Locale } from "@/consts";
+import { DONATE_LINKS } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+import Newsletter from "@/components/Newsletter.astro";
+import BusinessPattern from "@/components/BusinessPattern.astro";
+
+interface Props {
+  lang: Locale;
+  /** Slug of the video on this page, if any — counted toward the trigger. */
+  trackVideoId?: string;
+}
+
+const { lang, trackVideoId } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div
+  id="fb-engage"
+  data-locale={lang}
+  data-video-slug={trackVideoId}
+  hidden
+  aria-hidden="true"
+>
+  <div data-engage-backdrop class="engage-backdrop"></div>
+
+  <aside
+    data-engage-panel="email"
+    class="engage-panel business-surface"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="engage-email-title"
+    hidden
+  >
+    <BusinessPattern />
+    <button type="button" data-engage-close class="engage-x" aria-label={t("popup.close")}>
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="engage-inner">
+      <h2 id="engage-email-title" class="engage-title font-display">
+        {t("popup.email.title")}
+      </h2>
+      <p class="engage-body">{t("popup.email.body")}</p>
+      <Newsletter lang={lang} compact idSuffix="popup" />
+      <button type="button" data-engage-dismiss class="engage-dismiss label">
+        {t("popup.email.dismiss")}
+      </button>
+    </div>
+  </aside>
+
+  <aside
+    data-engage-panel="donate"
+    class="engage-panel business-surface"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="engage-donate-title"
+    hidden
+  >
+    <BusinessPattern />
+    <button type="button" data-engage-close class="engage-x" aria-label={t("popup.close")}>
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="engage-inner">
+      <h2 id="engage-donate-title" class="engage-title font-display">
+        {t("popup.donate.title")}
+      </h2>
+      <p class="engage-body">{t("popup.donate.body")}</p>
+      <a
+        class="engage-donate-btn"
+        href={DONATE_LINKS.buyMeACoffee}
+        target="_blank"
+        rel="noopener"
+        data-engage-convert
+      >
+        {t("popup.donate.cta")}
+      </a>
+      <button type="button" data-engage-dismiss class="engage-dismiss label">
+        {t("popup.donate.dismiss")}
+      </button>
+    </div>
+  </aside>
+</div>
+
+<script>
+  interface EngageState {
+    videos: string[];
+    emailDone: boolean;
+    emailDismissedAt: number | null;
+    emailShownCount: number;
+    donateDismissedAt: number | null;
+    visits: number;
+  }
+
+  const STORAGE_KEY = "fb-engage";
+  const SESSION_KEY = "fb-engage-session"; // set once per browser session
+  const SHOWN_KEY = "fb-engage-shown"; // at most one popup per session
+
+  const DAY = 24 * 60 * 60 * 1000;
+  const EMAIL_MIN_VIDEOS = 2;
+  const EMAIL_MAX_SHOWS = 3;
+  const EMAIL_COOLDOWN = 7 * DAY;
+  const DONATE_MIN_VIDEOS = 4;
+  const DONATE_MIN_VISITS = 2;
+  const DONATE_COOLDOWN = 30 * DAY;
+  const SHOW_DELAY = 4000;
+
+  const root = document.getElementById("fb-engage");
+  if (root) {
+    const defaults: EngageState = {
+      videos: [],
+      emailDone: false,
+      emailDismissedAt: null,
+      emailShownCount: 0,
+      donateDismissedAt: null,
+      visits: 0,
+    };
+
+    const load = (): EngageState => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return {
+          ...defaults,
+          ...(parsed as Partial<EngageState>),
+          videos: Array.isArray(parsed?.videos) ? parsed.videos : [],
+        };
+      } catch {
+        return { ...defaults };
+      }
+    };
+
+    const state = load();
+
+    const save = () => {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch {
+        /* private mode / quota — degrade to a nag-free experience */
+      }
+    };
+
+    // One "visit" per browser session (drives the return-visitor donate rule).
+    let newSession = false;
+    try {
+      if (!sessionStorage.getItem(SESSION_KEY)) {
+        sessionStorage.setItem(SESSION_KEY, "1");
+        state.visits += 1;
+        newSession = true;
+      }
+    } catch {
+      newSession = true;
+    }
+
+    // Record the video on this page toward the engagement threshold.
+    const slug = root.dataset.videoSlug;
+    if (slug && !state.videos.includes(slug)) state.videos.push(slug);
+    if (newSession || slug) save();
+
+    const alreadyShown = () => {
+      try {
+        return sessionStorage.getItem(SHOWN_KEY) === "1";
+      } catch {
+        return false;
+      }
+    };
+    const markShown = () => {
+      try {
+        sessionStorage.setItem(SHOWN_KEY, "1");
+      } catch {
+        /* ignore */
+      }
+    };
+
+    const cooled = (at: number | null, cooldown: number) =>
+      at == null || Date.now() - at > cooldown;
+
+    const emailEligible = () =>
+      !state.emailDone &&
+      state.videos.length >= EMAIL_MIN_VIDEOS &&
+      state.emailShownCount < EMAIL_MAX_SHOWS &&
+      cooled(state.emailDismissedAt, EMAIL_COOLDOWN);
+
+    const donateEligible = () =>
+      (state.emailDone || state.emailDismissedAt != null) &&
+      (state.videos.length >= DONATE_MIN_VIDEOS ||
+        state.visits >= DONATE_MIN_VISITS) &&
+      cooled(state.donateDismissedAt, DONATE_COOLDOWN);
+
+    const backdrop = root.querySelector<HTMLElement>("[data-engage-backdrop]");
+    const panels = {
+      email: root.querySelector<HTMLElement>('[data-engage-panel="email"]'),
+      donate: root.querySelector<HTMLElement>('[data-engage-panel="donate"]'),
+    };
+
+    let active: "email" | "donate" | null = null;
+    let lastFocus: HTMLElement | null = null;
+
+    const open = (which: "email" | "donate") => {
+      const panel = panels[which];
+      if (!panel) return;
+      active = which;
+      lastFocus = document.activeElement as HTMLElement | null;
+      markShown();
+
+      root.hidden = false;
+      root.setAttribute("aria-hidden", "false");
+      panel.hidden = false;
+      document.body.style.overflow = "hidden";
+
+      if (which === "email") {
+        state.emailShownCount += 1;
+        save();
+      }
+
+      const focusTarget =
+        which === "email"
+          ? panel.querySelector<HTMLElement>("input[type=email]")
+          : panel.querySelector<HTMLElement>("[data-engage-convert]");
+      window.requestAnimationFrame(() => focusTarget?.focus());
+    };
+
+    const close = (converted = false) => {
+      if (active === "email" && !converted) {
+        state.emailDismissedAt = Date.now();
+        save();
+      } else if (active === "donate") {
+        // Both a dismiss and a click count as "settled" — don't ask again soon.
+        state.donateDismissedAt = Date.now();
+        save();
+      }
+      if (active && panels[active]) panels[active]!.hidden = true;
+      root.hidden = true;
+      root.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      active = null;
+      lastFocus?.focus?.();
+    };
+
+    root
+      .querySelectorAll<HTMLElement>("[data-engage-close], [data-engage-dismiss]")
+      .forEach((el) => el.addEventListener("click", () => close()));
+    backdrop?.addEventListener("click", () => close());
+    root
+      .querySelector<HTMLElement>("[data-engage-convert]")
+      ?.addEventListener("click", () => close(true));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !root.hidden) close();
+    });
+
+    // A confirmed signup (from any newsletter form) settles the email ask.
+    document.addEventListener("fb-newsletter:success", () => {
+      state.emailDone = true;
+      save();
+      if (active === "email") window.setTimeout(() => close(true), 1400);
+    });
+
+    if (!alreadyShown()) {
+      const which = emailEligible()
+        ? "email"
+        : donateEligible()
+          ? "donate"
+          : null;
+      if (which) window.setTimeout(() => open(which), SHOW_DELAY);
+    }
+  }
+</script>
+
+<style is:global>
+  #fb-engage {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+  }
+  #fb-engage[hidden] {
+    display: none;
+  }
+  #fb-engage .engage-backdrop {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--color-obsidian) 60%, transparent);
+    backdrop-filter: blur(2px);
+    animation: engage-fade 300ms var(--ease-editorial);
+  }
+  #fb-engage .engage-panel {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    margin-inline: auto;
+    width: 100%;
+    max-width: 32rem;
+    border-radius: 6px 6px 0 0;
+    box-shadow: var(--shadow-md);
+    animation: engage-rise 320ms var(--ease-editorial);
+  }
+  #fb-engage .engage-panel[hidden] {
+    display: none;
+  }
+  @media (min-width: 640px) {
+    #fb-engage .engage-panel {
+      inset-block: 50% auto;
+      transform: translateY(-50%);
+      border-radius: 6px;
+      animation: engage-pop 320ms var(--ease-editorial);
+    }
+  }
+  #fb-engage .engage-inner {
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  #fb-engage .engage-title {
+    margin: 0;
+    font-weight: 300;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    line-height: 1.1;
+    color: var(--bar-text);
+  }
+  #fb-engage .engage-body {
+    margin: 0;
+    max-width: 46ch;
+    color: var(--bar-muted);
+    line-height: 1.6;
+  }
+  #fb-engage .engage-x {
+    position: absolute;
+    inset-block-start: 0.35rem;
+    inset-inline-end: 0.5rem;
+    z-index: 2;
+    background: none;
+    border: 0;
+    font-size: 1.7rem;
+    line-height: 1;
+    color: var(--bar-muted);
+    cursor: pointer;
+    padding: 0.35rem 0.6rem;
+  }
+  #fb-engage .engage-x:hover {
+    color: var(--bar-text);
+  }
+  #fb-engage .engage-dismiss {
+    align-self: flex-start;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--bar-muted);
+    cursor: pointer;
+    transition: color 300ms var(--ease-editorial);
+  }
+  #fb-engage .engage-dismiss:hover {
+    color: var(--bar-accent);
+  }
+  #fb-engage .engage-donate-btn {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.75rem;
+    border-radius: 2px;
+    background: var(--color-canary);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+      transform 300ms var(--ease-editorial),
+      box-shadow 300ms var(--ease-editorial),
+      filter 300ms var(--ease-editorial);
+  }
+  #fb-engage .engage-donate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    filter: brightness(1.05);
+  }
+  html[dir="rtl"] #fb-engage .engage-donate-btn {
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  @keyframes engage-fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes engage-rise {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes engage-pop {
+    from {
+      opacity: 0;
+      transform: translateY(-50%) scale(0.96);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #fb-engage .engage-backdrop,
+    #fb-engage .engage-panel {
+      animation: none;
+    }
+  }
+</style>

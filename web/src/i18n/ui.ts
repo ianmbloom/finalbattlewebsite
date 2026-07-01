@@ -96,6 +96,17 @@ export const ui = {
     "newsletter.error": "Something went wrong. Please try again.",
     "newsletter.consent": "No spam. Unsubscribe anytime.",
 
+    "popup.close": "Close",
+    "popup.email.title": "Don't miss the next one.",
+    "popup.email.body":
+      "You've watched more than one — you get it. Join the list and every new video lands in your inbox the moment it drops.",
+    "popup.email.dismiss": "Maybe later",
+    "popup.donate.title": "Fund the next arrow.",
+    "popup.donate.body":
+      "You keep coming back. Every video is made and shared for free — a small gift keeps them coming.",
+    "popup.donate.cta": "Buy us a coffee",
+    "popup.donate.dismiss": "Not now",
+
     "support.title": "Fund the Fight",
     "support.lead":
       "Every video is made and shared for free. Your support pays for the next one — and the one after that.",
@@ -232,6 +243,17 @@ export const ui = {
     "newsletter.success": "ثبت شد. منتظر ایمیل ما باشید.",
     "newsletter.error": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
     "newsletter.consent": "بدون هرزنامه. هر زمان بخواهید لغو عضویت کنید.",
+
+    "popup.close": "بستن",
+    "popup.email.title": "ویدیوی بعدی را از دست نده.",
+    "popup.email.body":
+      "بیش از یکی را تماشا کرده‌ای — پس اهلش هستی. به فهرست بپیوند تا هر ویدیوی تازه همان لحظه‌ی انتشار به ایمیلت برسد.",
+    "popup.email.dismiss": "شاید بعداً",
+    "popup.donate.title": "تیر بعدی را تأمین کن.",
+    "popup.donate.body":
+      "تو بارها برگشته‌ای. هر ویدیو رایگان ساخته و هم‌رسانی می‌شود — یک کمک کوچک آن‌ها را ادامه می‌دهد.",
+    "popup.donate.cta": "برای ما یک قهوه بخر",
+    "popup.donate.dismiss": "الان نه",
 
     "support.title": "از مبارزه حمایت کن",
     "support.lead":
