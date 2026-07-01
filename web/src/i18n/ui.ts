@@ -92,7 +92,7 @@ export const ui = {
       "These videos only matter if they are seen. Join the email list and we'll send each new one the moment it drops — so you're first to watch, and first to share.",
     "newsletter.placeholder": "Your email",
     "newsletter.subscribe": "Subscribe",
-    "newsletter.success": "You're in. Watch your inbox.",
+    "newsletter.success": "You're on the list. We'll email you when the next video drops.",
     "newsletter.error": "Something went wrong. Please try again.",
     "newsletter.consent": "No spam. Unsubscribe anytime.",
 
@@ -240,7 +240,7 @@ export const ui = {
       "این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. به فهرست ایمیل بپیوندید تا هر ویدیوی تازه را همان لحظه‌ی انتشار برایتان بفرستیم — تا اولین کسی باشید که آن را می‌بیند و هم‌رسانی می‌کند.",
     "newsletter.placeholder": "ایمیل شما",
     "newsletter.subscribe": "عضویت",
-    "newsletter.success": "ثبت شد. منتظر ایمیل ما باشید.",
+    "newsletter.success": "به فهرست اضافه شدی. وقتی ویدیوی بعدی منتشر شود برایت ایمیل می‌کنیم.",
     "newsletter.error": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
     "newsletter.consent": "بدون هرزنامه. هر زمان بخواهید لغو عضویت کنید.",
 
