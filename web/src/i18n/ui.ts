@@ -104,7 +104,7 @@ export const ui = {
     "popup.donate.title": "Fund the next arrow.",
     "popup.donate.body":
       "You keep coming back. Every video is made and shared for free — a small gift keeps them coming.",
-    "popup.donate.cta": "Buy us a coffee",
+    "popup.donate.cta": "Buy us a kotlet",
     "popup.donate.dismiss": "Not now",
 
     "support.title": "Fund the Fight",
@@ -113,7 +113,7 @@ export const ui = {
     "support.donate.title": "Make a one-time gift",
     "support.donate.body":
       "A quick, no-account donation keeps the cameras rolling. Give whatever you can.",
-    "support.bmac": "Buy us a coffee",
+    "support.bmac": "Buy us a kotlet",
     "support.shop.title": "Wear the message",
     "support.shop.body":
       "Grab a shirt or a print and carry the fight into the streets. Every order funds more videos.",
@@ -252,7 +252,7 @@ export const ui = {
     "popup.donate.title": "تیر بعدی را تأمین کن.",
     "popup.donate.body":
       "تو بارها برگشته‌ای. هر ویدیو رایگان ساخته و هم‌رسانی می‌شود — یک کمک کوچک آن‌ها را ادامه می‌دهد.",
-    "popup.donate.cta": "برای ما یک قهوه بخر",
+    "popup.donate.cta": "برای ما یک کتلت بخر",
     "popup.donate.dismiss": "الان نه",
 
     "support.title": "از مبارزه حمایت کن",
@@ -261,7 +261,7 @@ export const ui = {
     "support.donate.title": "یک کمک یک‌باره بکن",
     "support.donate.body":
       "یک کمک مالی سریع و بدون نیاز به حساب، دوربین‌ها را روشن نگه می‌دارد. هر چه می‌توانید ببخشید.",
-    "support.bmac": "برای ما یک قهوه بخر",
+    "support.bmac": "برای ما یک کتلت بخر",
     "support.shop.title": "پیام را بپوش",
     "support.shop.body":
       "یک تی‌شرت یا پوستر بگیرید و مبارزه را به خیابان‌ها ببرید. هر سفارش ویدیوهای بیشتری را ممکن می‌کند.",
