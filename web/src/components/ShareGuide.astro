@@ -37,6 +37,7 @@ const rows = [
 
 <section class="share-guide">
   <span class="label guide-label">{t("share.guide.title")}</span>
+  <p class="guide-hint">{t("share.guide.hint")}</p>
   <ul class="rows">
     {
       rows.map((row) => (
@@ -65,6 +66,13 @@ const rows = [
     gap: 0.75rem;
   }
   .guide-label {
+    color: var(--text-muted);
+  }
+  .guide-hint {
+    margin: 0;
+    max-width: 46ch;
+    font-size: 0.82rem;
+    line-height: 1.55;
     color: var(--text-muted);
   }
   .rows {
