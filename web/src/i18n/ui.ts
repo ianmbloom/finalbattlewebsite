@@ -61,7 +61,7 @@ export const ui = {
 
     "share.guide.title": "How to Share",
     "share.guide.hint":
-      "Boost it where it lives: repost or share it to your own followers, then like and drop a comment. Reposts reach new people; likes and comments push the original higher.",
+      "Reposts put this in front of new people, while likes and comments help the video rise on each platform.",
     "share.guide.x": "Repost on X.com",
     "share.guide.instagram": "Share on Instagram",
     "share.guide.tiktok": "Repost on TikTok",
@@ -211,7 +211,7 @@ export const ui = {
 
     "share.guide.title": "چگونه هم‌رسانی کنیم",
     "share.guide.hint":
-      "همان‌جا که ویدیو منتشر شده تقویتش کنید: آن را برای دنبال‌کنندگان خود بازنشر یا هم‌رسانی کنید، سپس لایک کنید و نظری بگذارید. بازنشر به افراد تازه می‌رسد؛ لایک و نظر پست اصلی را بالاتر می‌برد.",
+      "بازنشرها این را به افراد تازه می‌رسانند، و لایک‌ها و نظرها به بالا آمدن ویدیو در هر پلتفرم کمک می‌کنند.",
     "share.guide.x": "بازنشر در X.com",
     "share.guide.instagram": "هم‌رسانی در اینستاگرام",
     "share.guide.tiktok": "بازنشر در تیک‌تاک",
