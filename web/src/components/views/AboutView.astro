@@ -51,6 +51,8 @@ const t = useTranslations(lang);
           <p class="prose font-display">{t("about.help.body")}</p>
         </section>
 
+        <p class="about-abbr">{t("abbr.note")}</p>
+
         <section class="signup business-surface">
           <BusinessPattern />
           <div class="signup-inner">
@@ -148,5 +150,13 @@ const t = useTranslations(lang);
   }
   .rule {
     margin: 0;
+  }
+  .about-abbr {
+    margin: 0 0 1.5rem;
+    max-width: 60ch;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    font-style: italic;
   }
 </style>

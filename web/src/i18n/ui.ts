@@ -180,7 +180,7 @@ export const ui = {
 
     "footer.rights": "See You In a Free Nation.",
     "footer.terms": "How launching works",
-    "footer.abbr": "Unfortunately, online platforms too often fail to distinguish between the current government and the people of our beloved nation — so we've found it necessary to abbreviate certain terms.",
+    "abbr.note": "Unfortunately, online platforms too often fail to distinguish between the current government and the people of our beloved nation — so we've found it necessary to abbreviate certain terms.",
   },
   fa: {
     "site.name": "نبرد نهایی",
@@ -357,7 +357,7 @@ export const ui = {
 
     "footer.rights": "میهنِ آزاد.",
     "footer.terms": "پرتاب چگونه کار می‌کند",
-    "footer.abbr": "متأسفانه پلتفرم‌های آنلاین بارها میان حکومت کنونی و مردمِ میهن عزیز ما تمایز نمی‌گذارند — از این‌رو ناچار شده‌ایم برخی واژه‌ها را به‌صورت مخفف بنویسیم.",
+    "abbr.note": "متأسفانه پلتفرم‌های آنلاین بارها میان حکومت کنونی و مردمِ میهن عزیز ما تمایز نمی‌گذارند — از این‌رو ناچار شده‌ایم برخی واژه‌ها را به‌صورت مخفف بنویسیم.",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 
