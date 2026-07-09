@@ -1,6 +1,6 @@
 # Final Battle Films
 
-Bilingual (English + Persian) hub for the Prosperity Project. Built with Astro 6 + Tailwind CSS v4, deployed as a static site on Cloudflare Pages with Pages Functions for email + checkout.
+Bilingual (English + Persian) hub for the IPP. Built with Astro 6 + Tailwind CSS v4, deployed as a static site on Cloudflare Pages with Pages Functions for email + checkout.
 
 It serves three purposes:
 

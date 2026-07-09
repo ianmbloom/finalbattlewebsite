@@ -24,7 +24,7 @@ export const ui = {
     "hero.cta.watch": "Watch the Series",
 
     "home.statement.p1":
-      "Every piece of content we create is an arrow for your quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Prosperity Project.",
+      "Every piece of content we create is an arrow for your quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the IPP.",
     "home.hero.sub": "Every video is an arrow in your quiver — a truth few outside the country know, certainty for a bright future, a piece of the plan for a free nation.\n\nWatch them where they live, follow our channels, like, comment, and repost — every share carries the message past the regime's noise and into the world.",
 
     "videos.title": "The Series",
@@ -73,10 +73,10 @@ export const ui = {
       "We are a small, unlikely band of friends who met on Discord: a group of compatriots, a Jewish video editor, and an activist from Hong Kong. Among us, a true daughter of Persia whose luminous voice gives our videos their soul.",
     "about.vision.title": "Our Vision",
     "about.vision.body":
-      "We are an independent collaboration bound by a single shared vision: a secular, democratic nation. Our task is to bring the Prosperity Project to life in content you can share. We stand with Reza Pahlavi and work to reflect his message. Beyond that, we stay politically neutral — the goal is to build a coalition behind a transition. We can work out our differences once the nation is free.",
+      "We are an independent collaboration bound by a single shared vision: a secular, democratic nation. Our task is to bring the IPP to life in content you can share. We stand with Reza Pahlavi and work to reflect his message. Beyond that, we stay politically neutral — the goal is to build a coalition behind a transition. We can work out our differences once the nation is free.",
     "about.mission.title": "Our Mission",
     "about.mission.body":
-      "Most of the world knows very little about the homeland or the Lion and Sun Revolution, and that silence leaves room for misconceptions to spread unchallenged. We want to change that — to show a global audience the free nation that will soon benefit us all. We do it with short videos, where every piece is an arrow for the quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Prosperity Project.",
+      "Most of the world knows very little about the homeland or the Lion and Sun Revolution, and that silence leaves room for misconceptions to spread unchallenged. We want to change that — to show a global audience the free nation that will soon benefit us all. We do it with short videos, where every piece is an arrow for the quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the IPP.",
     "about.help.title": "How You Can Help",
     "about.help.body":
       "This is where you come in. These videos only matter if they are seen. Watch them where they live, then follow our channels, like, comment, and repost — every share pushes the message past the regime's noise and into the world. Join our email list below to catch each new video the moment it drops, and, if you are able, fund the work by launching a video or wearing the message. We make it for free; you make it travel.",
@@ -137,7 +137,7 @@ export const ui = {
 
     "support.title": "Fund the Videos",
     "support.lead":
-      "You can help us spread a confident vision for a secular, democratic nation and teach the world about the Prosperity Project.",
+      "You can help us spread a confident vision for a secular, democratic nation and teach the world about the IPP.",
     "support.donate.title": "Buy us a kotlet… or maybe a few",
     "support.donate.body":
       "Cover our production costs and put our next video in front of more people.",
@@ -180,6 +180,7 @@ export const ui = {
 
     "footer.rights": "See You In a Free Nation.",
     "footer.terms": "How launching works",
+    "footer.abbr": "Unfortunately, we've found it necessary to abbreviate certain terms.",
   },
   fa: {
     "site.name": "نبرد نهایی",
@@ -199,7 +200,7 @@ export const ui = {
     "hero.cta.watch": "تماشای مجموعه",
 
     "home.statement.p1":
-      "هر محتوایی که می‌سازیم تیری برای ترکش توست: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه شکوفایی را شرح می‌دهد.",
+      "هر محتوایی که می‌سازیم تیری برای ترکش توست: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از IPP را شرح می‌دهد.",
 
     "home.hero.sub": "هر ویدیو تیری در ترکش توست — حقیقتی که کمتر کسی بیرون از کشور می‌داند، یقین به آینده‌ای روشن، تکه‌ای از نقشهٔ میهنِ آزاد.\n\nآن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند.",
 
@@ -249,10 +250,10 @@ export const ui = {
       "ما گروهی کوچک و نامحتمل از دوستانی هستیم که در دیسکورد با هم آشنا شدیم: گروهی از هم‌میهنان، یک تدوین‌گر ویدیوی یهودی، و کنشگری از هنگ‌کنگ. در میان ما، دختری راستین از پارس که صدای درخشانش به ویدیوهای ما جان می‌بخشد.",
     "about.vision.title": "چشم‌انداز ما",
     "about.vision.body":
-      "ما یک همکاری مستقل هستیم که با یک چشم‌انداز مشترک به هم پیوسته‌ایم: ملتی سکولار و دموکراتیک. مأموریت ما این است که پروژهٔ شکوفایی را در قالب محتوایی که می‌توانید هم‌رسانی کنید، زنده کنیم. ما در کنار رضا پهلوی ایستاده‌ایم و کوشش می‌کنیم پیام او را بازتاب دهیم. فراتر از این، ما از نظر سیاسی بی‌طرف می‌مانیم — هدف، ساختن ائتلافی برای یک گذار است. اختلاف‌هایمان را می‌توانیم پس از آزادی میهن حل کنیم.",
+      "ما یک همکاری مستقل هستیم که با یک چشم‌انداز مشترک به هم پیوسته‌ایم: ملتی سکولار و دموکراتیک. مأموریت ما این است که IPP را در قالب محتوایی که می‌توانید هم‌رسانی کنید، زنده کنیم. ما در کنار رضا پهلوی ایستاده‌ایم و کوشش می‌کنیم پیام او را بازتاب دهیم. فراتر از این، ما از نظر سیاسی بی‌طرف می‌مانیم — هدف، ساختن ائتلافی برای یک گذار است. اختلاف‌هایمان را می‌توانیم پس از آزادی میهن حل کنیم.",
     "about.mission.title": "مأموریت ما",
     "about.mission.body":
-      "بیشتر جهان درباره‌ی میهن و انقلاب شیر و خورشید بسیار کم می‌داند، و این سکوت فضایی می‌سازد که در آن برداشت‌های نادرست بدون چالش گسترش می‌یابند. ما می‌خواهیم این را تغییر دهیم — تا میهنِ آزادی را به جهان نشان دهیم که به‌زودی به سود همه‌ی ما خواهد بود. این کار را با ویدیوهای کوتاه انجام می‌دهیم، جایی که هر اثر تیری برای ترکش است: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه‌ی شکوفایی را شرح می‌دهد.",
+      "بیشتر جهان درباره‌ی میهن و انقلاب شیر و خورشید بسیار کم می‌داند، و این سکوت فضایی می‌سازد که در آن برداشت‌های نادرست بدون چالش گسترش می‌یابند. ما می‌خواهیم این را تغییر دهیم — تا میهنِ آزادی را به جهان نشان دهیم که به‌زودی به سود همه‌ی ما خواهد بود. این کار را با ویدیوهای کوتاه انجام می‌دهیم، جایی که هر اثر تیری برای ترکش است: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از IPP را شرح می‌دهد.",
     "about.help.title": "چگونه می‌توانید کمک کنید",
     "about.help.body":
       "اینجا جایی است که شما وارد می‌شوید. این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. آن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، سپس کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند. در پایین به فهرست ایمیل ما بپیوندید تا هر ویدیوی تازه را همان لحظه‌ی انتشار دریافت کنید، و اگر می‌توانید، با پرتاب یک ویدیو یا پوشیدن پیام هزینه‌ی این کار را تأمین کنید. ما آن را رایگان می‌سازیم؛ شما آن را به حرکت درمی‌آورید.",
@@ -313,7 +314,7 @@ export const ui = {
 
     "support.title": "تأمین ویدیوها",
     "support.lead":
-      "می‌توانی کمک کنی چشم‌اندازی مطمئن از ملتی سکولار و دموکراتیک را بگسترانیم و جهان را با پروژه‌ی شکوفایی آشنا کنیم.",
+      "می‌توانی کمک کنی چشم‌اندازی مطمئن از ملتی سکولار و دموکراتیک را بگسترانیم و جهان را با IPP آشنا کنیم.",
     "support.donate.title": "برایمان یک کتلت بخر… یا شاید چند تا",
     "support.donate.body":
       "هزینه‌ی تولید ما را بپوشان و ویدیوی بعدی‌مان را پیش چشم افراد بیشتری بگذار.",
@@ -356,6 +357,7 @@ export const ui = {
 
     "footer.rights": "میهنِ آزاد.",
     "footer.terms": "پرتاب چگونه کار می‌کند",
+    "footer.abbr": "متأسفانه ناچار شده‌ایم برخی واژه‌ها را به‌صورت مخفف بنویسیم.",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 
