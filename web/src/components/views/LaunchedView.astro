@@ -9,7 +9,7 @@
 import { getCollection } from "astro:content";
 import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
-import { getVariant, shareablePlatforms } from "@/lib/videos";
+import { getVariant, shareablePlatforms, encodeHex } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 interface Props {
@@ -20,13 +20,15 @@ const t = useTranslations(lang);
 const videosHref = localizedPath("/videos", lang);
 
 // Build a small slug -> X post URL map so the client can pick the right repost
-// link from `?slug` without shipping the full content collection.
+// link from `?slug` without shipping the full content collection. URLs are
+// hex-encoded so the handle (which carries the nation's name) stays out of the
+// served HTML; the client decodes the chosen one before setting the href.
 const entries = await getCollection("videos");
 const xMap: Record<string, string> = {};
 for (const entry of entries) {
   const variant = getVariant(entry, lang) ?? getVariant(entry, "en");
   const x = shareablePlatforms(variant?.platforms).x;
-  if (x) xMap[entry.id] = x;
+  if (x) xMap[entry.id] = encodeHex(x);
 }
 ---
 
@@ -65,8 +67,12 @@ for (const entry of entries) {
   const params = new URLSearchParams(window.location.search);
   const slug = params.get("slug");
   const repost = document.querySelector("[data-launched-repost]");
-  const url = slug ? xMap[slug] : undefined;
-  if (repost && url) {
+  const hex = slug ? xMap[slug] : undefined;
+  const pairs = hex ? hex.match(/../g) : null;
+  if (repost && pairs) {
+    const url = new TextDecoder().decode(
+      new Uint8Array(pairs.map((h) => parseInt(h, 16))),
+    );
     repost.setAttribute("href", url);
     repost.hidden = false;
   }

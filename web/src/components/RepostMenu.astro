@@ -1,7 +1,7 @@
 ---
 import type { Locale } from "@/consts";
 import { useTranslations } from "@/i18n/utils";
-import { shareablePlatforms, withUtm } from "@/lib/videos";
+import { shareablePlatforms, withUtm, encodeHex } from "@/lib/videos";
 
 interface Platforms {
   x?: string;
@@ -27,15 +27,20 @@ const t = useTranslations(lang);
 // Native-post links stay on their platform (no UTM — they leave our domain).
 // Only real (non-placeholder) links render.
 const platforms = shareablePlatforms(Astro.props.platforms);
+// Native-post URLs are hex-encoded so the handles (which still carry the
+// nation's name) never appear literally in the HTML; RepostMenu's script
+// decodes them into real hrefs at runtime.
 const nativeRows = [
   { key: "x", label: t("share.x"), url: platforms.x },
   { key: "instagram", label: t("share.instagram"), url: platforms.instagram },
   { key: "youtube", label: t("share.youtube"), url: platforms.youtube },
   { key: "tiktok", label: t("share.tiktok"), url: platforms.tiktok },
   { key: "linkedin", label: t("share.linkedin"), url: platforms.linkedin },
-].filter((row): row is { key: string; label: string; url: string } =>
-  Boolean(row.url),
-);
+]
+  .filter((row): row is { key: string; label: string; url: string } =>
+    Boolean(row.url),
+  )
+  .map((row) => ({ key: row.key, label: row.label, enc: encodeHex(row.url) }));
 
 // Telegram + Copy share the site page URL (tagged) — Telegram renders the video
 // inline from our Open Graph metadata, and both are attributable via UTM.
@@ -93,9 +98,9 @@ const titleId = `${uid}-title`;
             <li>
               <a
                 class="repost-link"
-                href={row.url}
+                data-href={row.enc}
                 target="_blank"
-                rel="noopener"
+                rel="noopener nofollow"
               >
                 <span class="repost-name">{row.label}</span>
                 <span class="repost-cue" aria-hidden="true">
@@ -139,6 +144,18 @@ const titleId = `${uid}-title`;
 
   if (!w.__repostMenuInit) {
     w.__repostMenuInit = true;
+
+    // Rebuild native-post hrefs from their hex-encoded form so the handles are
+    // absent from the served HTML but the links still work for real visitors.
+    document
+      .querySelectorAll<HTMLAnchorElement>(".repost-link[data-href]")
+      .forEach((link) => {
+        const pairs = link.dataset.href?.match(/../g);
+        if (!pairs) return;
+        link.href = new TextDecoder().decode(
+          new Uint8Array(pairs.map((h) => parseInt(h, 16))),
+        );
+      });
 
     let lastTrigger: HTMLElement | null = null;
 

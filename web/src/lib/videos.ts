@@ -59,6 +59,18 @@ export function withUtm(url: string, source: string): string {
   return u.href;
 }
 
+/**
+ * Hex-encode a string so sensitive substrings (e.g. social handles that still
+ * contain the nation's name) never appear literally in the served HTML.
+ * Hex uses only 0-9a-f, so those substrings can't occur in the output even by
+ * chance. Links are rebuilt at runtime via `decodeHex` on the client.
+ */
+export function encodeHex(value: string): string {
+  return Array.from(new TextEncoder().encode(value))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
 export type VideoFormat = VideoEntry["data"]["format"];
 
 /** Short-form series clips vs. longer standalone statements. */
