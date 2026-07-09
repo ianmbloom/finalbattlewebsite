@@ -8,8 +8,8 @@ import type { Locale } from "@/consts";
 export const ui = {
   en: {
     "site.name": "Final Battle",
-    "site.subtitle": "For Iran",
-    "site.tagline": "Educating the world about a free Iran.",
+    "site.subtitle": "Films",
+    "site.tagline": "Educating the world about a free nation.",
 
     "nav.home": "Home",
     "nav.videos": "Videos",
@@ -24,8 +24,8 @@ export const ui = {
     "hero.cta.watch": "Watch the Series",
 
     "home.statement.p1":
-      "Every piece of content we create is an arrow for your quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Iran Prosperity Project.",
-    "home.hero.sub": "Every video is an arrow in your quiver — a truth few outside Iran know, certainty for a bright future, a piece of the plan for a free Iran.\n\nWatch them where they live, follow our channels, like, comment, and repost — every share carries the message past the regime's noise and into the world.",
+      "Every piece of content we create is an arrow for your quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Prosperity Project.",
+    "home.hero.sub": "Every video is an arrow in your quiver — a truth few outside the country know, certainty for a bright future, a piece of the plan for a free nation.\n\nWatch them where they live, follow our channels, like, comment, and repost — every share carries the message past the regime's noise and into the world.",
 
     "videos.title": "The Series",
     "videos.intro": "Every piece is an arrow for the quiver.",
@@ -68,15 +68,15 @@ export const ui = {
 
     "about.title": "Who We Are",
     "about.image_alt":
-      "A Persian mosaic of a flag-bearer raising the Lion and Sun flag of Iran.",
+      "A Persian mosaic of a flag-bearer raising the Lion and Sun flag.",
     "about.lead":
-      "We are a small, unlikely band of friends who met on Discord: a group of Iranians, a Jewish video editor, and an activist from Hong Kong. Among us, a true daughter of Persia whose luminous voice gives our videos their soul.",
+      "We are a small, unlikely band of friends who met on Discord: a group of compatriots, a Jewish video editor, and an activist from Hong Kong. Among us, a true daughter of Persia whose luminous voice gives our videos their soul.",
     "about.vision.title": "Our Vision",
     "about.vision.body":
-      "We are an independent collaboration bound by a single shared vision: a secular, democratic Iran. Our task is to bring the Iran Prosperity Project to life in content you can share. We stand with Reza Pahlavi and work to reflect his message. Beyond that, we stay politically neutral — the goal is to build a coalition behind a transition. We can work out our differences once Iran is free.",
+      "We are an independent collaboration bound by a single shared vision: a secular, democratic nation. Our task is to bring the Prosperity Project to life in content you can share. We stand with Reza Pahlavi and work to reflect his message. Beyond that, we stay politically neutral — the goal is to build a coalition behind a transition. We can work out our differences once the nation is free.",
     "about.mission.title": "Our Mission",
     "about.mission.body":
-      "Most of the world knows very little about Iran or the Lion and Sun Revolution, and that silence leaves room for misconceptions to spread unchallenged. We want to change that — to show a global audience the Free Iran that will soon benefit us all. We do it with short videos, where every piece is an arrow for the quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Iran Prosperity Project.",
+      "Most of the world knows very little about the homeland or the Lion and Sun Revolution, and that silence leaves room for misconceptions to spread unchallenged. We want to change that — to show a global audience the free nation that will soon benefit us all. We do it with short videos, where every piece is an arrow for the quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Prosperity Project.",
     "about.help.title": "How You Can Help",
     "about.help.body":
       "This is where you come in. These videos only matter if they are seen. Watch them where they live, then follow our channels, like, comment, and repost — every share pushes the message past the regime's noise and into the world. Join our email list below to catch each new video the moment it drops, and, if you are able, fund the work by launching a video or wearing the message. We make it for free; you make it travel.",
@@ -137,7 +137,7 @@ export const ui = {
 
     "support.title": "Fund the Videos",
     "support.lead":
-      "You can help us spread a confident vision for a secular, democratic Iran and teach the world about the Iran Prosperity Project.",
+      "You can help us spread a confident vision for a secular, democratic nation and teach the world about the Prosperity Project.",
     "support.donate.title": "Buy us a kotlet… or maybe a few",
     "support.donate.body":
       "Cover our production costs and put our next video in front of more people.",
@@ -178,13 +178,13 @@ export const ui = {
     "checkout.cancel.body":
       "No charge was made and your cart is still saved. Pick up where you left off whenever you're ready.",
 
-    "footer.rights": "See You In Free Iran.",
+    "footer.rights": "See You In a Free Nation.",
     "footer.terms": "How launching works",
   },
   fa: {
     "site.name": "نبرد نهایی",
-    "site.subtitle": "برای ایران",
-    "site.tagline": "جهان را دربارهٔ ایرانِ آزاد آگاه می‌کنیم.",
+    "site.subtitle": "فیلم‌ها",
+    "site.tagline": "جهان را دربارهٔ میهنِ آزاد آگاه می‌کنیم.",
 
     "nav.home": "خانه",
     "nav.videos": "ویدیوها",
@@ -199,9 +199,9 @@ export const ui = {
     "hero.cta.watch": "تماشای مجموعه",
 
     "home.statement.p1":
-      "هر محتوایی که می‌سازیم تیری برای ترکش توست: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه شکوفایی ایران را شرح می‌دهد.",
+      "هر محتوایی که می‌سازیم تیری برای ترکش توست: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه شکوفایی را شرح می‌دهد.",
 
-    "home.hero.sub": "هر ویدیو تیری در ترکش توست — حقیقتی که کمتر کسی بیرون از ایران می‌داند، یقین به آینده‌ای روشن، تکه‌ای از نقشهٔ ایرانِ آزاد.\n\nآن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند.",
+    "home.hero.sub": "هر ویدیو تیری در ترکش توست — حقیقتی که کمتر کسی بیرون از کشور می‌داند، یقین به آینده‌ای روشن، تکه‌ای از نقشهٔ میهنِ آزاد.\n\nآن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند.",
 
     "videos.title": "مجموعه",
     "videos.intro": "هر اثر تیری برای ترکش است.",
@@ -244,15 +244,15 @@ export const ui = {
 
     "about.title": "ما که هستیم",
     "about.image_alt":
-      "موزاییکی ایرانی از پرچم‌داری که پرچم شیر و خورشید ایران را برافراشته است.",
+      "موزاییکی پارسی از پرچم‌داری که پرچم شیر و خورشید را برافراشته است.",
     "about.lead":
-      "ما گروهی کوچک و نامحتمل از دوستانی هستیم که در دیسکورد با هم آشنا شدیم: گروهی از ایرانیان، یک تدوین‌گر ویدیوی یهودی، و کنشگری از هنگ‌کنگ. در میان ما، دختری راستین از پارس که صدای درخشانش به ویدیوهای ما جان می‌بخشد.",
+      "ما گروهی کوچک و نامحتمل از دوستانی هستیم که در دیسکورد با هم آشنا شدیم: گروهی از هم‌میهنان، یک تدوین‌گر ویدیوی یهودی، و کنشگری از هنگ‌کنگ. در میان ما، دختری راستین از پارس که صدای درخشانش به ویدیوهای ما جان می‌بخشد.",
     "about.vision.title": "چشم‌انداز ما",
     "about.vision.body":
-      "ما یک همکاری مستقل هستیم که با یک چشم‌انداز مشترک به هم پیوسته‌ایم: ایرانی سکولار و دموکراتیک. مأموریت ما این است که پروژهٔ شکوفایی ایران را در قالب محتوایی که می‌توانید هم‌رسانی کنید، زنده کنیم. ما در کنار رضا پهلوی ایستاده‌ایم و کوشش می‌کنیم پیام او را بازتاب دهیم. فراتر از این، ما از نظر سیاسی بی‌طرف می‌مانیم — هدف، ساختن ائتلافی برای یک گذار است. اختلاف‌هایمان را می‌توانیم پس از آزادی ایران حل کنیم.",
+      "ما یک همکاری مستقل هستیم که با یک چشم‌انداز مشترک به هم پیوسته‌ایم: ملتی سکولار و دموکراتیک. مأموریت ما این است که پروژهٔ شکوفایی را در قالب محتوایی که می‌توانید هم‌رسانی کنید، زنده کنیم. ما در کنار رضا پهلوی ایستاده‌ایم و کوشش می‌کنیم پیام او را بازتاب دهیم. فراتر از این، ما از نظر سیاسی بی‌طرف می‌مانیم — هدف، ساختن ائتلافی برای یک گذار است. اختلاف‌هایمان را می‌توانیم پس از آزادی میهن حل کنیم.",
     "about.mission.title": "مأموریت ما",
     "about.mission.body":
-      "بیشتر جهان درباره‌ی ایران و انقلاب شیر و خورشید بسیار کم می‌داند، و این سکوت فضایی می‌سازد که در آن برداشت‌های نادرست بدون چالش گسترش می‌یابند. ما می‌خواهیم این را تغییر دهیم — تا ایرانِ آزادی را به جهان نشان دهیم که به‌زودی به سود همه‌ی ما خواهد بود. این کار را با ویدیوهای کوتاه انجام می‌دهیم، جایی که هر اثر تیری برای ترکش است: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه‌ی شکوفایی ایران را شرح می‌دهد.",
+      "بیشتر جهان درباره‌ی میهن و انقلاب شیر و خورشید بسیار کم می‌داند، و این سکوت فضایی می‌سازد که در آن برداشت‌های نادرست بدون چالش گسترش می‌یابند. ما می‌خواهیم این را تغییر دهیم — تا میهنِ آزادی را به جهان نشان دهیم که به‌زودی به سود همه‌ی ما خواهد بود. این کار را با ویدیوهای کوتاه انجام می‌دهیم، جایی که هر اثر تیری برای ترکش است: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه‌ی شکوفایی را شرح می‌دهد.",
     "about.help.title": "چگونه می‌توانید کمک کنید",
     "about.help.body":
       "اینجا جایی است که شما وارد می‌شوید. این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. آن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، سپس کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند. در پایین به فهرست ایمیل ما بپیوندید تا هر ویدیوی تازه را همان لحظه‌ی انتشار دریافت کنید، و اگر می‌توانید، با پرتاب یک ویدیو یا پوشیدن پیام هزینه‌ی این کار را تأمین کنید. ما آن را رایگان می‌سازیم؛ شما آن را به حرکت درمی‌آورید.",
@@ -313,7 +313,7 @@ export const ui = {
 
     "support.title": "تأمین ویدیوها",
     "support.lead":
-      "می‌توانی کمک کنی چشم‌اندازی مطمئن از ایرانی سکولار و دموکراتیک را بگسترانیم و جهان را با پروژه‌ی شکوفایی ایران آشنا کنیم.",
+      "می‌توانی کمک کنی چشم‌اندازی مطمئن از ملتی سکولار و دموکراتیک را بگسترانیم و جهان را با پروژه‌ی شکوفایی آشنا کنیم.",
     "support.donate.title": "برایمان یک کتلت بخر… یا شاید چند تا",
     "support.donate.body":
       "هزینه‌ی تولید ما را بپوشان و ویدیوی بعدی‌مان را پیش چشم افراد بیشتری بگذار.",
@@ -354,7 +354,7 @@ export const ui = {
     "checkout.cancel.body":
       "هیچ هزینه‌ای کسر نشد و سبد خرید شما ذخیره است. هر وقت آماده بودید از همان‌جا ادامه دهید.",
 
-    "footer.rights": "ایران آزاد.",
+    "footer.rights": "میهنِ آزاد.",
     "footer.terms": "پرتاب چگونه کار می‌کند",
   },
 } as const satisfies Record<Locale, Record<string, string>>;

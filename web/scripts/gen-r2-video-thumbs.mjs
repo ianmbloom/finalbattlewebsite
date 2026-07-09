@@ -16,7 +16,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const VIDEOS_DIR = path.join(root, "src/content/videos");
 const THUMBS_DIR = path.join(root, "public/videos/thumbs");
-const R2_ORIGIN = "https://videos.finalbattleiran.org";
+const R2_ORIGIN = "https://videos.finalbattle.video";
 
 function resolveVideoUrl(videoSrc) {
   if (/^https?:\/\//.test(videoSrc)) return videoSrc;

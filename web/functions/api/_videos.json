@@ -6,13 +6,6 @@
     },
     "boostTier": 3
   },
-  "iran-has-a-future": {
-    "title": {
-      "en": "Iran Has a Future",
-      "fa": "ایران آینده‌ای دارد"
-    },
-    "boostTier": 1
-  },
   "returning-to-democracy": {
     "title": {
       "en": "Returning to Democracy",
@@ -20,12 +13,19 @@
     },
     "boostTier": 2
   },
-  "see-you-in-free-iran": {
+  "see-you-in-a-free-nation": {
     "title": {
-      "en": "We Will See Each Other in Free Iran",
-      "fa": "We Will See Each Other in Free Iran"
+      "en": "We Will See Each Other in a Free Nation",
+      "fa": "We Will See Each Other in a Free Nation"
     },
     "boostTier": 3
+  },
+  "the-nation-has-a-future": {
+    "title": {
+      "en": "Vision of a Bright Future",
+      "fa": "چشم‌اندازِ آینده‌ای روشن"
+    },
+    "boostTier": 1
   },
   "transitional-leader": {
     "title": {

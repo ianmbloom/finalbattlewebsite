@@ -15,11 +15,11 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const THUMBS_DIR = path.join(root, "public/videos/thumbs");
-const VIDEO_BASE = "https://videos.finalbattleiran.org/videos";
+const VIDEO_BASE = "https://videos.finalbattle.video/videos";
 
 const FA_VIDEOS = [
   { slug: "captive-nation", file: "captive-nation-fa-jun27.mp4", ss: "1.5" },
-  { slug: "iran-has-a-future", file: "iran-has-a-future-fa-jun27.mp4", ss: "1.5" },
+  { slug: "the-nation-has-a-future", file: "the-nation-has-a-future-fa-jun27.mp4", ss: "1.5" },
   {
     slug: "returning-to-democracy",
     file: "returning-to-democracy-fa-jun27.mp4",

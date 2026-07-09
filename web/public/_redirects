@@ -1,0 +1,4 @@
+# Preserve old video URLs after the slug rename (see git history / plan).
+/videos/iran-has-a-future /videos/the-nation-has-a-future 301
+/fa/videos/iran-has-a-future /fa/videos/the-nation-has-a-future 301
+/videos/see-you-in-free-iran /videos/see-you-in-a-free-nation 301

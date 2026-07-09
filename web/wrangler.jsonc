@@ -17,7 +17,7 @@
   // the Stripe webhook's buyer-email capture. Git-connected Pages builds also
   // need this same `DB` binding added in the dashboard
   // (Settings > Functions > D1 database bindings) so production Functions see it.
-  "name": "finalbattleiran",
+  "name": "finalbattle-films",
   "compatibility_date": "2026-06-24",
   "pages_build_output_dir": "./dist",
   "d1_databases": [

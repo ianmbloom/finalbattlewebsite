@@ -1,6 +1,6 @@
-export const SITE_URL = "https://finalbattleiran.org";
+export const SITE_URL = "https://finalbattle.video";
 
-export const SITE_NAME = "Final Battle Iran";
+export const SITE_NAME = "Final Battle Films";
 
 /**
  * Feature switches for the launch. Anything OFF renders grayed out and disabled
@@ -37,14 +37,14 @@ export const RTL_LOCALES: readonly Locale[] = ["fa"];
 
 /**
  * Optional origin for self-hosted video files — typically a Cloudflare R2 public
- * bucket (e.g. `https://videos.finalbattleiran.org`). When set, root-relative
+ * bucket (e.g. `https://videos.finalbattle.video`). When set, root-relative
  * `videoSrc` paths are served from here so the large media files never live in
  * the git repo or the Pages deploy. Empty in local dev, where the files in
  * `public/videos/` are served directly by the dev server.
  */
 export const VIDEO_BASE_URL =
   import.meta.env.PUBLIC_VIDEO_BASE_URL ??
-  (import.meta.env.PROD ? "https://videos.finalbattleiran.org" : "");
+  (import.meta.env.PROD ? "https://videos.finalbattle.video" : "");
 
 /**
  * Resolve a `videoSrc` to the URL the browser should load. Absolute URLs pass

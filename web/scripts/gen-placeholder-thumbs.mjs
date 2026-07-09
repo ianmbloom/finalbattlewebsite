@@ -9,7 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const THUMBS_DIR = path.resolve(__dirname, "../public/videos/thumbs");
 
 const slugs = [
-  "iran-has-a-future",
+  "the-nation-has-a-future",
   "transitional-leader",
   "returning-to-democracy",
   "captive-nation",

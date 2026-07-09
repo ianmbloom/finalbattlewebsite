@@ -1,6 +1,6 @@
-# Final Battle Iran
+# Final Battle Films
 
-Bilingual (English + Persian) hub for the Iran Prosperity Project. Built with Astro 6 + Tailwind CSS v4, deployed as a static site on Cloudflare Pages with Pages Functions for email + checkout.
+Bilingual (English + Persian) hub for the Prosperity Project. Built with Astro 6 + Tailwind CSS v4, deployed as a static site on Cloudflare Pages with Pages Functions for email + checkout.
 
 It serves three purposes:
 
@@ -8,7 +8,7 @@ It serves three purposes:
 2. **Financial support** — a self-hosted Stripe + Printify merch shop, plus a "Buy us a kotlet" Stripe tip checkout on the `/fund` page.
 3. **Email collection** — a newsletter form on every page that writes to a Cloudflare D1 database (buyers are captured too, via the Stripe webhook).
 
-- **Live domain:** finalbattleiran.org
+- **Live domain:** finalbattle.video
 - **Languages:** English at `/` (default), Persian at `/fa/` (RTL). Add more by extending `LOCALES` in `src/consts.ts`, adding a strings block in `src/i18n/ui.ts`, and mirroring pages under `src/pages/<locale>/`.
 
 ## Develop
@@ -65,7 +65,7 @@ variant carries its own `videoSrc`, title, script, and platform links:
 
 ```json
 {
-  "series": "iran-prosperity-project",
+  "series": "prosperity-project",
   "category": "myth",            // truth | myth | project
   "publishedAt": "2026-07-01",
   "featured": true,
@@ -256,11 +256,11 @@ Adding a product (`src/content/products/<slug>.json`):
 
 ```json
 {
-  "sku": "fb-free-iran",
-  "image": "/products/free-iran.png",
+  "sku": "fb-free-nation",
+  "image": "/products/free-nation.png",
   "featured": true,
   "order": 1,
-  "name": { "en": "Free Iran — Lion & Sun", "fa": "..." },
+  "name": { "en": "Free Nation — Lion & Sun", "fa": "..." },
   "slogan": { "en": "Now it's your turn to take aim." },
   "description": { "en": "...", "fa": "..." },
   "currency": "USD",
@@ -292,7 +292,7 @@ project (Settings > Variables and Functions). They mirror `.env.example`:
 | `PRINTIFY_SEND_TO_PRODUCTION` | var      | `true` to auto-fulfill (default: draft for review) |
 
 Register the Stripe webhook endpoint at
-`https://finalbattleiran.org/api/stripe-webhook` for the
+`https://finalbattle.video/api/stripe-webhook` for the
 `checkout.session.completed` event, and put its signing secret in
 `STRIPE_WEBHOOK_SECRET`.
 
