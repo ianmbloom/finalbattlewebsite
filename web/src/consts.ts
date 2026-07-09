@@ -30,6 +30,12 @@ export const FEATURES = {
 export const LOCALES = ["en", "fa"] as const;
 export type Locale = (typeof LOCALES)[number];
 
+/**
+ * Locales currently exposed in the served UI. Subset of `LOCALES`. Set back to
+ * `LOCALES` (or add "fa") to re-enable the language switcher.
+ */
+export const ENABLED_LOCALES: readonly Locale[] = ["en"];
+
 export const DEFAULT_LOCALE: Locale = "en";
 
 /** Locales that render right-to-left. */

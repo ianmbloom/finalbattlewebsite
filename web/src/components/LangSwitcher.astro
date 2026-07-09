@@ -1,5 +1,5 @@
 ---
-import { LOCALES, type Locale } from "@/consts";
+import { ENABLED_LOCALES, type Locale } from "@/consts";
 import { switchLocalePath } from "@/i18n/utils";
 
 interface Props {
@@ -10,20 +10,28 @@ const { lang } = Astro.props;
 const labels: Record<Locale, string> = { en: "EN", fa: "فا" };
 ---
 
-<nav class="lang-switcher label" aria-label="Language">
-  {
-    LOCALES.map((locale, i) => (
-      <>
-        {i > 0 && <span class="sep" aria-hidden="true">/</span>}
-        {locale === lang ? (
-          <span class="active" aria-current="true">{labels[locale]}</span>
-        ) : (
-          <a href={switchLocalePath(Astro.url, locale)}>{labels[locale]}</a>
-        )}
-      </>
-    ))
-  }
-</nav>
+{
+  ENABLED_LOCALES.length > 1 && (
+    <nav class="lang-switcher label" aria-label="Language">
+      {ENABLED_LOCALES.map((locale, i) => (
+        <>
+          {i > 0 && (
+            <span class="sep" aria-hidden="true">
+              /
+            </span>
+          )}
+          {locale === lang ? (
+            <span class="active" aria-current="true">
+              {labels[locale]}
+            </span>
+          ) : (
+            <a href={switchLocalePath(Astro.url, locale)}>{labels[locale]}</a>
+          )}
+        </>
+      ))}
+    </nav>
+  )
+}
 
 <style>
   .lang-switcher {
