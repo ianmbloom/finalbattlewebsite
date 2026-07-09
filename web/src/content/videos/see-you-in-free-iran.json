@@ -1,6 +1,7 @@
 {
   "series": "statements",
   "category": "truth",
+  "boostTier": 3,
   "format": "long",
   "publishedAt": "2026-04-18",
   "order": 1,

@@ -49,7 +49,13 @@ interface StripeSession {
   customer_details?: { email?: string | null; name?: string | null; address?: StripeAddress | null } | null;
   shipping_details?: { name?: string | null; address?: StripeAddress | null } | null;
   consent?: { promotions?: string | null } | null;
-  metadata?: { locale?: string } | null;
+  metadata?: {
+    locale?: string;
+    /** Set to "boost" by /api/boost/create-checkout for the Launch mechanic. */
+    type?: string;
+    videoSlug?: string;
+    amount?: string;
+  } | null;
   _embedded?: never;
 }
 
@@ -149,6 +155,58 @@ async function submitPrintify(
   );
 }
 
+/**
+ * Idempotency guard: returns true if this Stripe event was already processed.
+ * Records unseen events so webhook retries never double-count. No-ops (returns
+ * false) when no DB is bound so the merch flow keeps working without D1.
+ */
+async function alreadyProcessed(
+  db: D1Database | undefined,
+  eventId: string | undefined,
+): Promise<boolean> {
+  if (!db || !eventId) return false;
+  const seen = await db
+    .prepare("SELECT 1 FROM stripe_events WHERE event_id = ?")
+    .bind(eventId)
+    .first();
+  return Boolean(seen);
+}
+
+async function markProcessed(
+  db: D1Database | undefined,
+  eventId: string | undefined,
+): Promise<void> {
+  if (!db || !eventId) return;
+  await db
+    .prepare("INSERT OR IGNORE INTO stripe_events (event_id, processed_at) VALUES (?, ?)")
+    .bind(eventId, new Date().toISOString())
+    .run();
+}
+
+/**
+ * Pool a completed launch into the public per-video counter. `boost_count`
+ * drives the momentum number shown on the panel; `total_cents` is internal.
+ */
+async function recordBoost(
+  db: D1Database | undefined,
+  slug: string,
+  cents: number,
+): Promise<void> {
+  if (!db || !slug) return;
+  const now = new Date().toISOString();
+  await db
+    .prepare(
+      `INSERT INTO video_boosts (video_slug, boost_count, total_cents, updated_at)
+       VALUES (?, 1, ?, ?)
+       ON CONFLICT(video_slug) DO UPDATE SET
+         boost_count = boost_count + 1,
+         total_cents = total_cents + excluded.total_cents,
+         updated_at  = excluded.updated_at`,
+    )
+    .bind(slug, cents, now)
+    .run();
+}
+
 export const onRequestPost = async (context: {
   request: Request;
   env: Env;
@@ -161,7 +219,7 @@ export const onRequestPost = async (context: {
     return new Response("Invalid signature", { status: 401 });
   }
 
-  let event: { type?: string; data?: { object?: StripeSession } };
+  let event: { id?: string; type?: string; data?: { object?: StripeSession } };
   try {
     event = JSON.parse(raw);
   } catch {
@@ -171,6 +229,48 @@ export const onRequestPost = async (context: {
   if (event.type !== "checkout.session.completed") {
     // Acknowledge other event types so Stripe stops retrying.
     return new Response("Ignored", { status: 200 });
+  }
+
+  // Webhook retries can redeliver the same event; skip anything already handled.
+  if (await alreadyProcessed(env.DB, event.id)) {
+    return new Response("ok", { status: 200 });
+  }
+
+  // Boost sessions carry their data inline in metadata — no re-fetch or Printify
+  // fulfillment needed. Branch here before the merch path.
+  const obj = event.data?.object;
+  if (obj?.metadata?.type === "boost") {
+    const slug = obj.metadata.videoSlug ?? "";
+    const cents = (parseInt(obj.metadata.amount ?? "0", 10) || 0) * 100;
+    await recordBoost(env.DB, slug, cents);
+    // Capture the buyer's email + newsletter opt-in collected in the funnel.
+    const email = obj.customer_details?.email ?? "";
+    if (email) {
+      await recordEmail(env.DB, {
+        email,
+        source: "purchase",
+        locale: obj.metadata.locale === "fa" ? "fa" : "en",
+        marketing: obj.consent?.promotions === "opt_in",
+      });
+    }
+    await markProcessed(env.DB, event.id);
+    return new Response("ok", { status: 200 });
+  }
+
+  // Tip ("Buy us a kotlet") sessions have nothing to fulfill; just capture the
+  // buyer's email and acknowledge. No Printify re-fetch needed.
+  if (obj?.metadata?.type === "tip") {
+    const email = obj.customer_details?.email ?? "";
+    if (email) {
+      await recordEmail(env.DB, {
+        email,
+        source: "purchase",
+        locale: obj.metadata.locale === "fa" ? "fa" : "en",
+        marketing: obj.consent?.promotions === "opt_in",
+      });
+    }
+    await markProcessed(env.DB, event.id);
+    return new Response("ok", { status: 200 });
   }
 
   const sessionId = event.data?.object?.id;
@@ -224,5 +324,6 @@ export const onRequestPost = async (context: {
     return new Response(`Fulfillment error: ${detail}`, { status: 502 });
   }
 
+  await markProcessed(env.DB, event.id);
   return new Response("ok", { status: 200 });
 };

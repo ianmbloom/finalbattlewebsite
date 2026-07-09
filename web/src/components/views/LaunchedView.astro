@@ -1,0 +1,157 @@
+---
+/**
+ * Post-launch confirmation ("It's in the air."). Shown as the Stripe success
+ * page. Always renders the confirmation, tolerant of a missing/invalid `?slug`.
+ * When the launched video has a real X post, it offers an optional, untracked
+ * repost link. It then invites another launch — framed plainly as buying more
+ * reach and funding the next production, never as a donation.
+ */
+import { getCollection } from "astro:content";
+import type { Locale } from "@/consts";
+import { useTranslations, localizedPath } from "@/i18n/utils";
+import { getVariant, shareablePlatforms } from "@/lib/videos";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const videosHref = localizedPath("/videos", lang);
+
+// Build a small slug -> X post URL map so the client can pick the right repost
+// link from `?slug` without shipping the full content collection.
+const entries = await getCollection("videos");
+const xMap: Record<string, string> = {};
+for (const entry of entries) {
+  const variant = getVariant(entry, lang) ?? getVariant(entry, "en");
+  const x = shareablePlatforms(variant?.platforms).x;
+  if (x) xMap[entry.id] = x;
+}
+---
+
+<BaseLayout
+  lang={lang}
+  title={t("launch.confirm.title")}
+  description={t("launch.confirm.body")}
+>
+  <section class="launched">
+    <h1 class="launched-title font-display">{t("launch.confirm.title")}</h1>
+    <p class="launched-body">{t("launch.confirm.body")}</p>
+
+    <a
+      class="launched-repost"
+      data-launched-repost
+      target="_blank"
+      rel="noopener"
+      hidden
+    >
+      {t("launch.confirm.repost")}
+    </a>
+
+    <div class="launched-fund">
+      <h2 class="launched-fund-title font-display">
+        {t("launch.confirm.fund.title")}
+      </h2>
+      <p class="launched-fund-body">{t("launch.confirm.fund.body")}</p>
+      <a class="launched-fund-cta" href={videosHref}>
+        {t("launch.confirm.fund.cta")}
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ xMap }}>
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+  const repost = document.querySelector("[data-launched-repost]");
+  const url = slug ? xMap[slug] : undefined;
+  if (repost && url) {
+    repost.setAttribute("href", url);
+    repost.hidden = false;
+  }
+</script>
+
+<style>
+  .launched {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: clamp(3rem, 8vw, 6rem) 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .launched-title {
+    margin: 0;
+    font-weight: 300;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    line-height: 1.05;
+    color: var(--text);
+  }
+  .launched-body {
+    margin: 0;
+    max-width: 48ch;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+  .launched-repost {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    color: var(--color-emerald);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .launched-repost[hidden] {
+    display: none;
+  }
+  .launched-fund {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line-strong);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .launched-fund-title {
+    margin: 0;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .launched-fund-body {
+    margin: 0;
+    max-width: 48ch;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+  .launched-fund-cta {
+    align-self: flex-start;
+    margin-top: 0.4rem;
+    padding: 0.85rem 1.75rem;
+    border-radius: 2px;
+    background: var(--color-canary);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+      transform 300ms var(--ease-editorial),
+      box-shadow 300ms var(--ease-editorial),
+      filter 300ms var(--ease-editorial);
+  }
+  .launched-fund-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    filter: brightness(1.05);
+  }
+  html[dir="rtl"] .launched-fund-cta {
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+</style>

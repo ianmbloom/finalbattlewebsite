@@ -1,0 +1,74 @@
+---
+/**
+ * Plain-English service terms for the Launch mechanic. Confident, non-defensive
+ * prose: what you buy, how reach is bought, platform limits, production
+ * funding, and a clear statement that it is a purchase (not a donation).
+ */
+import type { Locale } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const sections = [
+  { title: t("terms.what.title"), body: t("terms.what.body") },
+  { title: t("terms.pool.title"), body: t("terms.pool.body") },
+  { title: t("terms.discretion.title"), body: t("terms.discretion.body") },
+  { title: t("terms.production.title"), body: t("terms.production.body") },
+  { title: t("terms.purchase.title"), body: t("terms.purchase.body") },
+];
+---
+
+<BaseLayout lang={lang} title={t("terms.title")} description={t("terms.what.body")}>
+  <section class="terms">
+    <h1 class="terms-title font-display">{t("terms.title")}</h1>
+    {
+      sections.map((s) => (
+        <div class="terms-block">
+          <h2 class="terms-heading font-display">{s.title}</h2>
+          <p class="terms-body">{s.body}</p>
+        </div>
+      ))
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .terms {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 4.5rem) 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .terms-title {
+    margin: 0;
+    font-weight: 300;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1.05;
+    color: var(--text);
+  }
+  .terms-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .terms-heading {
+    margin: 0;
+    font-weight: 400;
+    font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+    line-height: 1.15;
+    color: var(--text);
+  }
+  .terms-body {
+    margin: 0;
+    max-width: 60ch;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+</style>

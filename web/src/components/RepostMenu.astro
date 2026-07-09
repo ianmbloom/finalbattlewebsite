@@ -1,0 +1,414 @@
+---
+import type { Locale } from "@/consts";
+import { useTranslations } from "@/i18n/utils";
+import { shareablePlatforms, withUtm } from "@/lib/videos";
+
+interface Platforms {
+  x?: string;
+  instagram?: string;
+  tiktok?: string;
+  youtube?: string;
+  linkedin?: string;
+}
+
+interface Props {
+  title: string;
+  platforms?: Platforms;
+  /** Absolute URL of this video's page on our site. */
+  pageUrl: string;
+  lang: Locale;
+  /** Compact trigger used inside cards. */
+  compact?: boolean;
+}
+
+const { title, pageUrl, lang, compact = false } = Astro.props;
+const t = useTranslations(lang);
+
+// Native-post links stay on their platform (no UTM — they leave our domain).
+// Only real (non-placeholder) links render.
+const platforms = shareablePlatforms(Astro.props.platforms);
+const nativeRows = [
+  { key: "x", label: t("share.x"), url: platforms.x },
+  { key: "instagram", label: t("share.instagram"), url: platforms.instagram },
+  { key: "youtube", label: t("share.youtube"), url: platforms.youtube },
+  { key: "tiktok", label: t("share.tiktok"), url: platforms.tiktok },
+  { key: "linkedin", label: t("share.linkedin"), url: platforms.linkedin },
+].filter((row): row is { key: string; label: string; url: string } =>
+  Boolean(row.url),
+);
+
+// Telegram + Copy share the site page URL (tagged) — Telegram renders the video
+// inline from our Open Graph metadata, and both are attributable via UTM.
+const telegramUrl = withUtm(pageUrl, "telegram");
+const copyUrl = withUtm(pageUrl, "copy");
+const telegramIntent = `https://t.me/share/url?url=${encodeURIComponent(
+  telegramUrl,
+)}&text=${encodeURIComponent(title)}`;
+
+// Unique ids so the single hoisted script can pair each trigger to its overlay.
+const uid = `repost-${Math.random().toString(36).slice(2, 9)}`;
+const titleId = `${uid}-title`;
+---
+
+<div class:list={["repost", { compact }]}>
+  <button
+    type="button"
+    class="repost-trigger"
+    data-repost-open
+    aria-haspopup="dialog"
+    aria-expanded="false"
+    aria-controls={uid}
+  >
+    <span class="repost-trigger-label">
+      {compact ? t("share.repostShort") : t("share.repost")}
+    </span>
+    <span class="repost-trigger-cue" aria-hidden="true">↗</span>
+  </button>
+
+  <div
+    id={uid}
+    class="repost-overlay"
+    data-repost-overlay
+    hidden
+  >
+    <div class="repost-backdrop" data-repost-close></div>
+    <div class="repost-panel" role="dialog" aria-modal="true" aria-labelledby={titleId}>
+      <div class="repost-head">
+        <h2 id={titleId} class="repost-title font-display">
+          {t("share.repostTitle")}
+        </h2>
+        <button
+          type="button"
+          class="repost-close"
+          data-repost-close
+          aria-label={t("share.close")}
+        >
+          &times;
+        </button>
+      </div>
+
+      <ul class="repost-list">
+        {
+          nativeRows.map((row) => (
+            <li>
+              <a
+                class="repost-link"
+                href={row.url}
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="repost-name">{row.label}</span>
+                <span class="repost-cue" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a
+            class="repost-link"
+            href={telegramIntent}
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="repost-name">{t("share.telegram")}</span>
+            <span class="repost-cue" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      </ul>
+
+      <button
+        type="button"
+        class="repost-copy label"
+        data-repost-copy
+        data-copy-url={copyUrl}
+      >
+        <span class="copy-idle">{t("share.copyLink")}</span>
+        <span class="copy-done">{t("share.copied")}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface RepostWindow extends Window {
+    __repostMenuInit?: boolean;
+  }
+  const w = window as RepostWindow;
+
+  if (!w.__repostMenuInit) {
+    w.__repostMenuInit = true;
+
+    let lastTrigger: HTMLElement | null = null;
+
+    const overlayFor = (id: string | null): HTMLElement | null =>
+      id ? document.getElementById(id) : null;
+
+    const openOverlay = (overlay: HTMLElement) => {
+      overlay.hidden = false;
+      const trigger = document.querySelector<HTMLElement>(
+        `[aria-controls="${overlay.id}"]`,
+      );
+      lastTrigger = trigger;
+      trigger?.setAttribute("aria-expanded", "true");
+      overlay.querySelector<HTMLElement>("a, button")?.focus();
+      document.addEventListener("keydown", onKeydown);
+    };
+
+    const closeOverlay = (overlay: HTMLElement) => {
+      overlay.hidden = true;
+      document
+        .querySelector<HTMLElement>(`[aria-controls="${overlay.id}"]`)
+        ?.setAttribute("aria-expanded", "false");
+      document.removeEventListener("keydown", onKeydown);
+      lastTrigger?.focus();
+      lastTrigger = null;
+    };
+
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      document
+        .querySelectorAll<HTMLElement>("[data-repost-overlay]:not([hidden])")
+        .forEach(closeOverlay);
+    };
+
+    document.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+
+      const openBtn = target.closest<HTMLElement>("[data-repost-open]");
+      if (openBtn) {
+        const overlay = overlayFor(openBtn.getAttribute("aria-controls"));
+        if (overlay) openOverlay(overlay);
+        return;
+      }
+
+      const closeBtn = target.closest<HTMLElement>("[data-repost-close]");
+      if (closeBtn) {
+        const overlay = closeBtn.closest<HTMLElement>("[data-repost-overlay]");
+        if (overlay) closeOverlay(overlay);
+        return;
+      }
+
+      const copyBtn = target.closest<HTMLElement>("[data-repost-copy]");
+      if (copyBtn) {
+        const url = copyBtn.dataset.copyUrl;
+        if (!url) return;
+        navigator.clipboard?.writeText(url);
+        copyBtn.dataset.copied = "true";
+        setTimeout(() => {
+          delete copyBtn.dataset.copied;
+        }, 1500);
+      }
+    });
+  }
+</script>
+
+<style>
+  .repost {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Understated twinkling link with an up-right arrow (matches .launch-trigger). */
+  .repost-trigger {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text);
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .repost-trigger-label {
+    background-image: linear-gradient(
+      110deg,
+      var(--text) 0%,
+      var(--text) 43%,
+      var(--color-canary) 50%,
+      var(--text) 57%,
+      var(--text) 100%
+    );
+    background-size: 250% 100%;
+    background-position: 150% 0;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    /* Offset from the Launch twinkle so the two links sparkle out of sync. */
+    animation: repost-twinkle 5s var(--ease-editorial) infinite;
+    animation-delay: 2.5s;
+  }
+  .repost-trigger-cue {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .repost-trigger:hover {
+    color: var(--color-emerald);
+  }
+  .repost-trigger:hover .repost-trigger-label {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: currentColor;
+  }
+  .repost-trigger:hover .repost-trigger-cue {
+    color: var(--color-emerald);
+  }
+  @keyframes repost-twinkle {
+    0%,
+    55% {
+      background-position: 150% 0;
+    }
+    80%,
+    100% {
+      background-position: -50% 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .repost-trigger-label {
+      animation: none;
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: currentColor;
+    }
+  }
+
+  /* Quieter, calm text on cards: no twinkle, no arrow. */
+  .repost.compact .repost-trigger {
+    color: var(--text-muted);
+    font-size: 0.62rem;
+  }
+  .repost.compact .repost-trigger-cue {
+    display: none;
+  }
+  .repost.compact .repost-trigger-label {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: currentColor;
+  }
+  .repost.compact .repost-trigger:hover,
+  .repost.compact .repost-trigger:hover .repost-trigger-label {
+    color: var(--color-emerald);
+  }
+
+  .repost-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .repost-overlay[hidden] {
+    display: none;
+  }
+  .repost-backdrop {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--color-obsidian) 72%, transparent);
+    backdrop-filter: blur(3px);
+  }
+  .repost-panel {
+    position: relative;
+    width: min(24rem, 100%);
+    background: var(--bg);
+    border: 1px solid var(--border, color-mix(in srgb, var(--text) 12%, transparent));
+    border-radius: 1rem;
+    box-shadow: var(--shadow-md);
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+
+  .repost-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .repost-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--text);
+  }
+  .repost-close {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--text-muted);
+    transition: color 300ms var(--ease-editorial);
+  }
+  .repost-close:hover {
+    color: var(--color-emerald);
+  }
+
+  .repost-list {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .repost-link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.6rem 0;
+    color: var(--text);
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--text) 8%, transparent);
+    transition: color 300ms var(--ease-editorial);
+  }
+  .repost-list li:last-child .repost-link {
+    border-bottom: 0;
+  }
+  .repost-name {
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+  }
+  .repost-cue {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+  .repost-link:hover,
+  .repost-link:hover .repost-cue {
+    color: var(--color-emerald);
+  }
+
+  /* Quiet, secondary copy-link affordance. */
+  .repost-copy {
+    background: none;
+    border: 0;
+    padding: 0.25rem 0;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .repost-copy:hover {
+    color: var(--text);
+  }
+  .copy-done {
+    display: none;
+    color: var(--color-emerald);
+  }
+  .repost-copy[data-copied="true"] .copy-idle {
+    display: none;
+  }
+  .repost-copy[data-copied="true"] .copy-done {
+    display: inline;
+  }
+</style>

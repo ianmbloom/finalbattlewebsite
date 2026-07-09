@@ -1,12 +1,13 @@
 ---
-import { resolveVideoSrc, SITE_URL, type Locale } from "@/consts";
+import { resolveVideoSrc, SITE_URL, FEATURES, type Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
-import { getVariant, getVideoCredit, type VideoEntry } from "@/lib/videos";
+import { getVariant, getVideoCredit, getBoostTier, type VideoEntry } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import VideoPlayer from "@/components/VideoPlayer.astro";
-import ShareGuide from "@/components/ShareGuide.astro";
+import RepostMenu from "@/components/RepostMenu.astro";
 import Transcript from "@/components/Transcript.astro";
 import StoryPanel from "@/components/StoryPanel.astro";
+import LaunchThisVideo from "@/components/LaunchThisVideo.astro";
 
 interface Props {
   entry: VideoEntry;
@@ -29,6 +30,7 @@ const hasSibling = Boolean(getVariant(entry, otherLang));
 const siblingHref = localizedPath(`/videos/${entry.id}`, otherLang);
 const siblingLabel = lang === "en" ? t("video.alsoInFa") : t("video.alsoInEn");
 const soonLabel = lang === "en" ? t("video.faSoon") : t("video.enSoon");
+const boostTier = getBoostTier(entry);
 ---
 
 <BaseLayout
@@ -62,7 +64,17 @@ const soonLabel = lang === "en" ? t("video.faSoon") : t("video.enSoon");
           <span class="sister-soon">{soonLabel}</span>
         )
       }
-      <ShareGuide variant={variant} lang={lang} pageUrl={pageUrl} />
+      {
+        FEATURES.boost && (
+          <LaunchThisVideo videoSlug={entry.id} boostTier={boostTier} locale={lang} />
+        )
+      }
+      <RepostMenu
+        title={variant.title}
+        platforms={variant.platforms}
+        pageUrl={pageUrl}
+        lang={lang}
+      />
       <Transcript variant={variant} lang={lang} />
       <StoryPanel variant={variant} lang={lang} />
       <a class="back" href={localizedPath("/videos", lang)}>

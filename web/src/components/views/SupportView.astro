@@ -3,7 +3,6 @@ import type { Locale } from "@/consts";
 import { FEATURES } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import BusinessPattern from "@/components/BusinessPattern.astro";
 import SupportCTA from "@/components/SupportCTA.astro";
 
 interface Props {
@@ -15,91 +14,60 @@ const shopHref = localizedPath("/shop", lang);
 ---
 
 <BaseLayout lang={lang} title={t("support.title")} description={t("support.lead")}>
-  <section class="support-band business-surface">
-    <BusinessPattern />
-    <div class="support-band-inner">
-      <h1 class="title font-display">{t("support.title")}</h1>
-      <p class="lead">{t("support.lead")}</p>
-    </div>
-  </section>
+  <section class="support">
+    <h1 class="support-lead font-display">{t("support.lead")}</h1>
 
-  <section class="support-body">
-    <div class="block donate">
+    <div class="block fund">
       <SupportCTA lang={lang} variant="band" disabled={!FEATURES.donations} />
     </div>
 
     <hr class="rule" />
 
     <div class="block shop">
-      <div class="copy">
-        <h2 class="title font-display">
-          {t("support.shop.title")}
-          {!FEATURES.shop && <span class="soon">{t("common.soon")}</span>}
-        </h2>
-        <p class="body">{t("support.shop.body")}</p>
+      <div class="actions">
+        {
+          FEATURES.shop ? (
+            <a class="btn-outline shop-cta" href={shopHref}>{t("support.shop.title")}</a>
+          ) : (
+            <span class="btn-outline shop-cta is-disabled" aria-disabled="true">
+              {t("support.shop.title")}
+            </span>
+          )
+        }
+        {!FEATURES.shop && <span class="soon">{t("common.soon")}</span>}
       </div>
-      {
-        FEATURES.shop ? (
-          <a class="btn-outline shop-cta" href={shopHref}>{t("support.shop.cta")}</a>
-        ) : (
-          <span class="btn-outline shop-cta is-disabled" aria-disabled="true">
-            {t("support.shop.cta")}
-          </span>
-        )
-      }
+      <p class="body">{t("support.shop.body")}</p>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .support-band {
-    border-bottom: 1px solid var(--bar-line);
-  }
-  .support-band-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: clamp(1.75rem, 3.5vw, 2.75rem) 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  .support-band .title {
-    font-weight: 300;
-    font-size: clamp(2rem, 4.5vw, 3rem);
-    line-height: 1.05;
-    margin: 0;
-    color: var(--bar-text);
-  }
-  .support-band .lead {
-    margin: 0;
-    max-width: 52ch;
-    font-size: 1.1rem;
-    color: var(--bar-muted);
-  }
-  .support-body {
+  .support {
     max-width: 720px;
     margin: 0 auto;
-    padding: clamp(1.75rem, 3vw, 2.5rem) 1.5rem 0;
+    padding: clamp(2rem, 5vw, 3.5rem) 1.5rem 0;
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
+  }
+  .support-lead {
+    margin: 0;
+    max-width: 32ch;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+    line-height: 1.25;
+    color: var(--text);
   }
   .block {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
-  .shop .copy {
+  .actions {
     display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-  .shop .title {
-    margin: 0;
-    font-weight: 400;
-    font-size: clamp(1.6rem, 3vw, 2.1rem);
-    line-height: 1.1;
-    color: var(--text);
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
   }
   .shop .body {
     margin: 0;

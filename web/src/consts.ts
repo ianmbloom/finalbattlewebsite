@@ -3,24 +3,23 @@ export const SITE_URL = "https://finalbattleiran.org";
 export const SITE_NAME = "Final Battle Iran";
 
 /**
- * External "impulse donation" destination. This is a plain outbound link —
- * the project takes no payment details itself for donations.
- */
-export const DONATE_LINKS = {
-  buyMeACoffee: "https://buymeacoffee.com/seeuinfreeiran",
-} as const;
-
-/**
  * Feature switches for the launch. Anything OFF renders grayed out and disabled
  * ("Soon") instead of pretending to work. Flip a flag to true once it is wired up:
  *   - newsletter: the D1 `subscribers` database is created + bound (`DB`). LIVE.
  *   - shop:       Stripe + Printify keys are set and real products exist.
- *   - donations:  the real Buy Me a Coffee URL above is filled in. LIVE.
+ *   - donations:  the "Buy us a kotlet" Stripe tip checkout is live (needs
+ *                 STRIPE_SECRET_KEY, reused from the merch integration). LIVE.
  */
 export const FEATURES = {
   newsletter: true,
   shop: false,
   donations: true,
+  /**
+   * The per-video "Launch this video" paid-reach mechanic. LIVE once the Stripe
+   * secret + webhook are set (reused from the merch integration) and the
+   * `video_boosts` D1 tables exist (migrations/0002_video_boosts.sql).
+   */
+  boost: true,
 } as const;
 
 /**

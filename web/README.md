@@ -5,7 +5,7 @@ Bilingual (English + Persian) hub for the Iran Prosperity Project. Built with As
 It serves three purposes:
 
 1. **Sharing hub** — shows the full video library and explicitly calls on visitors to share/promote each video on the platform where it lives (compact share bar on every card + a "Be the arrow" promote band on the home and library pages).
-2. **Financial support** — a self-hosted Stripe + Printify merch shop, plus external "impulse donation" links (Ko-fi + Buy Me a Coffee) on the `/support` page.
+2. **Financial support** — a self-hosted Stripe + Printify merch shop, plus a "Buy us a kotlet" Stripe tip checkout on the `/fund` page.
 3. **Email collection** — a newsletter form on every page that writes to a Cloudflare D1 database (buyers are captured too, via the Stripe webhook).
 
 - **Live domain:** finalbattleiran.org
@@ -182,7 +182,7 @@ visitor. Flip a flag to `true` once it's wired up and rebuild:
 | --------------------- | -------------------------------------------------------------- | ------------------------------------------------ |
 | `FEATURES.newsletter` | the D1 `subscribers` DB is created + bound (`DB`)              | the newsletter form                              |
 | `FEATURES.shop`       | Stripe + Printify keys are set and real products exist         | Shop nav/links, cart, add-to-cart                |
-| `FEATURES.donations`  | the real Ko-fi / Buy Me a Coffee URLs are in `DONATE_LINKS`    | the donate buttons on `/support`                 |
+| `FEATURES.donations`  | `STRIPE_SECRET_KEY` is set (reused from the shop)              | the "Buy us a kotlet" tip button on `/fund`      |
 
 Video share buttons light up per-video automatically: any platform link still
 set to a `PLACEHOLDER` post URL is hidden until you paste the real post URL into
@@ -216,11 +216,14 @@ Export the collected list anytime:
 npm run db:export            # SELECT email, source, locale, marketing, created_at ...
 ```
 
-## Donations (impulse links)
+## Donations ("Buy us a kotlet" tip)
 
-`/support` (`SupportView` + `SupportCTA.astro`) links out to Ko-fi and Buy Me a
-Coffee. The site itself takes no payment details for donations. Set the real
-account URLs in `DONATE_LINKS` in `src/consts.ts`.
+`/fund` (`SupportView` + `SupportCTA.astro`) offers a "Buy us a kotlet" tip that
+runs through Stripe Checkout — the same integration as the shop and the Launch
+mechanic. The button POSTs `{ locale }` to `POST /api/tip/create-checkout`, which
+creates a fixed-unit-price session (quantity adjustable at Checkout) and redirects
+to the hosted page. The unit amount lives in `src/config/tip.ts`; the webhook
+tags the session `type: "tip"` and only records the buyer's email.
 
 ## Merch shop (Stripe + Printify)
 

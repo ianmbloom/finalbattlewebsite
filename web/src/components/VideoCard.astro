@@ -1,5 +1,5 @@
 ---
-import type { Locale } from "@/consts";
+import { SITE_URL, type Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import {
   formatDuration,
@@ -8,7 +8,7 @@ import {
   hasShareLinks,
   type VideoEntry,
 } from "@/lib/videos";
-import ShareBar from "./ShareBar.astro";
+import RepostMenu from "./RepostMenu.astro";
 
 interface Props {
   entry: VideoEntry;
@@ -19,6 +19,7 @@ const t = useTranslations(lang);
 
 const variant = getVariant(entry, lang)!;
 const href = localizedPath(`/videos/${entry.id}`, lang);
+const pageUrl = new URL(href, SITE_URL).href;
 const duration = formatDuration(variant.durationSeconds);
 const blurb = getBlurb(variant);
 const hasPlatforms = hasShareLinks(variant.platforms);
@@ -59,7 +60,13 @@ const hasPlatforms = hasShareLinks(variant.platforms);
     hasPlatforms && (
       <div class="card-share">
         <span class="card-share-label label">{t("promote.share")}</span>
-        <ShareBar title={variant.title} platforms={variant.platforms} lang={lang} compact />
+        <RepostMenu
+          title={variant.title}
+          platforms={variant.platforms}
+          pageUrl={pageUrl}
+          lang={lang}
+          compact
+        />
       </div>
     )
   }

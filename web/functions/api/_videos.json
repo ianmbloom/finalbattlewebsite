@@ -1,0 +1,37 @@
+{
+  "captive-nation": {
+    "title": {
+      "en": "A Captive Nation",
+      "fa": "ملتی در اسارت"
+    },
+    "boostTier": 3
+  },
+  "iran-has-a-future": {
+    "title": {
+      "en": "Iran Has a Future",
+      "fa": "ایران آینده‌ای دارد"
+    },
+    "boostTier": 1
+  },
+  "returning-to-democracy": {
+    "title": {
+      "en": "Returning to Democracy",
+      "fa": "بازگشت به دموکراسی"
+    },
+    "boostTier": 2
+  },
+  "see-you-in-free-iran": {
+    "title": {
+      "en": "We Will See Each Other in Free Iran",
+      "fa": "We Will See Each Other in Free Iran"
+    },
+    "boostTier": 3
+  },
+  "transitional-leader": {
+    "title": {
+      "en": "What Is a Transitional Leader?",
+      "fa": "رهبر گذار چیست؟"
+    },
+    "boostTier": 2
+  }
+}

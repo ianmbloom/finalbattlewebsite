@@ -1,57 +1,111 @@
 ---
 import type { Locale } from "@/consts";
-import { DONATE_LINKS } from "@/consts";
+import { TIP } from "@/config/tip";
 import { useTranslations } from "@/i18n/utils";
 
 interface Props {
   lang: Locale;
-  /** Drop the donate buttons into a single emphasized band (used on /support). */
+  /** Drop the donate buttons into a single emphasized band (used on /fund). */
   variant?: "band" | "inline";
-  /** Render grayed-out and inert until the real donation URLs are set. */
+  /** Render grayed-out and inert until Stripe checkout is configured. */
   disabled?: boolean;
 }
 
 const { lang, variant = "inline", disabled = false } = Astro.props;
 const t = useTranslations(lang);
+
+const kotletWord = lang === "fa" ? "کتلت" : "kotlets";
+const price = (qty: number) =>
+  new Intl.NumberFormat(lang === "fa" ? "fa" : "en-US", {
+    style: "currency",
+    currency: TIP.currency,
+    maximumFractionDigits: 0,
+  }).format((qty * TIP.unitAmount) / 100);
 ---
 
-<div class:list={["support-cta", variant, { "is-disabled": disabled }]}>
-  <div class="copy">
-    <h2 class="title font-display">
-      {t("support.donate.title")}
-      {disabled && <span class="soon">{t("common.soon")}</span>}
-    </h2>
-    <p class="body">{t("support.donate.body")}</p>
-  </div>
-  <div class="actions">
+<div class:list={["support-cta", variant, { "is-disabled": disabled }]} data-tip data-locale={lang}>
+  <p class="tip-label">
+    {t("support.donate.title")}
+    {disabled && <span class="soon">{t("common.soon")}</span>}
+  </p>
+  <div class="actions" role="group" aria-label={t("support.donate.title")}>
     {
-      disabled ? (
-        <span class="donate-btn bmac" aria-disabled="true">{t("support.bmac")}</span>
-      ) : (
-        <a class="donate-btn bmac" href={DONATE_LINKS.buyMeACoffee} target="_blank" rel="noopener">
-          {t("support.bmac")}
-        </a>
-      )
+      TIP.quantities.map((qty) => {
+        const label = `${qty} ${kotletWord} — ${price(qty)}`;
+        return disabled ? (
+          <span class="support-btn kotlet" aria-disabled="true">
+            <span class="qty">{qty} {kotletWord}</span>
+            <span class="amount">{price(qty)}</span>
+          </span>
+        ) : (
+          <button
+            type="button"
+            class="support-btn kotlet"
+            data-tip-qty={qty}
+            aria-label={label}
+          >
+            <span class="qty">{qty} {kotletWord}</span>
+            <span class="amount">{price(qty)}</span>
+          </button>
+        );
+      })
     }
   </div>
+  <p class="body">{t("support.donate.body")}</p>
+  <p class="tip-error" data-tip-error hidden>{t("support.error")}</p>
 </div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-tip]").forEach((root) => {
+    if (root.dataset.tipBound === "1") return;
+    root.dataset.tipBound = "1";
+
+    const locale = root.dataset.locale ?? "en";
+    const errorEl = root.querySelector<HTMLElement>("[data-tip-error]");
+    const buttons = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("button[data-tip-qty]"),
+    );
+
+    const setDisabled = (disabled: boolean) => {
+      buttons.forEach((b) => (b.disabled = disabled));
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const quantity = Number(btn.dataset.tipQty);
+        setDisabled(true);
+        if (errorEl) errorEl.hidden = true;
+        try {
+          const res = await fetch("/api/tip/create-checkout", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ locale, quantity }),
+          });
+          if (!res.ok) throw new Error(String(res.status));
+          const { url } = (await res.json()) as { url?: string };
+          if (!url) throw new Error("no_url");
+          window.location.assign(url);
+        } catch {
+          setDisabled(false);
+          if (errorEl) errorEl.hidden = false;
+        }
+      });
+    });
+  });
+</script>
 
 <style>
   .support-cta {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
   }
-  .copy {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-  .title {
+  .tip-label {
     margin: 0;
+    max-width: 52ch;
+    font-size: 1rem;
     font-weight: 400;
-    font-size: clamp(1.6rem, 3vw, 2.1rem);
-    line-height: 1.1;
+    line-height: 1.6;
     color: var(--text);
   }
   .body {
@@ -63,44 +117,69 @@ const t = useTranslations(lang);
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    align-items: center;
+    gap: 0.75rem;
   }
-  .donate-btn {
+  .support-btn {
     display: inline-flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0.85rem 1.75rem;
+    gap: 0.15rem;
+    min-width: 4.5rem;
+    padding: 0.7rem 1.1rem;
     border-radius: 2px;
     font-family: var(--font-body);
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    cursor: pointer;
     transition:
       transform 300ms var(--ease-editorial),
       box-shadow 300ms var(--ease-editorial),
       filter 300ms var(--ease-editorial);
   }
-  html[dir="rtl"] .donate-btn {
-    text-transform: none;
-    letter-spacing: 0.02em;
+  .amount {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1;
   }
-  .donate-btn:hover {
+  .qty {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    opacity: 0.75;
+  }
+  .support-btn:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     filter: brightness(1.05);
   }
-  .bmac {
+  .kotlet {
     background: var(--color-canary);
     color: var(--color-ink);
+    border: 0;
+  }
+  .support-btn:disabled {
+    opacity: 0.45;
+    cursor: wait;
+    transform: none;
+    box-shadow: none;
+    filter: none;
   }
   .support-cta.band {
     align-items: flex-start;
   }
-  .support-cta.is-disabled .donate-btn {
+  .support-cta.is-disabled .support-btn {
     opacity: 0.45;
     cursor: not-allowed;
     pointer-events: none;
+  }
+  .tip-error {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--color-rose, #d66);
+  }
+  .tip-error[hidden] {
+    display: none;
   }
   .soon {
     display: inline-block;

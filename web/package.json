@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "prebuild": "node scripts/gen-product-map.mjs",
+    "prebuild": "node scripts/gen-product-map.mjs && node scripts/gen-video-map.mjs",
+    "gen:videos": "node scripts/gen-video-map.mjs",
     "gen:video-thumbs": "node scripts/gen-video-thumbs.js",
     "gen:r2-thumbs": "node scripts/gen-r2-video-thumbs.mjs",
     "gen:fa-thumbs": "node scripts/gen-fa-video-thumbs.mjs",
@@ -17,6 +18,8 @@
     "printify:sync": "node scripts/sync-printify.mjs --sync",
     "db:schema:local": "wrangler d1 execute finalbattle-emails --local --file=./schema.sql",
     "db:schema": "wrangler d1 execute finalbattle-emails --remote --file=./schema.sql",
+    "db:boost:local": "wrangler d1 execute finalbattle-emails --local --file=./migrations/0002_video_boosts.sql",
+    "db:boost": "wrangler d1 execute finalbattle-emails --remote --file=./migrations/0002_video_boosts.sql",
     "db:export": "wrangler d1 execute finalbattle-emails --remote --command \"SELECT email, source, locale, marketing, created_at FROM subscribers ORDER BY created_at DESC\""
   },
   "dependencies": {

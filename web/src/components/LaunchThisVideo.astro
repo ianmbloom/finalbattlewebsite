@@ -1,0 +1,365 @@
+---
+/**
+ * "Launch this video" boost mechanic. A discreet twinkling trigger opens a
+ * focused popup where a visitor buys paid reach on X for this specific video at
+ * a fixed tier via Stripe Checkout. Renders NOTHING for organic-only videos
+ * (tier 3) — the same guard is enforced server-side in
+ * /api/boost/create-checkout, so a tier-3 video can never be launched.
+ *
+ * The anthem/mechanics copy IS the disclosure: this is a service purchase (paid
+ * reach + funding the next production), never a donation.
+ */
+import type { Locale } from "@/consts";
+import { BOOST, isLaunchable, type VideoBoostTier } from "@/config/boost";
+import { useTranslations } from "@/i18n/utils";
+
+interface Props {
+  videoSlug: string;
+  boostTier: VideoBoostTier;
+  locale: Locale;
+}
+
+const { videoSlug, boostTier, locale } = Astro.props;
+const t = useTranslations(locale);
+
+const uid = `launch-${Math.random().toString(36).slice(2, 9)}`;
+const titleId = `${uid}-title`;
+---
+
+{
+  isLaunchable(boostTier) && (
+    <div class="launch" data-launch data-slug={videoSlug} data-locale={locale}>
+      <button
+        type="button"
+        class="launch-trigger"
+        data-launch-open
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-controls={uid}
+      >
+        <span class="launch-trigger-label">{t("launch.trigger")}</span>
+        <span class="launch-trigger-cue" aria-hidden="true">
+          ↗
+        </span>
+      </button>
+
+      <div id={uid} class="launch-overlay" data-launch-overlay hidden>
+        <div class="launch-backdrop" data-launch-close />
+        <div
+          class="launch-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+        >
+          <button
+            type="button"
+            class="launch-close"
+            data-launch-close
+            aria-label={t("popup.close")}
+          >
+            &times;
+          </button>
+          <p id={titleId} class="launch-anthem font-display">
+            {t("launch.anthem")}
+          </p>
+          <div class="launch-tiers" role="group" aria-label={t("launch.action")}>
+            {BOOST.tiers.map((amount) => (
+              <button type="button" class="launch-tier" data-amount={amount}>
+                ${amount}
+              </button>
+            ))}
+          </div>
+          <p class="launch-mechanics">{t("launch.mechanics")}</p>
+          <p class="launch-error" data-launch-error hidden>
+            {t("launch.error")}
+          </p>
+          <p
+            class="launch-counter"
+            data-launch-counter
+            data-template={t("launch.counter")}
+            hidden
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-launch]").forEach((root) => {
+    if (root.dataset.launchBound === "1") return;
+    root.dataset.launchBound = "1";
+
+    const slug = root.dataset.slug ?? "";
+    const locale = root.dataset.locale ?? "en";
+    const counter = root.querySelector<HTMLElement>("[data-launch-counter]");
+    const errorEl = root.querySelector<HTMLElement>("[data-launch-error]");
+    const overlay = root.querySelector<HTMLElement>("[data-launch-overlay]");
+    const trigger = root.querySelector<HTMLElement>("[data-launch-open]");
+    const buttons = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("button[data-amount]"),
+    );
+
+    // Fetch the live counter. Fail silent — never block the buy.
+    if (slug) {
+      fetch(`/api/boost/count?slug=${encodeURIComponent(slug)}`)
+        .then((r) => r.json())
+        .then(({ boostCount }: { boostCount?: number }) => {
+          if (counter && typeof boostCount === "number" && boostCount > 0) {
+            const formatted = new Intl.NumberFormat(locale).format(boostCount);
+            counter.textContent = (counter.dataset.template ?? "").replace(
+              "{count}",
+              formatted,
+            );
+            counter.hidden = false;
+          }
+        })
+        .catch(() => {
+          if (counter) counter.hidden = true;
+        });
+    }
+
+    // Modal open/close — focus the customer on the purchase.
+    let lastFocus: HTMLElement | null = null;
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
+    const openModal = () => {
+      if (!overlay) return;
+      lastFocus = document.activeElement as HTMLElement | null;
+      overlay.hidden = false;
+      trigger?.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+      (buttons[0] ?? overlay.querySelector<HTMLElement>("button"))?.focus();
+      document.addEventListener("keydown", onKeydown);
+    };
+    const closeModal = () => {
+      if (!overlay) return;
+      overlay.hidden = true;
+      trigger?.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKeydown);
+      lastFocus?.focus?.();
+    };
+    trigger?.addEventListener("click", openModal);
+    root
+      .querySelectorAll<HTMLElement>("[data-launch-close]")
+      .forEach((el) => el.addEventListener("click", closeModal));
+
+    const setDisabled = (disabled: boolean) => {
+      buttons.forEach((b) => (b.disabled = disabled));
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const amount = Number(btn.dataset.amount);
+        setDisabled(true);
+        if (errorEl) errorEl.hidden = true;
+        try {
+          const res = await fetch("/api/boost/create-checkout", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ videoSlug: slug, amount, locale }),
+          });
+          if (!res.ok) throw new Error(String(res.status));
+          const { url } = (await res.json()) as { url?: string };
+          if (!url) throw new Error("no_url");
+          window.location.assign(url);
+        } catch {
+          setDisabled(false);
+          if (errorEl) errorEl.hidden = false;
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .launch {
+    display: block;
+  }
+  /* Understated twinkling link with an up-right arrow. Matches .repost-trigger
+     so Launch and Share read as a consistent pair. */
+  .launch-trigger {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    width: fit-content;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text);
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .launch-trigger-label {
+    background-image: linear-gradient(
+      110deg,
+      var(--text) 0%,
+      var(--text) 43%,
+      var(--color-canary) 50%,
+      var(--text) 57%,
+      var(--text) 100%
+    );
+    background-size: 250% 100%;
+    background-position: 150% 0;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: launch-twinkle 5s var(--ease-editorial) infinite;
+  }
+  .launch-trigger-cue {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .launch-trigger:hover {
+    color: var(--color-emerald);
+  }
+  .launch-trigger:hover .launch-trigger-label {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: currentColor;
+  }
+  .launch-trigger:hover .launch-trigger-cue {
+    color: var(--color-emerald);
+  }
+  @keyframes launch-twinkle {
+    0%,
+    55% {
+      background-position: 150% 0;
+    }
+    80%,
+    100% {
+      background-position: -50% 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .launch-trigger-label {
+      animation: none;
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: currentColor;
+    }
+  }
+
+  /* Focused popup — same treatment as the Share (repost) menu. */
+  .launch-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .launch-overlay[hidden] {
+    display: none;
+  }
+  .launch-backdrop {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--color-obsidian) 72%, transparent);
+    backdrop-filter: blur(3px);
+  }
+  .launch-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    width: min(26rem, 100%);
+    max-height: calc(100dvh - 3rem);
+    overflow-y: auto;
+    background: var(--bg);
+    border: 1px solid
+      var(--border, color-mix(in srgb, var(--text) 12%, transparent));
+    border-radius: 1rem;
+    box-shadow: var(--shadow-md);
+    padding: clamp(1.5rem, 4vw, 2rem);
+  }
+  .launch-close {
+    position: absolute;
+    inset-block-start: 0.35rem;
+    inset-inline-end: 0.6rem;
+    background: none;
+    border: 0;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--text-muted);
+    transition: color 300ms var(--ease-editorial);
+  }
+  .launch-close:hover {
+    color: var(--color-emerald);
+  }
+  .launch-anthem {
+    margin: 0;
+    padding-inline-end: 1.5rem;
+    font-weight: 300;
+    font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+    line-height: 1.2;
+    color: var(--text);
+  }
+  .launch-tiers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .launch-tier {
+    flex: 1 1 auto;
+    min-width: 4.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition:
+      border-color 300ms var(--ease-editorial),
+      background 300ms var(--ease-editorial),
+      color 300ms var(--ease-editorial);
+  }
+  .launch-tier:hover {
+    border-color: var(--color-canary);
+    background: var(--color-canary);
+    color: var(--color-ink);
+  }
+  .launch-tier:disabled {
+    opacity: 0.45;
+    cursor: wait;
+  }
+  .launch-mechanics {
+    margin: 0;
+    max-width: 52ch;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+  .launch-error {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--color-rose, #d66);
+  }
+  .launch-error[hidden] {
+    display: none;
+  }
+  .launch-counter {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    opacity: 0.85;
+  }
+  .launch-counter[hidden] {
+    display: none;
+  }
+</style>

@@ -40,6 +40,12 @@ const videos = defineCollection({
     // fall to the end, sorted newest-first.
     order: z.number().optional(),
     featured: z.boolean().optional(),
+    /**
+     * Ad-safety tier for the "Launch this video" mechanic:
+     *   1 = ad-safe, 2 = caution (ad-safe), 3 = organic-only.
+     * Unset is treated as 3 (mechanic hidden) with a build-time warning.
+     */
+    boostTier: z.union([z.literal(1), z.literal(2), z.literal(3)]).optional(),
     /** Short-form series clips vs. longer standalone statements. */
     format: z.enum(["short", "long"]).default("short"),
     tags: z.array(z.string()).optional(),

@@ -14,7 +14,7 @@ export const ui = {
     "nav.home": "Home",
     "nav.videos": "Videos",
     "nav.about": "About",
-    "nav.support": "Donate",
+    "nav.support": "Fund",
     "nav.shop": "Shop",
     "nav.cart": "Cart",
     "nav.language": "Language",
@@ -52,22 +52,19 @@ export const ui = {
     "video.faSoon": "Available for Persian speakers soon.",
     "video.enSoon": "Available for English speakers soon.",
 
-    "share.button": "Share",
     "share.x": "Repost on X",
     "share.instagram": "Share on Instagram",
     "share.tiktok": "Repost on TikTok",
     "share.youtube": "Share on YouTube",
     "share.linkedin": "Repost on LinkedIn",
 
-    "share.guide.title": "How to Share",
-    "share.guide.hint":
-      "Reposts put this in front of new people, while likes and comments help the video rise on each platform.",
-    "share.guide.x": "Repost on X.com",
-    "share.guide.instagram": "Share on Instagram",
-    "share.guide.tiktok": "Repost on TikTok",
-    "share.guide.youtube": "Share on YouTube Shorts",
-    "share.guide.linkedin": "Repost on LinkedIn",
-    "share.guide.reddit": "Post on Reddit",
+    "share.repost": "Share this video with your followers",
+    "share.repostShort": "Share",
+    "share.repostTitle": "Repost this video",
+    "share.telegram": "Share on Telegram",
+    "share.copyLink": "Copy link",
+    "share.copied": "Copied",
+    "share.close": "Close",
 
     "about.title": "Who We Are",
     "about.image_alt":
@@ -82,7 +79,7 @@ export const ui = {
       "Most of the world knows very little about Iran or the Lion and Sun Revolution, and that silence leaves room for misconceptions to spread unchallenged. We want to change that — to show a global audience the Free Iran that will soon benefit us all. We do it with short videos, where every piece is an arrow for the quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the Iran Prosperity Project.",
     "about.help.title": "How You Can Help",
     "about.help.body":
-      "This is where you come in. These videos only matter if they are seen. Watch them where they live, then follow our channels, like, comment, and repost — every share pushes the message past the regime's noise and into the world. Join our email list below to catch each new video the moment it drops, and, if you are able, support the work with a donation or by wearing the message. We make it for free; you make it travel.",
+      "This is where you come in. These videos only matter if they are seen. Watch them where they live, then follow our channels, like, comment, and repost — every share pushes the message past the regime's noise and into the world. Join our email list below to catch each new video the moment it drops, and, if you are able, fund the work by launching a video or wearing the message. We make it for free; you make it travel.",
 
     "promote.title": "Be the archer.",
     "promote.body":
@@ -103,23 +100,51 @@ export const ui = {
     "popup.email.body":
       "You've watched more than one — you get it. Join the list and every new video lands in your inbox the moment it drops.",
     "popup.email.dismiss": "Maybe later",
-    "popup.donate.title": "Fund the next arrow.",
-    "popup.donate.body":
-      "You keep coming back. Every video is made and shared for free — a small gift keeps them coming.",
-    "popup.donate.cta": "Buy us a kotlet",
-    "popup.donate.dismiss": "Not now",
 
-    "support.title": "Fund the Fight",
+    "launch.trigger": "Launch this video",
+    "launch.anthem":
+      "For the price of one Shahed drone, we can open the eyes of millions.",
+    "launch.action": "Launch this video:",
+    "launch.mechanics":
+      "Buy this video paid reach on X and fund our next production.",
+    "launch.counter": "{count} launched",
+    "launch.error": "Something went wrong. Please try again.",
+    "launch.confirm.title": "It's in the air.",
+    "launch.confirm.body":
+      "This message is now heading toward more people who haven't heard it.",
+    "launch.confirm.repost": "Add your own voice — repost on X",
+    "launch.confirm.fund.title": "Send another.",
+    "launch.confirm.fund.body":
+      "Every launch buys more reach and funds the next production. Pick another video to send further.",
+    "launch.confirm.fund.cta": "Launch another video",
+
+    "terms.title": "How launching works",
+    "terms.what.title": "What you're buying",
+    "terms.what.body":
+      "You're buying paid promotion of the video you chose on X — reach that puts it in front of people who haven't seen it yet.",
+    "terms.pool.title": "How the reach is bought",
+    "terms.pool.body":
+      "Purchases are pooled and spent as ad reach on a regular cadence, weighted toward the videos people have backed most. Reach isn't bought one transaction at a time.",
+    "terms.discretion.title": "Platform limits",
+    "terms.discretion.body":
+      "X decides what it will promote. If a video is limited or rejected, the reach is applied to other videos where it does the most good.",
+    "terms.production.title": "Funding the next video",
+    "terms.production.body":
+      "A portion of every purchase funds the production of the videos that come next.",
+    "terms.purchase.title": "It's a purchase",
+    "terms.purchase.body":
+      "This is a commercial purchase of paid reach and production support — not a donation. Purchases are final.",
+
+    "support.title": "Fund the Videos",
     "support.lead":
-      "A free Iran is an Iranian project — not a fantasy, and not something handed down from outside. These videos make that case, and reach further only with your help.",
-    "support.donate.title": "Fuel the next video",
+      "You can help us spread a confident vision for a secular, democratic Iran and teach the world about the Iran Prosperity Project.",
+    "support.donate.title": "Buy us a kotlet… or maybe a few",
     "support.donate.body":
-      "Your gift covers production, hosting, and reach — the difference between a video that merely exists and one the world actually sees. Give whatever you can.",
-    "support.bmac": "Buy us a kotlet",
+      "Cover our production costs and put our next video in front of more people.",
+    "support.error": "Could not start checkout. Please try again.",
     "support.shop.title": "Wear the message",
     "support.shop.body":
-      "Grab a shirt or a print and carry the fight into the streets. Every order funds more videos.",
-    "support.shop.cta": "Visit the shop",
+      "Grab a shirt or a print. Every order helps fund the next video.",
 
     "shop.title": "The Shop",
     "shop.intro": "Wear the message. Every order funds more videos.",
@@ -154,6 +179,7 @@ export const ui = {
       "No charge was made and your cart is still saved. Pick up where you left off whenever you're ready.",
 
     "footer.rights": "See You In Free Iran.",
+    "footer.terms": "How launching works",
   },
   fa: {
     "site.name": "نبرد نهایی",
@@ -163,7 +189,7 @@ export const ui = {
     "nav.home": "خانه",
     "nav.videos": "ویدیوها",
     "nav.about": "درباره",
-    "nav.support": "کمک مالی",
+    "nav.support": "تأمین مالی",
     "nav.shop": "فروشگاه",
     "nav.cart": "سبد خرید",
     "nav.language": "زبان",
@@ -202,22 +228,19 @@ export const ui = {
     "video.faSoon": "نسخه فارسی به‌زودی در دسترس قرار می‌گیرد.",
     "video.enSoon": "نسخه انگلیسی به‌زودی در دسترس قرار می‌گیرد.",
 
-    "share.button": "هم‌رسانی",
     "share.x": "بازنشر در ایکس",
     "share.instagram": "هم‌رسانی در اینستاگرام",
     "share.tiktok": "بازنشر در تیک‌تاک",
     "share.youtube": "هم‌رسانی در یوتیوب",
     "share.linkedin": "بازنشر در لینکدین",
 
-    "share.guide.title": "چگونه هم‌رسانی کنیم",
-    "share.guide.hint":
-      "بازنشرها این را به افراد تازه می‌رسانند، و لایک‌ها و نظرها به بالا آمدن ویدیو در هر پلتفرم کمک می‌کنند.",
-    "share.guide.x": "بازنشر در X.com",
-    "share.guide.instagram": "هم‌رسانی در اینستاگرام",
-    "share.guide.tiktok": "بازنشر در تیک‌تاک",
-    "share.guide.youtube": "هم‌رسانی در یوتیوب شورتس",
-    "share.guide.linkedin": "بازنشر در لینکدین",
-    "share.guide.reddit": "انتشار در ردیت",
+    "share.repost": "این ویدیو را با دنبال‌کنندگانتان هم‌رسانی کنید",
+    "share.repostShort": "هم‌رسانی",
+    "share.repostTitle": "بازنشر این ویدیو",
+    "share.telegram": "هم‌رسانی در تلگرام",
+    "share.copyLink": "کپی لینک",
+    "share.copied": "کپی شد",
+    "share.close": "بستن",
 
     "about.title": "ما که هستیم",
     "about.image_alt":
@@ -232,7 +255,7 @@ export const ui = {
       "بیشتر جهان درباره‌ی ایران و انقلاب شیر و خورشید بسیار کم می‌داند، و این سکوت فضایی می‌سازد که در آن برداشت‌های نادرست بدون چالش گسترش می‌یابند. ما می‌خواهیم این را تغییر دهیم — تا ایرانِ آزادی را به جهان نشان دهیم که به‌زودی به سود همه‌ی ما خواهد بود. این کار را با ویدیوهای کوتاه انجام می‌دهیم، جایی که هر اثر تیری برای ترکش است: هر کدام حقیقتی پنهان را روشن می‌کند، افسانه‌ای رایج را باطل می‌کند، یا جزئیاتی از پروژه‌ی شکوفایی ایران را شرح می‌دهد.",
     "about.help.title": "چگونه می‌توانید کمک کنید",
     "about.help.body":
-      "اینجا جایی است که شما وارد می‌شوید. این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. آن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، سپس کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند. در پایین به فهرست ایمیل ما بپیوندید تا هر ویدیوی تازه را همان لحظه‌ی انتشار دریافت کنید، و اگر می‌توانید، با یک کمک مالی یا پوشیدن پیام از این کار حمایت کنید. ما آن را رایگان می‌سازیم؛ شما آن را به حرکت درمی‌آورید.",
+      "اینجا جایی است که شما وارد می‌شوید. این ویدیوها تنها وقتی اهمیت دارند که دیده شوند. آن‌ها را همان‌جا که منتشر شده‌اند تماشا کنید، سپس کانال‌های ما را دنبال کنید، بپسندید، نظر بدهید و بازنشر کنید — هر هم‌رسانی پیام را از هیاهوی رژیم عبور می‌دهد و به جهان می‌رساند. در پایین به فهرست ایمیل ما بپیوندید تا هر ویدیوی تازه را همان لحظه‌ی انتشار دریافت کنید، و اگر می‌توانید، با پرتاب یک ویدیو یا پوشیدن پیام هزینه‌ی این کار را تأمین کنید. ما آن را رایگان می‌سازیم؛ شما آن را به حرکت درمی‌آورید.",
 
     "promote.title": "کماندار باش.",
     "promote.body":
@@ -253,23 +276,51 @@ export const ui = {
     "popup.email.body":
       "بیش از یکی را تماشا کرده‌ای — پس اهلش هستی. به فهرست بپیوند تا هر ویدیوی تازه همان لحظه‌ی انتشار به ایمیلت برسد.",
     "popup.email.dismiss": "شاید بعداً",
-    "popup.donate.title": "تیر بعدی را تأمین کن.",
-    "popup.donate.body":
-      "تو بارها برگشته‌ای. هر ویدیو رایگان ساخته و هم‌رسانی می‌شود — یک کمک کوچک آن‌ها را ادامه می‌دهد.",
-    "popup.donate.cta": "برای ما یک کتلت بخر",
-    "popup.donate.dismiss": "الان نه",
 
-    "support.title": "از مبارزه حمایت کن",
+    "launch.trigger": "این ویدیو را پرتاب کن",
+    "launch.anthem":
+      "به قیمت یک پهپاد شاهد، می‌توانیم چشم میلیون‌ها نفر را باز کنیم.",
+    "launch.action": "این ویدیو را پرتاب کن:",
+    "launch.mechanics":
+      "برای این ویدیو در ایکس بازدید تبلیغاتی بخر و تولید بعدی ما را تأمین کن.",
+    "launch.counter": "{count} پرتاب شده",
+    "launch.error": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
+    "launch.confirm.title": "پرتاب شد.",
+    "launch.confirm.body":
+      "این پیام حالا به سوی افراد بیشتری در حرکت است که هنوز آن را نشنیده‌اند.",
+    "launch.confirm.repost": "صدای خودت را اضافه کن — در ایکس بازنشر کن",
+    "launch.confirm.fund.title": "یکی دیگر بفرست.",
+    "launch.confirm.fund.body":
+      "هر پرتاب بازدید بیشتری می‌خرد و تولید بعدی را تأمین می‌کند. ویدیوی دیگری را برای فرستادن انتخاب کن.",
+    "launch.confirm.fund.cta": "یک ویدیوی دیگر را پرتاب کن",
+
+    "terms.title": "پرتاب چگونه کار می‌کند",
+    "terms.what.title": "چه چیزی می‌خری",
+    "terms.what.body":
+      "تو تبلیغ پولی ویدیویی را که انتخاب کرده‌ای در ایکس می‌خری — بازدیدی که آن را جلوی چشم کسانی می‌گذارد که هنوز ندیده‌اندش.",
+    "terms.pool.title": "بازدید چگونه خریده می‌شود",
+    "terms.pool.body":
+      "خریدها در یک استخر جمع می‌شوند و به‌صورت دوره‌ای به‌عنوان بازدید تبلیغاتی هزینه می‌شوند، با وزن بیشتر برای ویدیوهایی که مردم بیشتر از آن‌ها حمایت کرده‌اند. بازدید تک‌به‌تک برای هر تراکنش خریده نمی‌شود.",
+    "terms.discretion.title": "محدودیت‌های پلتفرم",
+    "terms.discretion.body":
+      "ایکس تصمیم می‌گیرد چه چیزی را تبلیغ کند. اگر ویدیویی محدود یا رد شود، بازدید به ویدیوهای دیگری که بیشترین اثر را دارند اختصاص می‌یابد.",
+    "terms.production.title": "تأمین ویدیوی بعدی",
+    "terms.production.body":
+      "بخشی از هر خرید، تولید ویدیوهای بعدی را تأمین می‌کند.",
+    "terms.purchase.title": "این یک خرید است",
+    "terms.purchase.body":
+      "این خریدی تجاری از بازدید تبلیغاتی و حمایت از تولید است — نه یک کمک خیریه. خریدها قطعی‌اند.",
+
+    "support.title": "تأمین ویدیوها",
     "support.lead":
-      "ایرانِ آزاد یک پروژه‌ی ایرانی است — نه یک خیال، و نه چیزی که از بیرون فرو بریزد. این ویدیوها همین را ثابت می‌کنند و تنها با کمک تو دورتر می‌رسند.",
-    "support.donate.title": "سوختِ ویدیوی بعدی باش",
+      "می‌توانی کمک کنی چشم‌اندازی مطمئن از ایرانی سکولار و دموکراتیک را بگسترانیم و جهان را با پروژه‌ی شکوفایی ایران آشنا کنیم.",
+    "support.donate.title": "برایمان یک کتلت بخر… یا شاید چند تا",
     "support.donate.body":
-      "کمک تو هزینه‌ی تولید، میزبانی و انتشار را می‌پوشاند — همان تفاوت میان ویدیویی که فقط وجود دارد و ویدیویی که جهان واقعاً آن را می‌بیند. هر چه می‌توانی ببخش.",
-    "support.bmac": "برای ما یک کتلت بخر",
+      "هزینه‌ی تولید ما را بپوشان و ویدیوی بعدی‌مان را پیش چشم افراد بیشتری بگذار.",
+    "support.error": "شروع پرداخت ممکن نشد. لطفاً دوباره تلاش کن.",
     "support.shop.title": "پیام را بپوش",
     "support.shop.body":
-      "یک تی‌شرت یا پوستر بگیرید و مبارزه را به خیابان‌ها ببرید. هر سفارش ویدیوهای بیشتری را ممکن می‌کند.",
-    "support.shop.cta": "به فروشگاه برو",
+      "یک تی‌شرت یا پوستر بگیر. هر سفارش به تأمین ویدیوی بعدی کمک می‌کند.",
 
     "shop.title": "فروشگاه",
     "shop.intro": "پیام را بپوش. هر سفارش ویدیوهای بیشتری را می‌سازد.",
@@ -304,6 +355,7 @@ export const ui = {
       "هیچ هزینه‌ای کسر نشد و سبد خرید شما ذخیره است. هر وقت آماده بودید از همان‌جا ادامه دهید.",
 
     "footer.rights": "ایران آزاد.",
+    "footer.terms": "پرتاب چگونه کار می‌کند",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 

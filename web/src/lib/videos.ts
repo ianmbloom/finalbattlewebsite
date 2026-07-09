@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import type { Locale } from "@/consts";
+import { DEFAULT_BOOST_TIER, type VideoBoostTier } from "@/config/boost";
 
 export type VideoEntry = CollectionEntry<"videos">;
 export type VideoVariant = VideoEntry["data"]["languages"]["en"];
@@ -45,11 +46,45 @@ export function hasShareLinks(platforms?: Platforms): boolean {
   return Boolean(p.x || p.instagram || p.tiktok || p.youtube || p.linkedin);
 }
 
+/**
+ * Tag a *site* URL with UTM params so we can attribute traffic that comes back
+ * through Telegram shares and copied links. Native-platform reposts leave our
+ * domain and can't be tagged, so this is only applied to the site page URL.
+ */
+export function withUtm(url: string, source: string): string {
+  const u = new URL(url);
+  u.searchParams.set("utm_source", source);
+  u.searchParams.set("utm_medium", "repost");
+  u.searchParams.set("utm_campaign", "video_share");
+  return u.href;
+}
+
 export type VideoFormat = VideoEntry["data"]["format"];
 
 /** Short-form series clips vs. longer standalone statements. */
 export function isLongForm(entry: VideoEntry): boolean {
   return entry.data.format === "long";
+}
+
+const warnedTiers = new Set<string>();
+
+/**
+ * Ad-safety tier for a video's Launch mechanic. An unflagged video defaults to
+ * organic-only (tier 3, mechanic hidden) and warns once at build time so the
+ * operator notices it needs classifying. The server enforces the same guard.
+ */
+export function getBoostTier(entry: VideoEntry): VideoBoostTier {
+  const tier = entry.data.boostTier;
+  if (tier == null) {
+    if (!warnedTiers.has(entry.id)) {
+      warnedTiers.add(entry.id);
+      console.warn(
+        `[boost] unflagged video: ${entry.id} -> defaulting to tier ${DEFAULT_BOOST_TIER}`,
+      );
+    }
+    return DEFAULT_BOOST_TIER;
+  }
+  return tier;
 }
 
 /** Credit line under the title on a video page. */

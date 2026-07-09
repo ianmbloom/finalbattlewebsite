@@ -19,13 +19,15 @@ const year = new Date().getFullYear();
     <p class="tagline font-display">{t("site.tagline")}</p>
     <nav class="links label" aria-label="Footer">
       <a href={localizedPath("/videos", lang)}>{t("nav.videos")}</a>
-      <a href={localizedPath("/support", lang)}>{t("nav.support")}</a>
+      <a href={localizedPath("/fund", lang)}>{t("nav.support")}</a>
       <a href={localizedPath("/about", lang)}>{t("nav.about")}</a>
     </nav>
     <div class="meta label">
       <a href={localizedPath("/", lang)}>{t("site.name")}</a>
       <span aria-hidden="true">·</span>
       <span>{t("footer.rights")}</span>
+      <span aria-hidden="true">·</span>
+      <a href={localizedPath("/support-terms", lang)}>{t("footer.terms")}</a>
       <span aria-hidden="true">·</span>
       <span>© {year}</span>
     </div>

@@ -1,6 +1,7 @@
 {
   "series": "iran-prosperity-project",
   "category": "truth",
+  "boostTier": 3,
   "publishedAt": "2026-07-09",
   "order": 4,
   "featured": false,

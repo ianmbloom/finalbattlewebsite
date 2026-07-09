@@ -73,7 +73,11 @@ const t = useTranslations(lang);
     }
     <Footer lang={lang} />
     {FEATURES.shop && <Cart lang={lang} />}
-    {FEATURES.newsletter && <EngagementPopup lang={lang} trackVideoId={trackVideoId} />}
+    {
+      FEATURES.newsletter && (
+        <EngagementPopup lang={lang} trackVideoId={trackVideoId} />
+      )
+    }
   </body>
 </html>
 
