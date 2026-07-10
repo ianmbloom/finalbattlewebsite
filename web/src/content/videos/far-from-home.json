@@ -6,25 +6,25 @@
   "order": 6,
   "featured": false,
   "draft": true,
-  "tags": ["TODO"],
+  "tags": ["diaspora", "exile", "human-rights"],
   "languages": {
     "en": {
       "title": "Far From Home",
       "videoSrc": "/videos/far-from-home.mp4",
-      "description": "TODO: add English card blurb.",
+      "description": "The I.R. drives out as many as 200,000 people a year. The diaspora isn't separate — it's the same people, kept apart by exile, not by heart.",
       "durationSeconds": 44,
       "thumbnailUrl": "/videos/thumbs/far-from-home.webp",
-      "script": "TODO: add English transcript.",
-      "context": "TODO: add English background essay."
+      "script": "Some say the diaspora is separate from the people at home. Here's what they get wrong. The I.R. drove them out: close to 200,000 every year. Almost all leave family behind. When the internet is cut, they spend days trying to reach parents and siblings they can't get through to. They are not outsiders. They are the same people, separated by exile, not by heart. Follow along to learn about a free homeland where millions can finally come home.",
+      "context": "The diaspora is the I.R.'s longest-running crime against its own people.\n\nSince the revolution, the people have left in waves — driven out by political repression, economic collapse, and the suffocation of basic freedoms. The flight never stopped. As many as 200,000 leave every year, and international monitoring bodies have consistently ranked the homeland among the world's highest brain-drain nations. The total number of those who've left has grown from roughly half a million before the revolution to more than 3 million — and today, with second and third generations counted, the diaspora numbers in the many millions more.\n\nAlmost none of them chose to leave lightly. The vast majority never return — they leave behind parents, siblings, and friends. The severing of contact is not only permanent but episodic and traumatic. During the uprisings of early 2026, the I.R. cut off all internet and phone service, leaving diaspora members unable to reach loved ones for weeks. Families abroad found out about deaths and arrests not through a phone call — but through the absence of one.\n\nThe same scenario has repeated across every crisis. During the conflict of mid-2025, the I.R. imposed what digital rights experts called the worst communications shutdown ever recorded — blocking traffic in both directions, not just restricting access but cutting contact entirely. People in the diaspora watched missile alerts in real time, unable to warn family members to move. Others paid premium rates to middlemen at the border who held two phones together just to connect a conversation.\n\nThis is the lived reality of the diaspora — not the comfortable distance of exile, but the daily anxiety of separation from people they love inside a homeland held hostage. They did not leave. The homeland was taken from them."
     },
     "fa": {
-      "title": "TODO: عنوان فارسی — Far From Home",
+      "title": "دور از خانه",
       "videoSrc": "/videos/far-from-home-fa.mp4",
-      "description": "TODO: توضیح فارسی.",
+      "description": "این رژیم سالانه تا دویست هزار نفر را از وطن بیرون می‌راند. دیاسپورا جدا نیست؛ همان مردم است، جدا افتاده با تبعید، نه با دل.",
       "durationSeconds": 49,
       "thumbnailUrl": "/videos/thumbs/far-from-home-fa.webp",
-      "script": "TODO: متن فارسی.",
-      "context": "TODO: زمینهٔ فارسی."
+      "script": "بعضی‌ها می‌گویند هم‌وطنان خارج از کشور از مردم داخل جدا هستند اما حقیقت چیز دیگریست. این رژیم آنها را مجبور به ترک وطن کرده است. سالانه نزدیک به دویست هزار نفر، بیشترشان دوستان و خانواده‌های خود را در وطن جا می‌گذارند. وقتی اینترنت قطع می‌شود، روزها تلاش می‌کنند با دوستان و خانواده‌هایشان تماس بگیرند اما پاسخی نمی‌رسد. آنها بیگانه نیستند. همان مردم‌اند که تبعید از وطن جدایشان کرده، نه از دل. ما را دنبال کنید تا از آینده‌ای بگوییم که در آن میلیون‌ها هم‌وطن سرانجام به خانه بازمی‌گردند.",
+      "context": "TODO: زمینهٔ فارسی (ترجمهٔ پس‌زمینهٔ انگلیسی)."
     }
   }
 }
