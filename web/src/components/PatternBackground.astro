@@ -1,62 +1,41 @@
 ---
 /**
- * Decorative Persian (non-Islamic) tiling ornament used as a low-contrast
- * background accent. The SVG is line art, recolored via CSS `mask-image`.
+ * Low-contrast decorative background accent. The tiling artwork is generated
+ * by the Escher engine in `@/lib/patternTile` and shared across instances via
+ * a `:root` custom property (defined once by `<PatternDefs>`); this component
+ * just paints that pre-tinted tile and repeats it.
  *
- * The motif's topmost scallop peaks repeat every 144.54 user units. The art
- * is cropped to exactly 8 periods (viewBox width 1156.32) so the peak grid is
- * continuous across the horizontal seam — adjacent tiles meet without a gap
- * and without squishing the motif. Vertical scale is left untouched (lower
- * curves are designed to overlap).
+ * Colour is baked into the shared data URI (see patternTile.ts for why a
+ * `background-image` SVG must be recoloured at the source). `opacity` is
+ * applied here so the same tinted tile can sit at any strength.
  */
-type PaletteColor =
-  | "ink"
-  | "sand"
-  | "stone"
-  | "gold"
-  | "emerald"
-  | "crimson"
-  | "rose"
-  | "canary";
+import { tileBackgroundSize, tileVarName } from "@/lib/patternTile";
+import type { PatternColor } from "@/lib/patternTile";
 
 interface Props {
-  src?: string;
-  color?: PaletteColor;
+  color?: PatternColor;
   opacity?: number;
-  /** Tile width on screen, e.g. "480px". Height follows the SVG aspect. */
-  size?: string;
-  /** Vertical offset of the tile, e.g. "-120px" to skip the top fringe. */
+  /** Vertical offset of the tiling, e.g. "-120px" to skip the top fringe. */
   posY?: string;
   class?: string;
 }
 
 const {
-  src = "/patterns/PatternMatte.svg",
-  color = "ink",
+  color = "canary",
   opacity = 0.06,
-  size = "480px",
   posY = "0",
   class: className = "",
 } = Astro.props;
 
-/** Cropped viewBox aspect: height / width = 2005.62 / 1156.32. */
-const aspect = 2005.62 / 1156.32;
-
 const style = [
-  `--pattern-src: url('${src}')`,
-  `--pattern-size: ${size}`,
-  `--pattern-aspect: ${aspect}`,
+  `--pattern-src: var(${tileVarName(color)})`,
+  `--pattern-size: ${tileBackgroundSize()}`,
   `--pattern-pos-y: ${posY}`,
-  `background-color: var(--color-${color})`,
   `opacity: ${opacity}`,
 ].join("; ");
 ---
 
-<div
-  class:list={["pattern-bg", className]}
-  style={style}
-  aria-hidden="true"
->
+<div class:list={["pattern-bg", className]} style={style} aria-hidden="true">
 </div>
 
 <style>
@@ -65,18 +44,10 @@ const style = [
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    -webkit-mask-image: var(--pattern-src);
-    mask-image: var(--pattern-src);
-    -webkit-mask-repeat: repeat;
-    mask-repeat: repeat;
-    /* Natural aspect (no distortion); width maps to exactly one repeat. */
-    -webkit-mask-size:
-      var(--pattern-size)
-      calc(var(--pattern-size) * var(--pattern-aspect));
-    mask-size:
-      var(--pattern-size)
-      calc(var(--pattern-size) * var(--pattern-aspect));
-    -webkit-mask-position: 0 var(--pattern-pos-y, 0);
-    mask-position: 0 var(--pattern-pos-y, 0);
+    background-image: var(--pattern-src);
+    background-repeat: repeat;
+    /* One period per repeat unit. */
+    background-size: var(--pattern-size);
+    background-position: 0 var(--pattern-pos-y, 0);
   }
 </style>

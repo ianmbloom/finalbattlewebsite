@@ -25,7 +25,7 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
-const fullTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
+const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
 
 const absThumb = video?.thumbnailUrl
   ? new URL(video.thumbnailUrl, SITE_URL).href

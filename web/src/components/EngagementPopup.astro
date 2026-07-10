@@ -26,6 +26,8 @@ const t = useTranslations(lang);
   id="fb-engage"
   data-locale={lang}
   data-video-slug={trackVideoId}
+  data-soon-title={t("popup.soon.title")}
+  data-soon-body={t("popup.soon.body")}
   hidden
   aria-hidden="true"
 >
@@ -71,7 +73,6 @@ const t = useTranslations(lang);
   const EMAIL_MIN_VIDEOS = 2;
   const EMAIL_MAX_SHOWS = 3;
   const EMAIL_COOLDOWN = 7 * DAY;
-  const SHOW_DELAY = 4000;
 
   const root = document.getElementById("fb-engage");
   if (root) {
@@ -139,23 +140,43 @@ const t = useTranslations(lang);
 
     const backdrop = root.querySelector<HTMLElement>("[data-engage-backdrop]");
     const panel = root.querySelector<HTMLElement>('[data-engage-panel="email"]');
+    const titleEl = panel?.querySelector<HTMLElement>("#engage-email-title");
+    const bodyEl = panel?.querySelector<HTMLElement>(".engage-body");
+
+    // Default copy, so a forced (coming-soon) show can be reset back to the
+    // standard engagement ask if the same panel is reused later.
+    const defaultTitle = titleEl?.textContent ?? "";
+    const defaultBody = bodyEl?.textContent ?? "";
 
     let open = false;
     let lastFocus: HTMLElement | null = null;
 
-    const show = () => {
-      if (!panel) return;
+    interface ShowOptions {
+      /** User-initiated (e.g. a coming-soon click): always honored, uncapped. */
+      forced?: boolean;
+      title?: string;
+      body?: string;
+    }
+
+    const show = ({ forced = false, title, body }: ShowOptions = {}) => {
+      if (!panel || open) return;
       open = true;
       lastFocus = document.activeElement as HTMLElement | null;
       markShown();
+
+      if (titleEl) titleEl.textContent = title || defaultTitle;
+      if (bodyEl) bodyEl.textContent = body || defaultBody;
 
       root.hidden = false;
       root.setAttribute("aria-hidden", "false");
       panel.hidden = false;
       document.body.style.overflow = "hidden";
 
-      state.emailShownCount += 1;
-      save();
+      // Only the automatic engagement path counts against the show cap.
+      if (!forced) {
+        state.emailShownCount += 1;
+        save();
+      }
 
       const focusTarget = panel.querySelector<HTMLElement>("input[type=email]");
       window.requestAnimationFrame(() => focusTarget?.focus());
@@ -189,9 +210,27 @@ const t = useTranslations(lang);
       if (open) window.setTimeout(() => close(true), 1400);
     });
 
-    if (!alreadyShown() && emailEligible()) {
-      window.setTimeout(show, SHOW_DELAY);
-    }
+    // Surface the ask exactly as a video wraps up — the moment attention is
+    // released — rather than on an arbitrary timer that interrupts the watch.
+    // The VideoPlayer emits this a beat before the final frame.
+    const maybeShow = () => {
+      if (open || alreadyShown() || !emailEligible()) return;
+      show();
+    };
+    document.addEventListener("fb-video:ending", maybeShow, { once: true });
+
+    // A click on a "coming soon" film is explicit intent — always open the
+    // popup with copy naming the film, so they can be first to hear about it.
+    document.addEventListener("fb-film:coming-soon", (event) => {
+      const film =
+        (event as CustomEvent<{ title?: string }>).detail?.title ?? "";
+      const soonTitle = root.dataset.soonTitle || defaultTitle;
+      const soonBody = (root.dataset.soonBody || defaultBody).replace(
+        "{film}",
+        () => film,
+      );
+      show({ forced: true, title: soonTitle, body: soonBody });
+    });
   }
 </script>
 

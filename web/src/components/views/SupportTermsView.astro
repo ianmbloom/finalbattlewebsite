@@ -1,11 +1,11 @@
 ---
 /**
- * Plain-English service terms for the Launch mechanic. Confident, non-defensive
- * prose: what you buy, how reach is bought, platform limits, production
- * funding, and a clear statement that it is a purchase (not a donation).
+ * The trust page behind the Launch button. One coherent message: a lead that
+ * states the whole deal (launching is patronage that buys reach and funds the
+ * next video), then how we spend it, then a link to fund everything.
  */
 import type { Locale } from "@/consts";
-import { useTranslations } from "@/i18n/utils";
+import { useTranslations, localizedPath, linkify } from "@/i18n/utils";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 interface Props {
@@ -13,24 +13,32 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const fundHref = localizedPath("/fund", lang);
+const fundLink = { fund: { href: fundHref, label: t("link.fund") } };
 
 const sections = [
-  { title: t("terms.what.title"), body: t("terms.what.body") },
-  { title: t("terms.pool.title"), body: t("terms.pool.body") },
-  { title: t("terms.discretion.title"), body: t("terms.discretion.body") },
-  { title: t("terms.production.title"), body: t("terms.production.body") },
-  { title: t("terms.purchase.title"), body: t("terms.purchase.body") },
+  { title: t("terms.spend.title"), body: t("terms.spend.body") },
+  {
+    title: t("terms.fund.title"),
+    body: linkify(t("terms.fund.body"), fundLink),
+    html: true,
+  },
 ];
 ---
 
-<BaseLayout lang={lang} title={t("terms.title")} description={t("terms.what.body")}>
+<BaseLayout lang={lang} title={t("terms.title")} description={t("terms.lead")}>
   <section class="terms">
     <h1 class="terms-title font-display">{t("terms.title")}</h1>
+    <p class="terms-lead font-display">{t("terms.lead")}</p>
     {
       sections.map((s) => (
         <div class="terms-block">
           <h2 class="terms-heading font-display">{s.title}</h2>
-          <p class="terms-body">{s.body}</p>
+          {s.html ? (
+            <p class="terms-body" set:html={s.body} />
+          ) : (
+            <p class="terms-body">{s.body}</p>
+          )}
         </div>
       ))
     }
@@ -53,6 +61,14 @@ const sections = [
     line-height: 1.05;
     color: var(--text);
   }
+  .terms-lead {
+    margin: 0;
+    max-width: 54ch;
+    font-weight: 400;
+    font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+    line-height: 1.5;
+    color: var(--text);
+  }
   .terms-block {
     display: flex;
     flex-direction: column;
@@ -70,5 +86,15 @@ const sections = [
     max-width: 60ch;
     line-height: 1.65;
     color: var(--text-muted);
+  }
+  .terms-body :global(.prose-link) {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-emerald) 45%, transparent);
+    text-underline-offset: 0.15em;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .terms-body :global(.prose-link:hover) {
+    color: var(--color-emerald);
   }
 </style>

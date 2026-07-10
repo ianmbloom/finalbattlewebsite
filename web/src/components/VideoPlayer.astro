@@ -21,6 +21,42 @@ const { src, title, poster, autoplay = false } = Astro.props;
   ></video>
 </div>
 
+<script>
+  // Signal "the video is wrapping up" so downstream UI (e.g. the email popup)
+  // can surface right as attention naturally releases — not on an arbitrary
+  // timer. We fire once, a beat before the final frame, so the handoff feels
+  // like part of the ending rather than an interruption over the content.
+  const ENDING_LEAD_SECONDS = 2;
+
+  document.querySelectorAll<HTMLVideoElement>(".player video").forEach((video) => {
+    let signalled = false;
+
+    const signalEnding = () => {
+      if (signalled) return;
+      signalled = true;
+      document.dispatchEvent(new CustomEvent("fb-video:ending"));
+    };
+
+    // Allow re-arming if the viewer scrubs back and watches again.
+    video.addEventListener("seeking", () => {
+      const remaining = video.duration - video.currentTime;
+      if (Number.isFinite(remaining) && remaining > ENDING_LEAD_SECONDS + 1) {
+        signalled = false;
+      }
+    });
+
+    video.addEventListener("timeupdate", () => {
+      const remaining = video.duration - video.currentTime;
+      if (Number.isFinite(remaining) && remaining <= ENDING_LEAD_SECONDS) {
+        signalEnding();
+      }
+    });
+
+    // Fallback for very short clips or browsers that skip the final tick.
+    video.addEventListener("ended", signalEnding);
+  });
+</script>
+
 <style>
   /* Mobile: full width, aspect-ratio drives height. The max-width caps the
      portrait frame at the width it reaches in the wide two-column layout

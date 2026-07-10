@@ -43,6 +43,12 @@ const videos = defineCollection({
     /** Hidden from the production library/routes; still visible in dev. */
     draft: z.boolean().default(false),
     /**
+     * Teaser state: the film shows in the library as a "coming soon" card that
+     * opens the email-capture popup instead of a player. No detail page is
+     * built and it's kept out of the boost index until the flag is removed.
+     */
+    comingSoon: z.boolean().default(false),
+    /**
      * Ad-safety tier for the "Launch this video" mechanic:
      *   1 = ad-safe, 2 = caution (ad-safe), 3 = organic-only.
      * Unset is treated as 3 (mechanic hidden) with a build-time warning.

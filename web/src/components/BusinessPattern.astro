@@ -6,12 +6,11 @@
 import PatternBackground from "./PatternBackground.astro";
 
 interface Props {
-  size?: string;
   opacity?: number;
   posY?: string;
 }
 
-const { size = "640px", opacity = 0.09, posY = "0" } = Astro.props;
+const { opacity = 0.09, posY = "0" } = Astro.props;
 ---
 
-<PatternBackground color="canary" opacity={opacity} size={size} posY={posY} />
+<PatternBackground color="canary" opacity={opacity} posY={posY} />

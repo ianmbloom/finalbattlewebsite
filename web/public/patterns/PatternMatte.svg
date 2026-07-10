@@ -509,8 +509,4 @@
   <path class="st0" d="M39.97,1503.21h0s.59-67.89.3-85.16c-.28-17.26-7.23-36-7.23-36,44.94,7.13,34.64-64.37-31.44-23.59-.12.07-.24.14-.36.21h0c25.37,43.95,38.73,93.8,38.73,144.54h0Z"/>
   <path class="st0" d="M39.6,2004.13h0s.59-67.89.3-85.16c-.28-17.26-7.23-36-7.23-36,44.94,7.13,34.64-64.37-31.44-23.59-.12.07-.24.14-.36.21h0c25.37,43.95,38.73,93.8,38.73,144.54h0Z"/>
   </g>
-  <!-- Wrap the right-edge bleed (art runs to ~1198 in a 1156.32 tile) onto the
-       next tile's left edge so the designed overlap is reconstructed across the
-       horizontal seam. As an alpha mask the strokes union cleanly. -->
-  <use href="#tile" transform="translate(-1156.32 0)"/>
 </svg>

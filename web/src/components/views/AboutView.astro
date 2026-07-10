@@ -1,7 +1,7 @@
 ---
 import type { Locale } from "@/consts";
 import { FEATURES } from "@/consts";
-import { useTranslations } from "@/i18n/utils";
+import { useTranslations, localizedPath, linkify } from "@/i18n/utils";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import BusinessPattern from "@/components/BusinessPattern.astro";
 import Newsletter from "@/components/Newsletter.astro";
@@ -11,6 +11,20 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const helpBody = linkify(t("about.help.body"), {
+  launch: {
+    href: localizedPath("/videos", lang),
+    label: t("link.launch"),
+  },
+  shop: {
+    href: localizedPath("/shop", lang),
+    label: t("link.shop"),
+  },
+  fund: {
+    href: localizedPath("/fund", lang),
+    label: t("link.fund"),
+  },
+});
 ---
 
 <BaseLayout lang={lang} title={t("about.title")} description={t("about.lead")} hideNewsletter>
@@ -48,7 +62,7 @@ const t = useTranslations(lang);
 
         <section class="block">
           <h2 class="section-title font-display">{t("about.help.title")}</h2>
-          <p class="prose font-display">{t("about.help.body")}</p>
+          <p class="prose font-display" set:html={helpBody} />
         </section>
 
         <p class="about-abbr">{t("abbr.note")}</p>
@@ -158,5 +172,15 @@ const t = useTranslations(lang);
     line-height: 1.6;
     color: var(--text-muted);
     font-style: italic;
+  }
+  .prose :global(.prose-link) {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-emerald) 45%, transparent);
+    text-underline-offset: 0.15em;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .prose :global(.prose-link:hover) {
+    color: var(--color-emerald);
   }
 </style>

@@ -24,6 +24,28 @@ export function dir(lang: Locale): "rtl" | "ltr" {
   return RTL_LOCALES.includes(lang) ? "rtl" : "ltr";
 }
 
+export type LinkMarker = "fund" | "launch" | "shop";
+
+/** Replace `{fund}`, `{launch}`, and `{shop}` markers with localized anchor tags. */
+export function linkify(
+  text: string,
+  links: Partial<Record<LinkMarker, { href: string; label: string }>>,
+  className = "prose-link",
+): string {
+  return (Object.entries(links) as [LinkMarker, { href: string; label: string }][])
+    .reduce((acc, [key, { href, label }]) => {
+      const safeHref = href.replace(/"/g, "&quot;");
+      const safeLabel = label
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+      return acc.replaceAll(
+        `{${key}}`,
+        `<a href="${safeHref}" class="${className}">${safeLabel}</a>`,
+      );
+    }, text);
+}
+
 /**
  * Build a localized path. The default locale lives at the root (no prefix);
  * all other locales are prefixed with `/<locale>`.

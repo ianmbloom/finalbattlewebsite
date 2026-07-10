@@ -78,6 +78,22 @@ export function isLongForm(entry: VideoEntry): boolean {
   return entry.data.format === "long";
 }
 
+/**
+ * A teaser film: listed in the library as a "coming soon" card (which opens the
+ * email-capture popup) but with no playable detail page yet.
+ */
+export function isComingSoon(entry: VideoEntry): boolean {
+  return entry.data.comingSoon;
+}
+
+/** Videos that have a real, playable detail page (excludes coming-soon teasers). */
+export async function getPlayableVideosForLocale(
+  lang: Locale,
+): Promise<VideoEntry[]> {
+  const videos = await getVideosForLocale(lang);
+  return videos.filter((entry) => !isComingSoon(entry));
+}
+
 const warnedTiers = new Set<string>();
 
 /**

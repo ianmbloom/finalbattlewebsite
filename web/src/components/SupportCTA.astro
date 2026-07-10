@@ -31,7 +31,7 @@ const price = (qty: number) =>
   <div class="actions" role="group" aria-label={t("support.donate.title")}>
     {
       TIP.quantities.map((qty) => {
-        const label = `${qty} ${kotletWord} — ${price(qty)}`;
+        const label = `${qty} ${kotletWord}, ${price(qty)}`;
         return disabled ? (
           <span class="support-btn kotlet" aria-disabled="true">
             <span class="qty">{qty} {kotletWord}</span>
