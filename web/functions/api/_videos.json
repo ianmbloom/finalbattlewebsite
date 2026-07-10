@@ -1,8 +1,22 @@
 {
+  "by-the-people": {
+    "title": {
+      "en": "By the People",
+      "fa": "به دستِ مردم"
+    },
+    "boostTier": 3
+  },
   "captive-nation": {
     "title": {
       "en": "A Captive Nation",
       "fa": "ملتی در اسارت"
+    },
+    "boostTier": 3
+  },
+  "far-from-home": {
+    "title": {
+      "en": "Far From Home",
+      "fa": "دور از خانه"
     },
     "boostTier": 3
   },
