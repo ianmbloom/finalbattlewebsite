@@ -1,5 +1,11 @@
 ---
-import { resolveVideoSrc, SITE_URL, FEATURES, type Locale } from "@/consts";
+import {
+  resolveVideoSrc,
+  SITE_URL,
+  FEATURES,
+  ENABLED_LOCALES,
+  type Locale,
+} from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import { getVariant, getVideoCredit, getBoostTier, type VideoEntry } from "@/lib/videos";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -26,6 +32,9 @@ const pageUrl = new URL(localizedPath(`/videos/${entry.id}`, lang), SITE_URL)
 // Sister video: the same entry in the other language. When that variant exists
 // we link to it; until then we show a muted "available soon" note in its place.
 const otherLang: Locale = lang === "en" ? "fa" : "en";
+// Only surface the cross-language link when the other locale is actually
+// exposed in the served UI (see ENABLED_LOCALES).
+const otherLangEnabled = ENABLED_LOCALES.includes(otherLang);
 const hasSibling = Boolean(getVariant(entry, otherLang));
 const siblingHref = localizedPath(`/videos/${entry.id}`, otherLang);
 const siblingLabel = lang === "en" ? t("video.alsoInFa") : t("video.alsoInEn");
@@ -56,13 +65,14 @@ const boostTier = getBoostTier(entry);
         <p class="narrator">{creditLine}</p>
       </div>
       {
-        hasSibling ? (
-          <a class="sister-link" href={siblingHref}>
-            {siblingLabel}
-          </a>
-        ) : (
-          <span class="sister-soon">{soonLabel}</span>
-        )
+        otherLangEnabled &&
+          (hasSibling ? (
+            <a class="sister-link" href={siblingHref}>
+              {siblingLabel}
+            </a>
+          ) : (
+            <span class="sister-soon">{soonLabel}</span>
+          ))
       }
       {
         FEATURES.boost && (
