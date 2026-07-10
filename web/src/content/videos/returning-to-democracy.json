@@ -9,10 +9,10 @@
   "languages": {
     "en": {
       "title": "Returning to Democracy",
-      "videoSrc": "/videos/returning-to-democracy-jun27.mp4",
+      "videoSrc": "/videos/returning-to-democracy.mp4",
       "description": "A century ago the people built a constitutional democracy. Today they are risking everything to win it back.",
       "durationSeconds": 39,
-      "thumbnailUrl": "/videos/thumbs/returning-to-democracy-v2.webp",
+      "thumbnailUrl": "/videos/thumbs/returning-to-democracy.webp",
       "script": "The nation is ready to return to democracy. Forty thousand people just gave their lives to prove that. A century ago, the people built a constitutional democracy, today they are risking everything to win it back. Whether the world stands with them or stays silent, they will not stop until their country is free. The IPP is the plan that turns that sacrifice into a bright future — a roadmap to a government that works for its people. Follow along for the details and we will see you in a free nation.",
       "context": "The nation's relationship with democratic governance is not an aspiration — it is a memory. In 1906, it became one of the first nations in Asia to establish a constitutional democracy, when the dying emperor Mozaffar ad-Din Shah Qajar signed the country's first constitution into law on December 30 of that year. Its parliament, the Majlis, is among the oldest in the world outside the West. Historian Fakhreddin Azimi, writing for Harvard University Press, argues that the 1979 revolution is fundamentally misunderstood — it was, he contends, the expression of a century-long struggle for popular sovereignty that the clerical regime then hijacked.\n\nThat struggle has never stopped. The Green Movement of 2009, the November 2019 fuel price protests, the 2022 uprising following Mahsa Amini's death, and the mass unrest of late 2025 and early 2026 are not separate events — they are chapters in the same story. Each time, the people returned to the streets at extraordinary personal risk, and each time the regime answered with force. According to opposition estimates, over 40,000 people were killed during the most recent uprising. These are not the actions of a people who have accepted their government. They are the actions of a people who have not.\n\nThe IPP was built on the conviction that this sacrifice deserves a concrete plan, not just a direction. Its mission statement commits to showing that \"the aspirations millions hold for a renewed nation are not only attainable, but measurable\". The plan is not a theoretical framework handed down from outside — it was developed by over 70 of the nation's own experts from inside the country and the diaspora, people who know the country's institutions, its broken infrastructure, and the specific reforms needed to make democracy durable rather than decorative.",
       "platforms": {
@@ -24,7 +24,7 @@
     },
     "fa": {
       "title": "بازگشت به دموکراسی",
-      "videoSrc": "/videos/returning-to-democracy-fa-jun27.mp4",
+      "videoSrc": "/videos/returning-to-democracy-fa.mp4",
       "description": "یک قرن پیش مردم یک دموکراسی مشروطه ساختند. امروز همه‌چیز را به خطر می‌اندازند تا آن را بازپس گیرند.",
       "durationSeconds": 54,
       "thumbnailUrl": "/videos/thumbs/returning-to-democracy-fa.webp",

@@ -40,6 +40,8 @@ const videos = defineCollection({
     // fall to the end, sorted newest-first.
     order: z.number().optional(),
     featured: z.boolean().optional(),
+    /** Hidden from the production library/routes; still visible in dev. */
+    draft: z.boolean().default(false),
     /**
      * Ad-safety tier for the "Launch this video" mechanic:
      *   1 = ad-safe, 2 = caution (ad-safe), 3 = organic-only.

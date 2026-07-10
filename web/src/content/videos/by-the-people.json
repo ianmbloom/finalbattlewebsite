@@ -1,0 +1,30 @@
+{
+  "series": "prosperity-project",
+  "category": "truth",
+  "boostTier": 3,
+  "publishedAt": "2026-07-09",
+  "order": 5,
+  "featured": false,
+  "draft": true,
+  "tags": ["TODO"],
+  "languages": {
+    "en": {
+      "title": "By the People",
+      "videoSrc": "/videos/by-the-people.mp4",
+      "description": "TODO: add English card blurb.",
+      "durationSeconds": 49,
+      "thumbnailUrl": "/videos/thumbs/by-the-people.webp",
+      "script": "TODO: add English transcript.",
+      "context": "TODO: add English background essay."
+    },
+    "fa": {
+      "title": "TODO: عنوان فارسی — By the People",
+      "videoSrc": "/videos/by-the-people-fa.mp4",
+      "description": "TODO: توضیح فارسی.",
+      "durationSeconds": 55,
+      "thumbnailUrl": "/videos/thumbs/by-the-people-fa.webp",
+      "script": "TODO: متن فارسی.",
+      "context": "TODO: زمینهٔ فارسی."
+    }
+  }
+}

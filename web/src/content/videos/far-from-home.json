@@ -1,0 +1,30 @@
+{
+  "series": "prosperity-project",
+  "category": "truth",
+  "boostTier": 3,
+  "publishedAt": "2026-07-09",
+  "order": 6,
+  "featured": false,
+  "draft": true,
+  "tags": ["TODO"],
+  "languages": {
+    "en": {
+      "title": "Far From Home",
+      "videoSrc": "/videos/far-from-home.mp4",
+      "description": "TODO: add English card blurb.",
+      "durationSeconds": 44,
+      "thumbnailUrl": "/videos/thumbs/far-from-home.webp",
+      "script": "TODO: add English transcript.",
+      "context": "TODO: add English background essay."
+    },
+    "fa": {
+      "title": "TODO: عنوان فارسی — Far From Home",
+      "videoSrc": "/videos/far-from-home-fa.mp4",
+      "description": "TODO: توضیح فارسی.",
+      "durationSeconds": 49,
+      "thumbnailUrl": "/videos/thumbs/far-from-home-fa.webp",
+      "script": "TODO: متن فارسی.",
+      "context": "TODO: زمینهٔ فارسی."
+    }
+  }
+}

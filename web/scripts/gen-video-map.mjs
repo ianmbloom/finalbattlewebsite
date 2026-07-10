@@ -30,6 +30,10 @@ for (const file of files) {
   const raw = await readFile(path.join(videosDir, file), "utf8");
   const v = JSON.parse(raw);
 
+  // Drafts are hidden from the site and have no page to launch, so keep them
+  // out of the trusted boost index too.
+  if (v.draft) continue;
+
   let boostTier = v.boostTier;
   if (boostTier == null) {
     console.warn(

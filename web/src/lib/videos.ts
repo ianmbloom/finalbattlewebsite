@@ -116,6 +116,7 @@ export function getVideoCredit(
 export async function getVideosForLocale(lang: Locale): Promise<VideoEntry[]> {
   const all = await getCollection("videos");
   return all
+    .filter((entry) => import.meta.env.DEV || !entry.data.draft)
     .filter((entry) => Boolean(getVariant(entry, lang)))
     .sort(compareSeriesOrder);
 }
