@@ -1,0 +1,24 @@
+---
+/**
+ * Emits one pre-tinted Escher tile data URI per colour as a `:root` custom
+ * property, so every `PatternBackground` on the page shares a single definition
+ * instead of inlining the (large) data URI on each instance. Include ONCE per
+ * document (see BaseLayout).
+ */
+import { tileDataUri, tileVarName } from "@/lib/patternTile";
+import type { PatternColor } from "@/lib/patternTile";
+
+interface Props {
+  /** Colours to define. Keep to the ones actually used to stay lean. */
+  colors?: PatternColor[];
+}
+
+const { colors = ["canary"] } = Astro.props;
+
+const css =
+  ":root{" +
+  colors.map((c) => `${tileVarName(c)}:${tileDataUri(c)};`).join("") +
+  "}";
+---
+
+<style set:html={css}></style>

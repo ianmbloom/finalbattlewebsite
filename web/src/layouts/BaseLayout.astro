@@ -9,6 +9,7 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Newsletter from "@/components/Newsletter.astro";
 import BusinessPattern from "@/components/BusinessPattern.astro";
+import PatternDefs from "@/components/PatternDefs.astro";
 import Cart from "@/components/Cart.astro";
 import EngagementPopup from "@/components/EngagementPopup.astro";
 
@@ -68,6 +69,7 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
         />
       )
     }
+    <PatternDefs />
   </head>
   <body class={immersive ? "immersive" : undefined}>
     <a class="skip-link label" href="#main">Skip to content</a>
@@ -75,17 +77,19 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
     <main id="main">
       <slot />
     </main>
-    {
-      !hideNewsletter && (
-        <section class="newsletter-band business-surface">
-          <BusinessPattern />
-          <div class="newsletter-inner">
-            <Newsletter lang={lang} disabled={!FEATURES.newsletter} />
-          </div>
-        </section>
-      )
-    }
-    <Footer lang={lang} />
+    <div class="bottom-zone business-surface">
+      <BusinessPattern />
+      {
+        !hideNewsletter && (
+          <section class="newsletter-band">
+            <div class="newsletter-inner">
+              <Newsletter lang={lang} disabled={!FEATURES.newsletter} />
+            </div>
+          </section>
+        )
+      }
+      <Footer lang={lang} />
+    </div>
     {FEATURES.shop && <Cart lang={lang} />}
     {
       FEATURES.newsletter && (
@@ -108,22 +112,22 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
   .skip-link:focus {
     left: 1rem;
   }
-  .newsletter-band {
+  /* Single continuous zone for newsletter + footer with one shared pattern */
+  .bottom-zone {
+    position: relative;
     margin-top: 6rem;
-    border-top: 1px solid var(--bar-line);
   }
-  /* Immersive (full-viewport) pages already fill the screen; drop the big gap
-     so the newsletter sits right after the content. */
-  :global(body.immersive) .newsletter-band {
+  :global(body.immersive) .bottom-zone {
     margin-top: 0;
+  }
+  .newsletter-band {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--bar-line);
   }
   .newsletter-inner {
     max-width: 720px;
     margin: 0 auto;
     padding: clamp(3rem, 6vw, 4.5rem) 1.5rem;
-  }
-  /* Footer already supplies its own top margin; avoid doubling the gap. */
-  .newsletter-band + :global(.site-footer) {
-    margin-top: 0;
   }
 </style>

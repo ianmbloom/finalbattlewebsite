@@ -2,7 +2,6 @@
 import type { Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import Logo from "./Logo.astro";
-import BusinessPattern from "./BusinessPattern.astro";
 
 interface Props {
   lang: Locale;
@@ -12,8 +11,7 @@ const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer business-surface">
-  <BusinessPattern />
+<footer class="site-footer">
   <div class="inner">
     <span class="mark"><Logo size={52} /></span>
     <p class="tagline font-display">{t("site.tagline")}</p>
@@ -47,7 +45,7 @@ const year = new Date().getFullYear();
 
 <style>
   .site-footer {
-    margin-top: 6rem;
+    /* Margin handled by parent .bottom-zone when inside BaseLayout */
   }
   .inner {
     position: relative;
