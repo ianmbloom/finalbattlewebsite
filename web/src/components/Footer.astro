@@ -9,6 +9,18 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
+
+const socialChannels = [
+  { name: "YouTube", url: "https://www.youtube.com/@seeuinfreeiran/shorts" },
+  { name: "X", url: "https://x.com/seeuinfreeiran" },
+  { name: "Instagram", url: "https://www.instagram.com/seeuinfreeiran" },
+  { name: "TikTok", url: "https://www.tiktok.com/@seeuinfreeiran" },
+  { name: "LinkedIn", url: "https://www.linkedin.com/company/final-battle-for-iran-39585941a" },
+];
+
+function obfuscate(str: string): string {
+  return str.split("").reverse().join("");
+}
 ---
 
 <footer class="site-footer">
@@ -19,6 +31,19 @@ const year = new Date().getFullYear();
       <a href={localizedPath("/videos", lang)}>{t("nav.videos")}</a>
       <a href={localizedPath("/fund", lang)}>{t("nav.support")}</a>
       <a href={localizedPath("/about", lang)}>{t("nav.about")}</a>
+    </nav>
+    <nav class="social label" aria-label="Social channels">
+      {socialChannels.map((ch) => (
+        <a
+          class="social-link"
+          data-u={obfuscate(ch.url)}
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {ch.name}
+        </a>
+      ))}
     </nav>
     <div class="meta label">
       <a href={localizedPath("/", lang)}>{t("site.name")}</a>
@@ -81,6 +106,20 @@ const year = new Date().getFullYear();
     opacity: 0.5;
     cursor: not-allowed;
   }
+  .social {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .social a {
+    color: var(--bar-muted);
+    transition: color 300ms var(--ease-editorial);
+  }
+  .social a:hover {
+    color: var(--bar-accent);
+  }
   .tagline {
     font-weight: 300;
     font-size: 1.75rem;
@@ -142,6 +181,13 @@ const year = new Date().getFullYear();
 </style>
 
 <script>
+  document.querySelectorAll<HTMLAnchorElement>(".social-link").forEach((link) => {
+    const obfuscated = link.dataset.u;
+    if (obfuscated) {
+      link.href = obfuscated.split("").reverse().join("");
+    }
+  });
+
   document.querySelectorAll<HTMLButtonElement>(".copy-email").forEach((btn) => {
     const status = btn.querySelector<HTMLElement>(".copy-email-status");
     let timer: number | undefined;
