@@ -19,6 +19,8 @@
     "db:schema": "wrangler d1 execute finalbattle-emails --remote --file=./schema.sql",
     "db:boost:local": "wrangler d1 execute finalbattle-emails --local --file=./migrations/0002_video_boosts.sql",
     "db:boost": "wrangler d1 execute finalbattle-emails --remote --file=./migrations/0002_video_boosts.sql",
+    "db:transactions:local": "wrangler d1 execute finalbattle-emails --local --file=./migrations/0003_boost_transactions.sql",
+    "db:transactions": "wrangler d1 execute finalbattle-emails --remote --file=./migrations/0003_boost_transactions.sql",
     "db:export": "wrangler d1 execute finalbattle-emails --remote --command \"SELECT email, source, locale, marketing, created_at FROM subscribers ORDER BY created_at DESC\""
   },
   "dependencies": {

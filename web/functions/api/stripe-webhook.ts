@@ -207,6 +207,31 @@ async function recordBoost(
     .run();
 }
 
+/**
+ * Log an individual boost transaction for spend reporting. Each completed
+ * Launch payment gets one row; `allocated` starts at 0 and is set to 1 when
+ * the funds are spent on ads.
+ */
+async function recordBoostTransaction(
+  db: D1Database | undefined,
+  sessionId: string,
+  slug: string,
+  cents: number,
+  email: string | undefined,
+  locale: string | undefined,
+): Promise<void> {
+  if (!db || !sessionId) return;
+  const now = new Date().toISOString();
+  await db
+    .prepare(
+      `INSERT OR IGNORE INTO boost_transactions
+         (video_slug, amount_cents, stripe_session_id, buyer_email, locale, created_at)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+    )
+    .bind(slug, cents, sessionId, email ?? null, locale ?? null, now)
+    .run();
+}
+
 export const onRequestPost = async (context: {
   request: Request;
   env: Env;
@@ -242,14 +267,18 @@ export const onRequestPost = async (context: {
   if (obj?.metadata?.type === "boost") {
     const slug = obj.metadata.videoSlug ?? "";
     const cents = (parseInt(obj.metadata.amount ?? "0", 10) || 0) * 100;
-    await recordBoost(env.DB, slug, cents);
-    // Capture the buyer's email + newsletter opt-in collected in the funnel.
     const email = obj.customer_details?.email ?? "";
+    const locale = obj.metadata.locale === "fa" ? "fa" : "en";
+
+    await recordBoost(env.DB, slug, cents);
+    await recordBoostTransaction(env.DB, obj.id, slug, cents, email || undefined, locale);
+
+    // Capture the buyer's email + newsletter opt-in collected in the funnel.
     if (email) {
       await recordEmail(env.DB, {
         email,
         source: "purchase",
-        locale: obj.metadata.locale === "fa" ? "fa" : "en",
+        locale,
         marketing: obj.consent?.promotions === "opt_in",
       });
     }

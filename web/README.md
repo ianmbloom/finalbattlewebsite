@@ -216,6 +216,22 @@ Export the collected list anytime:
 npm run db:export            # SELECT email, source, locale, marketing, created_at ...
 ```
 
+## Launch This Video (paid promotion)
+
+The "Launch This Video" mechanic lets visitors pay ($10 / $20 / $50) to fund ad
+reach for launchable videos. Each payment is logged to D1 for periodic spend
+reporting.
+
+- **Public counter:** `/api/boost/count?slug=<slug>` returns the launch count.
+- **Transaction log:** The `boost_transactions` table logs each payment with an
+  `allocated` flag to track which funds have been spent on ads.
+- **Spend reports:** See `docs/SPEND_REPORTS.md` for queries to generate reports
+  and mark transactions as allocated after running ads.
+
+Videos are eligible for Launch based on their `boostTier` in the content JSON:
+`1` = ad-safe (featured), `2` = ad-safe (caution), `3` = organic-only (no Launch
+button).
+
 ## Donations ("Buy us a kotlet" tip)
 
 `/fund` (`SupportView` + `SupportCTA.astro`) offers a "Buy us a kotlet" tip that
