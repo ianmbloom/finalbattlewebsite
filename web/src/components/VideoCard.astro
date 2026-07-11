@@ -254,22 +254,22 @@ const comingSoon = isComingSoon(entry);
   }
   .duration {
     position: absolute;
-    inset-block-end: 1rem;
-    inset-inline-end: 1rem;
+    inset-block-end: 1.5rem;
+    inset-inline-end: 1.5rem;
     padding: 0.2rem 0.5rem;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.04em;
     color: var(--color-cream);
     background: color-mix(in srgb, var(--color-obsidian) 68%, transparent);
-    border-radius: 2px;
+    border-radius: 4px;
     backdrop-filter: blur(2px);
   }
   .lang-badges {
     position: absolute;
     z-index: 2;
-    inset-block-end: 1rem;
-    inset-inline-start: 1rem;
+    inset-block-end: 1.5rem;
+    inset-inline-start: 1.5rem;
     display: flex;
     gap: 0.25rem;
   }
@@ -279,7 +279,7 @@ const comingSoon = isComingSoon(entry);
     font-weight: 600;
     color: var(--color-cream);
     background: color-mix(in srgb, var(--color-obsidian) 68%, transparent);
-    border-radius: 2px;
+    border-radius: 4px;
     backdrop-filter: blur(2px);
     transition:
       background 200ms var(--ease-editorial),
@@ -339,7 +339,7 @@ const comingSoon = isComingSoon(entry);
   .soon-badge {
     position: absolute;
     inset-block-start: 1rem;
-    inset-inline-start: 50%;
+    left: 50%;
     transform: translateX(-50%);
     padding: 0.28rem 0.6rem;
     font-size: 0.62rem;
@@ -348,7 +348,7 @@ const comingSoon = isComingSoon(entry);
     text-transform: uppercase;
     color: var(--color-obsidian);
     background: var(--color-gold);
-    border-radius: 2px;
+    border-radius: 4px;
     box-shadow: var(--shadow-sm);
   }
   .soon-cta {

@@ -38,6 +38,7 @@ const otherLangEnabled = ENABLED_LOCALES.includes(otherLang);
 const hasSibling = Boolean(getVariant(entry, otherLang));
 const siblingHref = localizedPath(`/videos/${entry.id}`, otherLang);
 const siblingLabel = lang === "en" ? t("video.alsoInFa") : t("video.alsoInEn");
+const siblingAction = lang === "en" ? t("video.goToFa") : t("video.goToEn");
 const soonLabel = lang === "en" ? t("video.faSoon") : t("video.enSoon");
 const boostTier = getBoostTier(entry);
 ---
@@ -65,14 +66,12 @@ const boostTier = getBoostTier(entry);
         <p class="narrator">{creditLine}</p>
       </div>
       {
-        otherLangEnabled &&
-          (hasSibling ? (
-            <a class="sister-link" href={siblingHref}>
-              {siblingLabel}
-            </a>
-          ) : (
-            <span class="sister-soon">{soonLabel}</span>
-          ))
+        otherLangEnabled && hasSibling && (
+          <a class="sister-link" href={siblingHref}>
+            <span class="sister-label">{siblingLabel}</span>
+            <span class="sister-action">{siblingAction}</span>
+          </a>
+        )
       }
       {
         FEATURES.boost && (
@@ -147,21 +146,32 @@ const boostTier = getBoostTier(entry);
     color: var(--color-emerald);
   }
 
-  .sister-link,
+  .sister-link {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-top: -0.75rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .sister-label {
+    color: var(--text-muted);
+  }
+  .sister-action {
+    color: var(--color-emerald);
+  }
+  .sister-link:hover .sister-label,
+  .sister-link:hover .sister-action {
+    color: var(--color-emerald);
+  }
   .sister-soon {
     display: inline-block;
     font-size: 0.8rem;
     letter-spacing: 0.04em;
     color: var(--text-muted);
     margin-top: -0.75rem;
-  }
-  .sister-link {
-    transition: color 300ms var(--ease-editorial);
-  }
-  .sister-link:hover {
-    color: var(--color-emerald);
-  }
-  .sister-soon {
     font-style: italic;
     opacity: 0.8;
   }
