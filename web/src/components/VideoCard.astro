@@ -1,5 +1,5 @@
 ---
-import { SITE_URL, type Locale } from "@/consts";
+import { SITE_URL, LOCALES, type Locale } from "@/consts";
 import { useTranslations, localizedPath } from "@/i18n/utils";
 import {
   formatDuration,
@@ -31,73 +31,94 @@ const comingSoon = isComingSoon(entry);
   class:list={["card", { "card--soon": comingSoon }]}
   data-category={entry.data.category}
 >
+  <div class="thumb-area">
+    <div class="lang-badges">
+      {LOCALES.map((loc) =>
+        getVariant(entry, loc) && (
+          <a
+            class="lang-badge"
+            href={localizedPath(`/videos/${entry.id}`, loc)}
+            aria-label={loc === "en" ? "Watch in English" : "تماشا به فارسی"}
+          >
+            {loc === "en" ? "EN" : "فا"}
+          </a>
+        )
+      )}
+    </div>
+    {
+      comingSoon ? (
+        <div
+          class="thumb-link thumb-soon"
+          role="button"
+          tabindex="0"
+          data-coming-soon
+          data-film-title={variant.title}
+          aria-label={`${variant.title}: ${t("video.comingSoon")}`}
+        >
+          <div class="thumb">
+            {variant.thumbnailUrl ? (
+              <img
+                src={variant.thumbnailUrl}
+                alt={variant.title}
+                loading="lazy"
+                decoding="async"
+                width="270"
+                height="480"
+              />
+            ) : (
+              <span class="thumb-fallback label">9:16</span>
+            )}
+            <span class="soon-veil" aria-hidden="true" />
+            <span class="soon-badge label">{t("video.comingSoon")}</span>
+            <span class="soon-cta">
+              {t("video.comingSoon.cta")}
+              <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+                <path
+                  d="M5 12h14M13 6l6 6-6 6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+      ) : (
+        <a class="thumb-link" href={href} aria-label={variant.title}>
+          <div class="thumb">
+            {variant.thumbnailUrl ? (
+              <img
+                src={variant.thumbnailUrl}
+                alt={variant.title}
+                loading="lazy"
+                decoding="async"
+                width="270"
+                height="480"
+              />
+            ) : (
+              <span class="thumb-fallback label">9:16</span>
+            )}
+            <span class="play" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+            {duration && <span class="duration">{duration}</span>}
+          </div>
+        </a>
+      )
+    }
+  </div>
+
   {
     comingSoon ? (
-      <div
-        class="card-link card-soon"
-        role="button"
-        tabindex="0"
-        data-coming-soon
-        data-film-title={variant.title}
-        aria-label={`${variant.title}: ${t("video.comingSoon")}`}
-      >
-        <div class="thumb">
-          {variant.thumbnailUrl ? (
-            <img
-              src={variant.thumbnailUrl}
-              alt={variant.title}
-              loading="lazy"
-              decoding="async"
-              width="270"
-              height="480"
-            />
-          ) : (
-            <span class="thumb-fallback label">9:16</span>
-          )}
-          <span class="soon-veil" aria-hidden="true" />
-          <span class="soon-badge label">{t("video.comingSoon")}</span>
-          <span class="soon-cta">
-            {t("video.comingSoon.cta")}
-            <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
-              <path
-                d="M5 12h14M13 6l6 6-6 6"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-        </div>
-
-        <div class="meta">
-          <h3 class="title font-display">{variant.title}</h3>
-          {blurb && <p class="blurb">{blurb}</p>}
-        </div>
+      <div class="meta">
+        <h3 class="title font-display">{variant.title}</h3>
+        {blurb && <p class="blurb">{blurb}</p>}
       </div>
     ) : (
-      <a class="card-link" href={href} aria-label={variant.title}>
-        <div class="thumb">
-          {variant.thumbnailUrl ? (
-            <img
-              src={variant.thumbnailUrl}
-              alt={variant.title}
-              loading="lazy"
-              decoding="async"
-              width="270"
-              height="480"
-            />
-          ) : (
-            <span class="thumb-fallback label">9:16</span>
-          )}
-          <span class="play" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </span>
-          {duration && <span class="duration">{duration}</span>}
-        </div>
-
+      <a class="meta-link" href={href}>
         <div class="meta">
           <h3 class="title font-display">{variant.title}</h3>
           {blurb && <p class="blurb">{blurb}</p>}
@@ -109,7 +130,6 @@ const comingSoon = isComingSoon(entry);
   {
     hasPlatforms && !comingSoon && (
       <div class="card-share">
-        <span class="card-share-label label">{t("promote.share")}</span>
         <RepostMenu
           title={variant.title}
           platforms={variant.platforms}
@@ -152,29 +172,26 @@ const comingSoon = isComingSoon(entry);
     background: transparent;
     border: none;
   }
-  .card-link {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
+  .thumb-area {
+    position: relative;
   }
-  .card-soon {
+  .thumb-link {
+    display: block;
+  }
+  .thumb-soon {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
   }
-  .card-soon:focus-visible {
+  .thumb-soon:focus-visible {
     outline: 2px solid var(--color-gold);
     outline-offset: 4px;
-    border-radius: 1rem;
+    border-radius: 9% / 5%;
+  }
+  .meta-link {
+    display: block;
   }
   .card-share {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
     padding: 0 0.25rem;
-  }
-  .card-share-label {
-    color: var(--text-muted);
-    font-size: 0.62rem;
   }
   .thumb {
     position: relative;
@@ -182,7 +199,7 @@ const comingSoon = isComingSoon(entry);
     aspect-ratio: 9 / 16;
     overflow: hidden;
     background: var(--color-ink);
-    border-radius: 1rem;
+    border-radius: 9% / 5%;
     box-shadow: var(--shadow-sm);
     transform-origin: center bottom;
     transition:
@@ -246,6 +263,30 @@ const comingSoon = isComingSoon(entry);
     border-radius: 2px;
     backdrop-filter: blur(2px);
   }
+  .lang-badges {
+    position: absolute;
+    z-index: 2;
+    inset-block-end: 0.6rem;
+    inset-inline-start: 0.6rem;
+    display: flex;
+    gap: 0.25rem;
+  }
+  .lang-badge {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: var(--color-cream);
+    background: color-mix(in srgb, var(--color-obsidian) 68%, transparent);
+    border-radius: 2px;
+    backdrop-filter: blur(2px);
+    transition:
+      background 200ms var(--ease-editorial),
+      color 200ms var(--ease-editorial);
+  }
+  .lang-badge:hover {
+    background: var(--color-emerald);
+    color: var(--color-obsidian);
+  }
   .meta {
     display: flex;
     flex-direction: column;
@@ -281,7 +322,7 @@ const comingSoon = isComingSoon(entry);
     transition: filter 350ms var(--ease-editorial);
   }
   .card--soon:hover .thumb img,
-  .card-soon:focus-visible .thumb img {
+  .thumb-soon:focus-visible .thumb img {
     filter: grayscale(0) brightness(0.82);
   }
   .soon-veil {
@@ -331,7 +372,7 @@ const comingSoon = isComingSoon(entry);
       transform 300ms var(--ease-editorial);
   }
   .card--soon:hover .soon-cta,
-  .card-soon:focus-visible .soon-cta {
+  .thumb-soon:focus-visible .soon-cta {
     opacity: 1;
     transform: translateY(0);
   }
