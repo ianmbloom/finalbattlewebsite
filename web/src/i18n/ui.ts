@@ -49,6 +49,8 @@ export const ui = {
     "video.unavailable": "This video is not yet available in this language.",
     "video.alsoInFa": "Also available for Persian speakers.",
     "video.alsoInEn": "Also available for English speakers.",
+    "video.goToFa": "به فارسی برو",
+    "video.goToEn": "Go to English",
     "video.faSoon": "Available for Persian speakers soon.",
     "video.enSoon": "Available for English speakers soon.",
     "video.comingSoon": "Coming Soon",
@@ -61,7 +63,7 @@ export const ui = {
     "share.linkedin": "Repost on LinkedIn",
 
     "share.repost": "Share this video with your followers",
-    "share.repostShort": "Share",
+    "share.repostShort": "SHARE THIS VIDEO",
     "share.repostTitle": "Repost this video",
     "share.telegram": "Share on Telegram",
     "share.copyLink": "Copy link",
@@ -112,10 +114,10 @@ export const ui = {
 
     "launch.trigger": "Launch this video",
     "launch.anthem":
-      "For the price of one Shahed drone, we can open the eyes of millions.",
+      "For the price of one Shahed drone,\nwe can open the eyes of millions.",
     "launch.action": "Launch this video:",
     "launch.mechanics":
-      "Buy this video paid reach on X and fund our next production.",
+      "Fund paid reach for this video on X and Instagram.\nSupport our next production.",
     "launch.counter": "{count} launched",
     "launch.error": "Something went wrong. Please try again.",
     "launch.confirm.title": "It's in the air.",
@@ -144,6 +146,8 @@ export const ui = {
     "support.donate.body":
       "Cover our production costs and put our next video in front of more people.",
     "support.error": "Could not start checkout. Please try again.",
+    "support.donate.custom": "No guest goes unfed",
+    "support.donate.customPlaceholder": "How many?",
     "support.shop.title": "Wear the message",
     "support.shop.body":
       "Grab a shirt or a print. Every order helps fund the next video.",
@@ -228,6 +232,8 @@ export const ui = {
     "video.unavailable": "این ویدیو هنوز به این زبان در دسترس نیست.",
     "video.alsoInFa": "این ویدیو برای فارسی‌زبانان نیز در دسترس است.",
     "video.alsoInEn": "این ویدیو برای انگلیسی‌زبانان نیز در دسترس است.",
+    "video.goToFa": "به فارسی برو",
+    "video.goToEn": "Go to English",
     "video.faSoon": "نسخه فارسی به‌زودی در دسترس قرار می‌گیرد.",
     "video.enSoon": "نسخه انگلیسی به‌زودی در دسترس قرار می‌گیرد.",
     "video.comingSoon": "به‌زودی",
@@ -240,7 +246,7 @@ export const ui = {
     "share.linkedin": "بازنشر در لینکدین",
 
     "share.repost": "این ویدیو را با دنبال‌کنندگانتان هم‌رسانی کنید",
-    "share.repostShort": "هم‌رسانی",
+    "share.repostShort": "این ویدیو را هم‌رسانی کنید",
     "share.repostTitle": "بازنشر این ویدیو",
     "share.telegram": "هم‌رسانی در تلگرام",
     "share.copyLink": "کپی لینک",
@@ -294,7 +300,7 @@ export const ui = {
       "به قیمت یک پهپاد شاهد، می‌توانیم چشم میلیون‌ها نفر را باز کنیم.",
     "launch.action": "این ویدیو را پرتاب کن:",
     "launch.mechanics":
-      "برای این ویدیو در ایکس بازدید تبلیغاتی بخر و تولید بعدی ما را تأمین کن.",
+      "بازدید تبلیغاتی این ویدیو را در ایکس و اینستاگرام تأمین کن و از تولید بعدی ما حمایت کن.",
     "launch.counter": "{count} پرتاب شده",
     "launch.error": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
     "launch.confirm.title": "پرتاب شد.",
@@ -323,6 +329,8 @@ export const ui = {
     "support.donate.body":
       "هزینه‌ی تولید ما را بپوشان و ویدیوی بعدی‌مان را پیش چشم افراد بیشتری بگذار.",
     "support.error": "شروع پرداخت ممکن نشد. لطفاً دوباره تلاش کن.",
+    "support.donate.custom": "مهرِ نان و نمک",
+    "support.donate.customPlaceholder": "چند تا؟",
     "support.shop.title": "پیام را بپوش",
     "support.shop.body":
       "یک تی‌شرت یا پوستر بگیر. هر سفارش به تأمین ویدیوی بعدی کمک می‌کند.",

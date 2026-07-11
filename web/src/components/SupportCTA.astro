@@ -50,6 +50,25 @@ const price = (qty: number) =>
         );
       })
     }
+    {!disabled && (
+      <button type="button" class="support-btn kotlet custom-kotlet" data-tip-custom-btn>
+        <span class="qty">{t("support.donate.custom")}</span>
+        <span class="custom-amount">
+          <span class="custom-dollar">$</span>
+          <input
+            type="number"
+            class="custom-input"
+            data-tip-custom
+            min="1"
+            max={TIP.maxQuantity}
+            placeholder="?"
+            aria-label={t("support.donate.customPlaceholder")}
+            onclick="event.stopPropagation()"
+          />
+          <span class="custom-arrow" data-tip-custom-arrow hidden>→</span>
+        </span>
+      </button>
+    )}
   </div>
   <p class="body">{t("support.donate.body")}</p>
   <p class="tip-error" data-tip-error hidden>{t("support.error")}</p>
@@ -65,31 +84,65 @@ const price = (qty: number) =>
     const buttons = Array.from(
       root.querySelectorAll<HTMLButtonElement>("button[data-tip-qty]"),
     );
+    const customBtn = root.querySelector<HTMLButtonElement>("[data-tip-custom-btn]");
+    const customInput = root.querySelector<HTMLInputElement>("[data-tip-custom]");
+    const customArrow = root.querySelector<HTMLElement>("[data-tip-custom-arrow]");
+
+    let arrowTimeout: ReturnType<typeof setTimeout> | null = null;
 
     const setDisabled = (disabled: boolean) => {
       buttons.forEach((b) => (b.disabled = disabled));
+      if (customBtn) customBtn.disabled = disabled;
+      if (customInput) customInput.disabled = disabled;
+    };
+
+    const checkout = async (quantity: number) => {
+      setDisabled(true);
+      if (errorEl) errorEl.hidden = true;
+      try {
+        const res = await fetch("/api/tip/create-checkout", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ locale, quantity }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        const { url } = (await res.json()) as { url?: string };
+        if (!url) throw new Error("no_url");
+        window.location.assign(url);
+      } catch {
+        setDisabled(false);
+        if (errorEl) errorEl.hidden = false;
+      }
     };
 
     buttons.forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const quantity = Number(btn.dataset.tipQty);
-        setDisabled(true);
-        if (errorEl) errorEl.hidden = true;
-        try {
-          const res = await fetch("/api/tip/create-checkout", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ locale, quantity }),
-          });
-          if (!res.ok) throw new Error(String(res.status));
-          const { url } = (await res.json()) as { url?: string };
-          if (!url) throw new Error("no_url");
-          window.location.assign(url);
-        } catch {
-          setDisabled(false);
-          if (errorEl) errorEl.hidden = false;
-        }
-      });
+      btn.addEventListener("click", () => checkout(Number(btn.dataset.tipQty)));
+    });
+
+    const submitCustom = () => {
+      if (!customInput) return;
+      const qty = Math.min(100, Math.max(1, Math.floor(Number(customInput.value))));
+      if (qty > 0) checkout(qty);
+    };
+
+    customBtn?.addEventListener("click", submitCustom);
+    customInput?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitCustom();
+      }
+    });
+
+    customInput?.addEventListener("input", () => {
+      if (arrowTimeout) clearTimeout(arrowTimeout);
+      if (customArrow) customArrow.hidden = true;
+      
+      const val = customInput.value;
+      if (val.length >= 2) {
+        arrowTimeout = setTimeout(() => {
+          if (customArrow) customArrow.hidden = false;
+        }, 1000);
+      }
     });
   });
 </script>
@@ -198,5 +251,60 @@ const price = (qty: number) =>
   html[dir="rtl"] .soon {
     text-transform: none;
     letter-spacing: 0;
+  }
+
+  .custom-amount {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    height: 1.1rem;
+    line-height: 1;
+  }
+  .custom-dollar {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-ink);
+  }
+  .custom-input {
+    width: 2rem;
+    height: 1.1rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    color: var(--color-ink);
+    text-align: left;
+  }
+  .custom-input::placeholder {
+    color: color-mix(in srgb, var(--color-ink) 40%, transparent);
+  }
+  .custom-input:focus {
+    outline: none;
+  }
+  .custom-input::-webkit-outer-spin-button,
+  .custom-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .custom-input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  .custom-input:disabled {
+    opacity: 0.5;
+    cursor: wait;
+  }
+  .custom-arrow {
+    margin-inline-start: 0.3rem;
+    font-size: 1rem;
+    color: var(--color-ink);
+    opacity: 0.7;
+  }
+  .custom-arrow[hidden] {
+    display: none;
   }
 </style>

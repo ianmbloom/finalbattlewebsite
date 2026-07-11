@@ -32,19 +32,21 @@ const comingSoon = isComingSoon(entry);
   data-category={entry.data.category}
 >
   <div class="thumb-area">
-    <div class="lang-badges">
-      {LOCALES.map((loc) =>
-        getVariant(entry, loc) && (
-          <a
-            class="lang-badge"
-            href={localizedPath(`/videos/${entry.id}`, loc)}
-            aria-label={loc === "en" ? "Watch in English" : "تماشا به فارسی"}
-          >
-            {loc === "en" ? "EN" : "فا"}
-          </a>
-        )
-      )}
-    </div>
+    {!comingSoon && (
+      <div class="lang-badges">
+        {LOCALES.map((loc) =>
+          getVariant(entry, loc) && (
+            <a
+              class="lang-badge"
+              href={localizedPath(`/videos/${entry.id}`, loc)}
+              aria-label={loc === "en" ? "Watch in English" : "تماشا به فارسی"}
+            >
+              {loc === "en" ? "EN" : "فا"}
+            </a>
+          )
+        )}
+      </div>
+    )}
     {
       comingSoon ? (
         <div
@@ -252,8 +254,8 @@ const comingSoon = isComingSoon(entry);
   }
   .duration {
     position: absolute;
-    inset-block-end: 0.6rem;
-    inset-inline-end: 0.6rem;
+    inset-block-end: 1rem;
+    inset-inline-end: 1rem;
     padding: 0.2rem 0.5rem;
     font-size: 0.7rem;
     font-weight: 500;
@@ -266,8 +268,8 @@ const comingSoon = isComingSoon(entry);
   .lang-badges {
     position: absolute;
     z-index: 2;
-    inset-block-end: 0.6rem;
-    inset-inline-start: 0.6rem;
+    inset-block-end: 1rem;
+    inset-inline-start: 1rem;
     display: flex;
     gap: 0.25rem;
   }
@@ -336,8 +338,9 @@ const comingSoon = isComingSoon(entry);
   }
   .soon-badge {
     position: absolute;
-    inset-block-start: 0.6rem;
-    inset-inline-start: 0.6rem;
+    inset-block-start: 1rem;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
     padding: 0.28rem 0.6rem;
     font-size: 0.62rem;
     font-weight: 600;
@@ -350,9 +353,9 @@ const comingSoon = isComingSoon(entry);
   }
   .soon-cta {
     position: absolute;
-    inset-block-end: 0.75rem;
-    inset-inline-start: 0.75rem;
-    inset-inline-end: 0.75rem;
+    inset-block-end: 1rem;
+    inset-inline-start: 1rem;
+    inset-inline-end: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -9,7 +9,7 @@
 export const TIP = {
   currency: "usd",
   unitAmount: 500,
-  quantities: [3, 5, 10] as const,
+  quantities: [3, 5] as const,
   maxQuantity: 100,
 } as const;
 
