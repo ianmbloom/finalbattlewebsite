@@ -3,5 +3,3 @@
 /fa/videos/iran-has-a-future /fa/videos/the-nation-has-a-future 301
 /videos/see-you-in-free-iran /videos/see-you-in-a-free-nation 301
 
-# Temporarily route the Farsi site to its English equivalent (reversible).
-/fa/* /:splat 302
