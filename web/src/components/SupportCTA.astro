@@ -15,12 +15,18 @@ const { lang, variant = "inline", disabled = false } = Astro.props;
 const t = useTranslations(lang);
 
 const kotletWord = lang === "fa" ? "کتلت" : "kotlets";
-const price = (qty: number) =>
-  new Intl.NumberFormat(lang === "fa" ? "fa" : "en-US", {
+const price = (qty: number) => {
+  const amount = (qty * TIP.unitAmount) / 100;
+  if (lang === "fa") {
+    return `${amount} دلار`;
+  }
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: TIP.currency,
     maximumFractionDigits: 0,
-  }).format((qty * TIP.unitAmount) / 100);
+  }).format(amount);
+};
+const currencySymbol = lang === "fa" ? "دلار" : "$";
 ---
 
 <div class:list={["support-cta", variant, { "is-disabled": disabled }]} data-tip data-locale={lang}>
@@ -54,24 +60,26 @@ const price = (qty: number) =>
       <button type="button" class="support-btn kotlet custom-kotlet" data-tip-custom-btn>
         <span class="qty">{t("support.donate.custom")}</span>
         <span class="custom-amount">
-          <span class="custom-dollar">$</span>
+          {lang !== "fa" && <span class="custom-currency">$</span>}
           <input
             type="number"
             class="custom-input"
             data-tip-custom
+            dir="ltr"
             min="1"
             max={TIP.maxQuantity}
             placeholder="?"
             aria-label={t("support.donate.customPlaceholder")}
             onclick="event.stopPropagation()"
           />
-          <span class="custom-arrow" data-tip-custom-arrow hidden>→</span>
+          {lang === "fa" && <span class="custom-currency">دلار</span>}
+          <span class="custom-arrow" data-tip-custom-arrow hidden>{lang === "fa" ? "←" : "→"}</span>
         </span>
       </button>
     )}
   </div>
-  <p class="body">{t("support.donate.body")}</p>
   <p class="tip-error" data-tip-error hidden>{t("support.error")}</p>
+  <p class="body">{t("support.donate.body")}</p>
 </div>
 
 <script>
@@ -256,15 +264,18 @@ const price = (qty: number) =>
   .custom-amount {
     display: inline-flex;
     align-items: center;
-    gap: 0;
+    gap: 0.25rem;
     height: 1.1rem;
     line-height: 1;
   }
-  .custom-dollar {
+  .custom-currency {
     font-size: 1.1rem;
     font-weight: 700;
     line-height: 1;
     color: var(--color-ink);
+  }
+  html[dir="rtl"] .custom-currency {
+    font-size: 0.9rem;
   }
   .custom-input {
     width: 2rem;
