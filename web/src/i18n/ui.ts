@@ -117,7 +117,7 @@ export const ui = {
       "For the price of one Shahed drone,\nwe can open the eyes of millions.",
     "launch.action": "Launch this video:",
     "launch.mechanics":
-      "Fund paid reach for this video on X and Instagram.\nSupport our next production.",
+      "You can buy this video paid reach on X and Instagram and fund our next production.",
     "launch.counter": "{count} launched",
     "launch.error": "Something went wrong. Please try again.",
     "launch.confirm.title": "It's in the air.",
@@ -300,7 +300,7 @@ export const ui = {
       "به قیمت یک پهپاد شاهد، می‌توانیم چشم میلیون‌ها نفر را باز کنیم.",
     "launch.action": "این ویدیو را پرتاب کن:",
     "launch.mechanics":
-      "بازدید تبلیغاتی این ویدیو را در ایکس و اینستاگرام تأمین کن و از تولید بعدی ما حمایت کن.",
+      "می‌توانی برای این ویدیو بازدید تبلیغاتی در ایکس و اینستاگرام بخری و تولید بعدی ما را تأمین کنی.",
     "launch.counter": "{count} پرتاب شده",
     "launch.error": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
     "launch.confirm.title": "پرتاب شد.",

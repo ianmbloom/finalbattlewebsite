@@ -46,16 +46,8 @@ function obfuscate(str: string): string {
       ))}
     </nav>
     <div class="meta label">
-      <a href={localizedPath("/", lang)}>{t("site.name")}</a>
+      <span>© {year} {t("site.name")}</span>
       <span aria-hidden="true">·</span>
-      <span>{t("footer.rights")}</span>
-      <span aria-hidden="true">·</span>
-      <a href={localizedPath("/support-terms", lang)}>{t("footer.terms")}</a>
-      <span aria-hidden="true">·</span>
-      <span>© {year}</span>
-    </div>
-    <p class="contact label">
-      <span class="contact-label">Contact</span>
       <button
         type="button"
         class="copy-email"
@@ -64,7 +56,7 @@ function obfuscate(str: string): string {
         <span class="copy-email-text">finalbattlefilms@gmail.com</span>
         <span class="copy-email-status" aria-hidden="true"></span>
       </button>
-    </p>
+    </div>
   </div>
 </footer>
 
@@ -81,7 +73,7 @@ function obfuscate(str: string): string {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.25rem;
+    gap: 1rem;
     text-align: center;
   }
   .mark {
@@ -126,43 +118,6 @@ function obfuscate(str: string): string {
     color: var(--bar-text);
     margin: 0;
   }
-  .contact {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: center;
-    gap: 0.5rem;
-    margin: 0;
-    color: var(--bar-muted);
-  }
-  .contact-label {
-    text-transform: uppercase;
-  }
-  .copy-email {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    padding: 0;
-    border: 0;
-    background: none;
-    font: inherit;
-    letter-spacing: inherit;
-    text-transform: inherit;
-    color: var(--bar-text);
-    cursor: pointer;
-    transition: color 300ms var(--ease-editorial);
-  }
-  .copy-email:hover {
-    color: var(--bar-accent);
-  }
-  .copy-email-status {
-    color: var(--bar-accent);
-    opacity: 0;
-    transition: opacity 200ms var(--ease-editorial);
-  }
-  .copy-email.copied .copy-email-status {
-    opacity: 1;
-  }
   .meta {
     display: flex;
     flex-wrap: wrap;
@@ -177,6 +132,31 @@ function obfuscate(str: string): string {
   }
   .meta a:hover {
     color: var(--bar-accent);
+  }
+  .copy-email {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: var(--bar-muted);
+    cursor: pointer;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .copy-email:hover {
+    color: var(--bar-accent);
+  }
+  .copy-email-status {
+    color: var(--bar-accent);
+    opacity: 0;
+    transition: opacity 200ms var(--ease-editorial);
+  }
+  .copy-email.copied .copy-email-status {
+    opacity: 1;
   }
 </style>
 
