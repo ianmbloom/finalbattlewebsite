@@ -77,7 +77,7 @@ export const ui = {
       "We are a small, unlikely band of friends who met online: a group of compatriots, a Jewish video editor, and an activist from Hong Kong. Among us, a true daughter of Persia whose luminous voice gives our videos their soul.",
     "about.vision.title": "Our Vision",
     "about.vision.body":
-      "We are an independent collaboration bound by a single shared vision: a secular, democratic nation. Our task is to bring the IPP to life in content you can share. We stand with Reza Pahlavi and work to reflect his message. Beyond that, we stay politically neutral: the goal is to build a coalition behind a transition. We can work out our differences once the nation is free.",
+      "We are an independent collaboration bound by a single shared vision: a secular, democratic nation. Our task is to bring the IPP to life in content you can share. We stand with Reza Pahlavi and strive to reflect his message. Beyond that, we stay politically neutral: the goal is to build a coalition behind a transition. We can work out our differences once the nation is free.",
     "about.mission.title": "Our Mission",
     "about.mission.body":
       "Most of the world knows very little about the homeland or the Lion and Sun Revolution, and that silence leaves room for misconceptions to spread unchallenged. We want to change that: to show a global audience the free nation that will soon benefit us all. We do it with short videos, where every piece is an arrow for the quiver: each one illuminates a hidden truth, dispels a common myth, or unpacks a detail of the IPP.",
