@@ -60,6 +60,7 @@ const currencySymbol = lang === "fa" ? "دلار" : "$";
       <button type="button" class="support-btn kotlet custom-kotlet" data-tip-custom-btn>
         <span class="qty">{t("support.donate.custom")}</span>
         <span class="custom-amount">
+          <span class="custom-spacer" aria-hidden="true"></span>
           {lang !== "fa" && <span class="custom-currency">$</span>}
           <input
             type="number"
@@ -73,7 +74,7 @@ const currencySymbol = lang === "fa" ? "دلار" : "$";
             onclick="event.stopPropagation()"
           />
           {lang === "fa" && <span class="custom-currency">دلار</span>}
-          <span class="custom-arrow" data-tip-custom-arrow hidden>{lang === "fa" ? "←" : "→"}</span>
+          <span class="custom-arrow is-hidden" data-tip-custom-arrow>{lang === "fa" ? "←" : "→"}</span>
         </span>
       </button>
     )}
@@ -133,7 +134,15 @@ const currencySymbol = lang === "fa" ? "دلار" : "$";
       if (qty > 0) checkout(qty);
     };
 
-    customBtn?.addEventListener("click", submitCustom);
+    customBtn?.addEventListener("click", () => {
+      if (!customInput) return;
+      const val = customInput.value.trim();
+      if (!val || Number(val) <= 0) {
+        customInput.focus();
+      } else {
+        submitCustom();
+      }
+    });
     customInput?.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -141,14 +150,14 @@ const currencySymbol = lang === "fa" ? "دلار" : "$";
       }
     });
 
-    customInput?.addEventListener("input", () => {
+customInput?.addEventListener("input", () => {
       if (arrowTimeout) clearTimeout(arrowTimeout);
-      if (customArrow) customArrow.hidden = true;
-      
+      customArrow?.classList.add("is-hidden");
+
       const val = customInput.value;
       if (val.length >= 2) {
         arrowTimeout = setTimeout(() => {
-          if (customArrow) customArrow.hidden = false;
+          customArrow?.classList.remove("is-hidden");
         }, 1000);
       }
     });
@@ -309,13 +318,17 @@ const currencySymbol = lang === "fa" ? "دلار" : "$";
     opacity: 0.5;
     cursor: wait;
   }
+  .custom-spacer {
+    width: 1rem;
+    margin-inline-end: 0.3rem;
+  }
   .custom-arrow {
+    width: 1rem;
     margin-inline-start: 0.3rem;
     font-size: 1rem;
     color: var(--color-ink);
-    opacity: 0.7;
   }
-  .custom-arrow[hidden] {
-    display: none;
+  .custom-arrow.is-hidden {
+    opacity: 0;
   }
 </style>
