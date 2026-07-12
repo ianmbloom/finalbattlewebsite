@@ -34,7 +34,7 @@ export type Locale = (typeof LOCALES)[number];
  * Locales currently exposed in the served UI. Subset of `LOCALES`. Set back to
  * `LOCALES` (or add "fa") to re-enable the language switcher.
  */
-export const ENABLED_LOCALES: readonly Locale[] = ["en"];
+export const ENABLED_LOCALES: readonly Locale[] = ["en", "fa"];
 
 export const DEFAULT_LOCALE: Locale = "en";
 
