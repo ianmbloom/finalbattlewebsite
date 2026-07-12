@@ -74,7 +74,7 @@ export const ui = {
     "about.image_alt":
       "A Persian mosaic of a flag-bearer raising the Lion and Sun flag.",
     "about.lead":
-      "We are a small, unlikely band of friends who met on Discord: a group of compatriots, a Jewish video editor, and an activist from Hong Kong. Among us, a true daughter of Persia whose luminous voice gives our videos their soul.",
+      "We are a small, unlikely band of friends who met online: a group of compatriots, a Jewish video editor, and an activist from Hong Kong. Among us, a true daughter of Persia whose luminous voice gives our videos their soul.",
     "about.vision.title": "Our Vision",
     "about.vision.body":
       "We are an independent collaboration bound by a single shared vision: a secular, democratic nation. Our task is to bring the IPP to life in content you can share. We stand with Reza Pahlavi and work to reflect his message. Beyond that, we stay politically neutral: the goal is to build a coalition behind a transition. We can work out our differences once the nation is free.",
@@ -141,10 +141,10 @@ export const ui = {
 
     "support.title": "Fund the Videos",
     "support.lead":
-      "You can help us spread a confident vision for a secular, democratic nation and teach the world about the IPP.",
+      "You can help us share\na confident vision for\na secular, democratic nation\nand teach the world about the IPP.",
     "support.donate.title": "Buy us a kotlet… or maybe a few",
     "support.donate.body":
-      "Cover our production costs and put our next video in front of more people.",
+      "Your patronage puts wings on our next video and sends it soaring to millions.",
     "support.error": "Could not start checkout. Please try again.",
     "support.donate.custom": "No guest goes unfed",
     "support.donate.customPlaceholder": "How many?",
@@ -257,7 +257,7 @@ export const ui = {
     "about.image_alt":
       "موزاییکی پارسی از پرچم‌داری که پرچم شیر و خورشید را برافراشته است.",
     "about.lead":
-      "ما گروهی کوچک و نامحتمل از دوستانی هستیم که در دیسکورد با هم آشنا شدیم: گروهی از هم‌میهنان، یک تدوین‌گر ویدیوی یهودی، و کنشگری از هنگ‌کنگ. در میان ما، دختری راستین از پارس که صدای درخشانش به ویدیوهای ما جان می‌بخشد.",
+      "ما گروهی کوچک و نامحتمل از دوستانی هستیم که آنلاین با هم آشنا شدیم: گروهی از هم‌میهنان، یک تدوین‌گر ویدیوی یهودی، و کنشگری از هنگ‌کنگ. در میان ما، دختری راستین از پارس که صدای درخشانش به ویدیوهای ما جان می‌بخشد.",
     "about.vision.title": "چشم‌انداز ما",
     "about.vision.body":
       "ما یک همکاری مستقل هستیم که با یک چشم‌انداز مشترک به هم پیوسته‌ایم: ملتی سکولار و دموکراتیک. مأموریت ما این است که IPP را در قالب محتوایی که می‌توانید هم‌رسانی کنید، زنده کنیم. ما در کنار رضا پهلوی ایستاده‌ایم و کوشش می‌کنیم پیام او را بازتاب دهیم. فراتر از این، ما از نظر سیاسی بی‌طرف می‌مانیم: هدف، ساختن ائتلافی برای یک گذار است. اختلاف‌هایمان را می‌توانیم پس از آزادی میهن حل کنیم.",
@@ -324,10 +324,10 @@ export const ui = {
 
     "support.title": "تأمین ویدیوها",
     "support.lead":
-      "می‌توانی کمک کنی چشم‌اندازی مطمئن از ملتی سکولار و دموکراتیک را بگسترانیم و جهان را با IPP آشنا کنیم.",
+      "می‌توانی کمک کنی چشم‌اندازی مطمئن\nاز ملتی سکولار و دموکراتیک را به اشتراک بگذاریم\nو جهان را با IPP آشنا کنیم.",
     "support.donate.title": "برایمان یک کتلت بخر… یا شاید چند تا",
     "support.donate.body":
-      "هزینه‌ی تولید ما را بپوشان و ویدیوی بعدی‌مان را پیش چشم افراد بیشتری بگذار.",
+      "حمایت شما به ویدیوی بعدی ما بال می‌دهد و آن را به سوی میلیون‌ها نفر به پرواز درمی‌آورد.",
     "support.error": "شروع پرداخت ممکن نشد. لطفاً دوباره تلاش کن.",
     "support.donate.custom": "مهرِ نان و نمک",
     "support.donate.customPlaceholder": "چند تا؟",
