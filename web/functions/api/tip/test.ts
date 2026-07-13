@@ -30,7 +30,7 @@ async function handleCheckout(context: {
         },
       },
     ],
-    consent_collection: { promotions: "auto" },
+    custom_text: { submit: { message: "Test disclosure" } },
     metadata: { type: "tip", locale: "en" },
     success_url: `${origin}/fund?test=ok`,
     cancel_url: `${origin}/fund`,
