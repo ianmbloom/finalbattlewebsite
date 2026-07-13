@@ -22,6 +22,7 @@ async function handleCheckout(context: {
     line_items: [
       {
         quantity: 3,
+        adjustable_quantity: { enabled: true, minimum: 1, maximum: TIP.maxQuantity },
         price_data: {
           currency: TIP.currency,
           unit_amount: TIP.unitAmount,
