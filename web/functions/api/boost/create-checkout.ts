@@ -65,20 +65,12 @@ export const onRequestPost = async (context: {
 
   const origin = new URL(request.url).origin;
   const prefix = loc === "fa" ? "/fa" : "";
-  const title = video.title[loc] || video.title.en;
-
-  // The "what you're buying" copy from the Launch popup rides along into the
-  // funnel so the purchase reads the same on-site and at the point of payment:
-  // this is a service (paid reach on X) that also funds production, never a
-  // donation. Kept plain and final.
-  const disclosure =
-    loc === "fa"
-      ? "برای این ویدیو در ایکس بازدید تبلیغاتی بخر و تولید بعدی ما را تأمین کن. همه‌ی خریدها نهایی‌اند."
-      : "Buy this video paid reach on X and fund our next production. All sales final.";
+  const title = video.title.en;
+  const disclosure = "Buy this video paid reach on X and fund our next production. All sales final.";
 
   const session: Record<string, unknown> = {
     mode: "payment",
-    locale: loc === "en" ? "en" : "auto",
+    locale: "en",
     line_items: [
       {
         quantity: 1,

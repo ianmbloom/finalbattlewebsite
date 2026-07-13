@@ -50,18 +50,12 @@ export const onRequestPost = async (context: {
 
   const origin = new URL(request.url).origin;
   const prefix = loc === "fa" ? "/fa" : "";
-  const name = loc === "fa" ? "کتلت" : "Kotlet";
-  // The kotlet is a light-hearted contribution, not a service purchase — so its
-  // "what you're buying" copy is deliberately different from the Launch funnel:
-  // no paid-reach language, just a plain note that it funds the next video.
-  const disclosure =
-    loc === "fa"
-      ? "کتلت‌هایت هزینه‌ی ساخت ویدیوی بعدی ما را می‌پوشانند. همه‌ی پرداخت‌ها نهایی‌اند."
-      : "Your kotlets help pay for our next video. All payments final.";
+  const name = "Final Battle Films Patronage";
+  const disclosure = "Your patronage helps fund our next video. All payments final.";
 
   const session: Record<string, unknown> = {
     mode: "payment",
-    locale: loc === "en" ? "en" : "auto",
+    locale: "en",
     line_items: [
       {
         quantity,
