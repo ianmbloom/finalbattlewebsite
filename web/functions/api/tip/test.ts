@@ -5,10 +5,10 @@ interface Env {
   STRIPE_SECRET_KEY: string;
 }
 
-export const onRequestPost = async (context: {
+async function handleCheckout(context: {
   request: Request;
   env: Env;
-}): Promise<Response> => {
+}): Promise<Response> {
   const { request, env } = context;
 
   if (!env.STRIPE_SECRET_KEY) {
@@ -59,4 +59,7 @@ export const onRequestPost = async (context: {
     const msg = err instanceof Error ? err.message : String(err);
     return jsonResponse({ error: "Checkout failed", detail: msg }, 500);
   }
-};
+}
+
+export const onRequestGet = handleCheckout;
+export const onRequestPost = handleCheckout;
