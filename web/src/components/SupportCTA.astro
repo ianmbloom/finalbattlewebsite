@@ -83,7 +83,7 @@ const currencySymbol = lang === "fa" ? "دلار" : "$";
   <p class="body">{t("support.donate.body")}</p>
 </div>
 
-<script>
+<script define:vars={{ unitAmount: TIP.unitAmount }}>
   document.querySelectorAll<HTMLElement>("[data-tip]").forEach((root) => {
     if (root.dataset.tipBound === "1") return;
     root.dataset.tipBound = "1";
@@ -126,7 +126,7 @@ const currencySymbol = lang === "fa" ? "دلار" : "$";
 
     buttons.forEach((btn) => {
       const qty = Number(btn.dataset.tipQty);
-      const amount = (qty * ${TIP.unitAmount}) / 100;
+      const amount = (qty * unitAmount) / 100;
       btn.addEventListener("click", () => checkout(amount));
     });
 
