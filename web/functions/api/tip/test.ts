@@ -19,11 +19,9 @@ async function handleCheckout(context: {
 
   const session: Record<string, unknown> = {
     mode: "payment",
-    locale: "en",
     line_items: [
       {
         quantity: 3,
-        adjustable_quantity: { enabled: true, minimum: 1, maximum: TIP.maxQuantity },
         price_data: {
           currency: TIP.currency,
           unit_amount: TIP.unitAmount,
@@ -31,14 +29,6 @@ async function handleCheckout(context: {
         },
       },
     ],
-    custom_text: {
-      submit: { message: "Test disclosure" },
-    },
-    consent_collection: { promotions: "auto" },
-    metadata: {
-      type: "tip",
-      locale: "en",
-    },
     success_url: `${origin}/fund?test=ok`,
     cancel_url: `${origin}/fund`,
   };
