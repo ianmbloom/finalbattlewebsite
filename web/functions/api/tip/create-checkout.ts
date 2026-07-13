@@ -51,7 +51,7 @@ export const onRequestPost = async (context: {
 
   const origin = new URL(request.url).origin;
   const prefix = loc === "fa" ? "/fa" : "";
-  const name = "One-time Patronage";
+  const name = "Final Battle Films One-time Patronage";
   const disclosure = "Your patronage helps fund our next video. All payments final.";
 
   const session: Record<string, unknown> = {
