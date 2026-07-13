@@ -30,6 +30,7 @@ async function handleCheckout(context: {
         },
       },
     ],
+    metadata: { type: "tip", locale: "en" },
     success_url: `${origin}/fund?test=ok`,
     cancel_url: `${origin}/fund`,
   };
