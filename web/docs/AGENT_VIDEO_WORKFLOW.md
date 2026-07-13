@@ -44,20 +44,22 @@ already on the site.
 ### 1. Map sources to slugs
 
 Match each master to the `<slug>` of a `web/src/content/videos/*.json` file.
-Example mapping (July_9 batch):
+Example mapping (July_12 batch):
 
 | Source master | Slug | Site MP4 |
 |---------------|------|----------|
-| `Captive_Nation_English_July9.mov` | `captive-nation` | `captive-nation.mp4` |
-| `Captive_Nation_Farsi_July9.mov` | `captive-nation` (fa) | `captive-nation-fa.mp4` |
-| `Return_To_Democracy_English_July9.mov` | `returning-to-democracy` | `returning-to-democracy.mp4` |
-| `Return_To_Democracy_Farsi_July9.mov` | `returning-to-democracy` (fa) | `returning-to-democracy-fa.mp4` |
-| `Transitional_Leader_English_July9.mov` | `transitional-leader` | `transitional-leader.mp4` |
-| `Transitional_Leader_Farsi_July9.mov` | `transitional-leader` (fa) | `transitional-leader-fa.mp4` |
-| `Bright_Future_English_July9.mov` | `the-nation-has-a-future` | `the-nation-has-a-future.mp4` |
-| `Bright_Future_Farsi_July9.mov` | `the-nation-has-a-future` (fa) | `the-nation-has-a-future-fa.mp4` |
-| `By_The_People_English_July9.mov` | `by-the-people` | `by-the-people.mp4` |
-| `Far_From_Home_English_July9.mov` | `far-from-home` | `far-from-home.mp4` |
+| `Captive_Nation_English_July_12.mov` | `captive-nation` | `captive-nation.mp4` |
+| `Captive_Nation_Farsi_July_12.mov` | `captive-nation` (fa) | `captive-nation-fa.mp4` |
+| `Return_To_Democracy_English_July_12.mov` | `returning-to-democracy` | `returning-to-democracy.mp4` |
+| `Return_To_Democracy_Farsi_July_12.mov` | `returning-to-democracy` (fa) | `returning-to-democracy-fa.mp4` |
+| `Transitional_Leader_English_July_12.mov` | `transitional-leader` | `transitional-leader.mp4` |
+| `Transitional_Leader_Farsi_July_12.mov` | `transitional-leader` (fa) | `transitional-leader-fa.mp4` |
+| `Bright_Future_English_July_12.mov` | `the-nation-has-a-future` | `the-nation-has-a-future.mp4` |
+| `Bright_Future_Farsi_July_12.mov` | `the-nation-has-a-future` (fa) | `the-nation-has-a-future-fa.mp4` |
+| `By_The_People_English_July_12.mov` | `by-the-people` | `by-the-people.mp4` |
+| `By_The_People_Farsi_July_12.mov` | `by-the-people` (fa) | `by-the-people-fa.mp4` |
+| `Far_From_Home_English_July_12.mov` | `far-from-home` | `far-from-home.mp4` |
+| `Far_From_Home_Farsi_July_12.mov` | `far-from-home` (fa) | `far-from-home-fa.mp4` |
 
 ### 2. Encode + thumbnail
 

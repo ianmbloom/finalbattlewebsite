@@ -1,4 +1,4 @@
-# Upload the July_9 encodes from public/videos/ to Cloudflare R2 under the
+# Upload the July_12 encodes from public/videos/ to Cloudflare R2 under the
 # `videos/` prefix, then delete the superseded `-jun27` objects. Public CDN:
 # https://videos.finalbattle.video/videos/<file>.mp4
 #
