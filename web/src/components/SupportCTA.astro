@@ -29,7 +29,7 @@ const price = (qty: number) => {
 const currencySymbol = lang === "fa" ? "دلار" : "$";
 ---
 
-<div class:list={["support-cta", variant, { "is-disabled": disabled }]} data-tip data-locale={lang}>
+<div class:list={["support-cta", variant, { "is-disabled": disabled }]} data-tip data-locale={lang} data-unit-amount={TIP.unitAmount}>
   <p class="tip-label">
     {t("support.donate.title")}
     {disabled && <span class="soon">{t("common.soon")}</span>}
@@ -83,12 +83,13 @@ const currencySymbol = lang === "fa" ? "دلار" : "$";
   <p class="body">{t("support.donate.body")}</p>
 </div>
 
-<script define:vars={{ unitAmount: TIP.unitAmount }}>
+<script>
   document.querySelectorAll<HTMLElement>("[data-tip]").forEach((root) => {
     if (root.dataset.tipBound === "1") return;
     root.dataset.tipBound = "1";
 
     const locale = root.dataset.locale ?? "en";
+    const unitAmount = Number(root.dataset.unitAmount) || 500;
     const errorEl = root.querySelector<HTMLElement>("[data-tip-error]");
     const buttons = Array.from(
       root.querySelectorAll<HTMLButtonElement>("button[data-tip-qty]"),
