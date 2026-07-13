@@ -5,10 +5,10 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Thumbnails are content-hashed by filename (v2, v3, -fa). Cache aggressively;
-# bump the filename when replacing an image to bust stale CDN entries.
+# Thumbnails use stable filenames and are updated frequently.
+# Short TTL with stale-while-revalidate for good performance + timely updates.
 /videos/thumbs/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
