@@ -1,3 +1,6 @@
+import { TIP } from "../../src/config/tip";
+import { BOOST } from "../../src/config/boost";
+
 export const onRequestGet = async (context: {
   env: { STRIPE_SECRET_KEY?: string };
 }): Promise<Response> => {
@@ -9,6 +12,8 @@ export const onRequestGet = async (context: {
       hasKey,
       keyLen,
       keyPreview: context.env.STRIPE_SECRET_KEY?.substring(0, 7) ?? "none",
+      tip: TIP,
+      boostTiers: BOOST.tiers,
     }),
     { headers: { "Content-Type": "application/json" } }
   );
