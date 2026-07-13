@@ -29,7 +29,7 @@ export const onRequestPost = async (context: {
   const { request, env } = context;
 
   if (!env.STRIPE_SECRET_KEY) {
-    return jsonResponse({ error: "Checkout is not configured" }, 503);
+    return jsonResponse({ error: "Checkout is not configured (v2)" }, 503);
   }
 
   let body: TipBody;
