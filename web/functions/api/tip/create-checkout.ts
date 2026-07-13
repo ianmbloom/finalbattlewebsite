@@ -76,9 +76,6 @@ export const onRequestPost = async (context: {
     custom_text: {
       submit: { message: disclosure },
     },
-    // Offer the newsletter opt-in inside the funnel; surfaced on the session as
-    // consent.promotions and stored by the webhook.
-    consent_collection: { promotions: "auto" },
     metadata: {
       type: "tip",
       locale: loc,

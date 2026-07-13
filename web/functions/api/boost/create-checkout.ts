@@ -92,9 +92,6 @@ export const onRequestPost = async (context: {
     custom_text: {
       submit: { message: disclosure },
     },
-    // Offer the newsletter opt-in inside the funnel; surfaced on the session as
-    // consent.promotions and stored by the webhook.
-    consent_collection: { promotions: "auto" },
     metadata: {
       type: "boost",
       videoSlug,
@@ -105,15 +102,20 @@ export const onRequestPost = async (context: {
     cancel_url: `${origin}${prefix}/videos/${videoSlug}`,
   };
 
-  const res = await stripePost(env.STRIPE_SECRET_KEY, "checkout/sessions", session);
-  if (!res.ok) {
-    const detail = await res.text();
-    return jsonResponse({ error: "Could not start checkout", detail }, 502);
-  }
+  try {
+    const res = await stripePost(env.STRIPE_SECRET_KEY, "checkout/sessions", session);
+    if (!res.ok) {
+      const detail = await res.text();
+      return jsonResponse({ error: "Could not start checkout", detail }, 502);
+    }
 
-  const data = (await res.json()) as { url?: string };
-  if (!data.url) {
-    return jsonResponse({ error: "Stripe returned no checkout URL" }, 502);
+    const data = (await res.json()) as { url?: string };
+    if (!data.url) {
+      return jsonResponse({ error: "Stripe returned no checkout URL" }, 502);
+    }
+    return jsonResponse({ url: data.url }, 200);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return jsonResponse({ error: "Checkout failed", detail: msg }, 500);
   }
-  return jsonResponse({ url: data.url }, 200);
 };
