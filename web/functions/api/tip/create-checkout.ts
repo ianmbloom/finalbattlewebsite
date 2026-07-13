@@ -1,11 +1,11 @@
 /**
- * Cloudflare Pages Function: create a Stripe Checkout Session for the
- * "Buy us some kotlets" tip.
+ * Cloudflare Pages Function: create a Stripe Checkout Session for one-time
+ * patronage contributions.
  *
- * A visitor contributes toward production by buying N kotlets at a fixed unit
- * price and can still fine-tune the quantity at Checkout. There is nothing to
- * fulfill — the webhook only records the buyer's email — so the session carries
- * `type: "tip"` in its metadata to branch away from the merch path.
+ * A visitor contributes a chosen dollar amount to fund production. There is
+ * nothing to fulfill — the webhook only records the buyer's email — so the
+ * session carries `type: "tip"` in its metadata to branch away from the merch
+ * path.
  *
  * Returns `{ url }` (the hosted Stripe Checkout page) for the client to redirect
  * to. Reuses the SDK-free Stripe helpers in ../_lib (form-encoded fetch).
@@ -19,7 +19,7 @@ interface Env {
 
 interface TipBody {
   locale?: unknown;
-  quantity?: unknown;
+  amount?: unknown;
 }
 
 export const onRequestPost = async (context: {
@@ -29,7 +29,7 @@ export const onRequestPost = async (context: {
   const { request, env } = context;
 
   if (!env.STRIPE_SECRET_KEY) {
-    return jsonResponse({ error: "Checkout is not configured (v2)" }, 503);
+    return jsonResponse({ error: "Checkout is not configured" }, 503);
   }
 
   let body: TipBody;
@@ -40,17 +40,18 @@ export const onRequestPost = async (context: {
   }
   const loc = body.locale === "fa" ? "fa" : "en";
 
-  // The starting count only seeds the Checkout page (buyers can adjust there),
-  // but keep it a sane integer inside the shared bounds regardless of input.
-  const requested = Math.floor(Number(body.quantity));
-  const quantity =
-    Number.isFinite(requested) && requested >= 1 && requested <= TIP.maxQuantity
-      ? requested
-      : TIP.quantities[0];
+  // Amount in dollars - must be within allowed range
+  const requested = Math.floor(Number(body.amount));
+  const minAmount = TIP.unitAmount / 100;
+  const maxAmount = (TIP.unitAmount * TIP.maxQuantity) / 100;
+  if (!Number.isFinite(requested) || requested < minAmount || requested > maxAmount) {
+    return jsonResponse({ error: "bad_amount" }, 400);
+  }
+  const amountCents = requested * 100;
 
   const origin = new URL(request.url).origin;
   const prefix = loc === "fa" ? "/fa" : "";
-  const name = "Final Battle Films Patronage";
+  const name = "One-time Patronage";
   const disclosure = "Your patronage helps fund our next video. All payments final.";
 
   const session: Record<string, unknown> = {
@@ -58,11 +59,10 @@ export const onRequestPost = async (context: {
     locale: "en",
     line_items: [
       {
-        quantity,
-        adjustable_quantity: { enabled: true, minimum: 1, maximum: TIP.maxQuantity },
+        quantity: 1,
         price_data: {
           currency: TIP.currency,
-          unit_amount: TIP.unitAmount,
+          unit_amount: amountCents,
           product_data: { name, description: disclosure },
         },
       },

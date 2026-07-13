@@ -105,14 +105,14 @@ const currencySymbol = lang === "fa" ? "دلار" : "$";
       if (customInput) customInput.disabled = disabled;
     };
 
-    const checkout = async (quantity: number) => {
+    const checkout = async (amount: number) => {
       setDisabled(true);
       if (errorEl) errorEl.hidden = true;
       try {
         const res = await fetch("/api/tip/create-checkout", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ locale, quantity }),
+          body: JSON.stringify({ locale, amount }),
         });
         if (!res.ok) throw new Error(String(res.status));
         const { url } = (await res.json()) as { url?: string };
@@ -125,13 +125,15 @@ const currencySymbol = lang === "fa" ? "دلار" : "$";
     };
 
     buttons.forEach((btn) => {
-      btn.addEventListener("click", () => checkout(Number(btn.dataset.tipQty)));
+      const qty = Number(btn.dataset.tipQty);
+      const amount = (qty * ${TIP.unitAmount}) / 100;
+      btn.addEventListener("click", () => checkout(amount));
     });
 
     const submitCustom = () => {
       if (!customInput) return;
-      const qty = Math.min(100, Math.max(1, Math.floor(Number(customInput.value))));
-      if (qty > 0) checkout(qty);
+      const amount = Math.min(500, Math.max(1, Math.floor(Number(customInput.value))));
+      if (amount > 0) checkout(amount);
     };
 
     customBtn?.addEventListener("click", () => {
