@@ -63,9 +63,9 @@ export const ui = {
 
     "share.repost": "Share this video with your followers",
     "share.repostShort": "SHARE THIS VIDEO",
-    "share.repostTitle": "Repost this video",
+    "share.repostTitle": "Methods to repost this video:",
     "share.telegram": "Share on Telegram",
-    "share.copyLink": "Copy link",
+    "share.copyLink": "Copy link to this page",
     "share.copied": "Copied",
     "share.close": "Close",
 
@@ -247,9 +247,9 @@ export const ui = {
 
     "share.repost": "این ویدیو را با دنبال‌کنندگانتان هم‌رسانی کنید",
     "share.repostShort": "این ویدیو را هم‌رسانی کنید",
-    "share.repostTitle": "بازنشر این ویدیو",
+    "share.repostTitle": "روش‌های بازنشر این ویدیو:",
     "share.telegram": "هم‌رسانی در تلگرام",
-    "share.copyLink": "کپی لینک",
+    "share.copyLink": "کپی لینک این صفحه",
     "share.copied": "کپی شد",
     "share.close": "بستن",
 

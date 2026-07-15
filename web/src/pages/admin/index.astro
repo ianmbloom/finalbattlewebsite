@@ -100,6 +100,13 @@ import AdminLayout from "@/layouts/AdminLayout.astro";
         <p class="loading">Loading...</p>
       </div>
     </section>
+
+    <section class="recent-subscribers">
+      <h2>Recent Subscribers</h2>
+      <div class="subscribers-list" id="subscribers-list">
+        <p class="loading">Loading...</p>
+      </div>
+    </section>
   </div>
 </AdminLayout>
 
@@ -171,6 +178,20 @@ import AdminLayout from "@/layouts/AdminLayout.astro";
         `).join("");
       } else {
         document.getElementById("activity-list")!.innerHTML = `<p class="empty">No ingestion runs yet.</p>`;
+      }
+
+      if (data.recentSubscribers && data.recentSubscribers.length > 0) {
+        const list = document.getElementById("subscribers-list")!;
+        list.innerHTML = data.recentSubscribers.map((s: any) => `
+          <div class="subscriber-card">
+            <span class="subscriber-email">${s.email}</span>
+            <span class="subscriber-locale lang-${s.locale}">${s.locale.toUpperCase()}</span>
+            <span class="subscriber-source">${s.source}</span>
+            <span class="subscriber-time">${new Date(s.createdAt).toLocaleString()}</span>
+          </div>
+        `).join("");
+      } else {
+        document.getElementById("subscribers-list")!.innerHTML = `<p class="empty">No subscribers yet.</p>`;
       }
       
     } catch (err) {
@@ -398,6 +419,70 @@ import AdminLayout from "@/layouts/AdminLayout.astro";
   }
 
   .activity-time {
+    font-size: 0.75rem;
+    color: var(--admin-muted);
+  }
+
+  .recent-subscribers {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+  }
+
+  .recent-subscribers h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+  }
+
+  .subscribers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .subscriber-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--admin-bg);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.375rem;
+  }
+
+  .subscriber-email {
+    font-weight: 500;
+    flex: 1;
+    font-family: monospace;
+    font-size: 0.875rem;
+  }
+
+  .subscriber-locale {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+
+  .subscriber-locale.lang-en {
+    background: #3b82f6;
+    color: white;
+  }
+
+  .subscriber-locale.lang-fa {
+    background: #10b981;
+    color: white;
+  }
+
+  .subscriber-source {
+    font-size: 0.75rem;
+    color: var(--admin-muted);
+    text-transform: capitalize;
+  }
+
+  .subscriber-time {
     font-size: 0.75rem;
     color: var(--admin-muted);
   }

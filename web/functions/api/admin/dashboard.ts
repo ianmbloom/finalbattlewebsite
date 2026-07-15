@@ -23,13 +23,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }
 
   try {
-    const [stats, comparison, revenue, topPerformers, recentRuns, subscriberGrowth] = await Promise.all([
+    const [stats, comparison, revenue, topPerformers, recentRuns, subscriberGrowth, recentSubscribers] = await Promise.all([
       getDashboardStats(env.DB),
       getLanguageComparison(env.DB),
       getRevenueByVideo(env.DB),
       getTopPerformers(env.DB),
       getRecentIngestionRuns(env.DB),
       getSubscriberGrowth(env.DB),
+      getRecentSubscribers(env.DB),
     ]);
 
     return jsonResponse({
@@ -39,6 +40,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       topPerformers,
       recentRuns,
       subscriberGrowth,
+      recentSubscribers,
     }, 200);
   } catch (err) {
     console.error("Error fetching dashboard data:", err);
@@ -212,5 +214,28 @@ async function getSubscriberGrowth(db: D1Database) {
     date: row.date,
     en: row.en_count ?? 0,
     fa: row.fa_count ?? 0,
+  }));
+}
+
+async function getRecentSubscribers(db: D1Database) {
+  const result = await db.prepare(`
+    SELECT email, locale, source, marketing, created_at
+    FROM subscribers
+    ORDER BY created_at DESC
+    LIMIT 25
+  `).all<{
+    email: string;
+    locale: string;
+    source: string;
+    marketing: number;
+    created_at: string;
+  }>();
+
+  return result.results.map(row => ({
+    email: row.email,
+    locale: row.locale,
+    source: row.source,
+    marketing: row.marketing === 1,
+    createdAt: row.created_at,
   }));
 }
