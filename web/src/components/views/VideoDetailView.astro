@@ -95,6 +95,15 @@ const boostTier = getBoostTier(entry);
   </div>
 </BaseLayout>
 
+<script define:vars={{ videoSlug: entry.id }}>
+  if (typeof twq === "function") {
+    twq("event", "tw-viewcontent", {
+      content_ids: [videoSlug],
+      content_type: "video",
+    });
+  }
+</script>
+
 <style>
   /* Mobile: single column, video first then content */
   .viewer {

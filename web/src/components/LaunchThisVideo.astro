@@ -155,11 +155,23 @@ const titleId = `${uid}-title`;
         const amount = Number(btn.dataset.amount);
         setDisabled(true);
         if (errorEl) errorEl.hidden = true;
+
+        if (typeof twq === "function") {
+          twq("event", "tw-initiatecheckout", {
+            value: amount,
+            currency: "USD",
+            content_ids: [slug],
+          });
+        }
+
         try {
+          const attribution = JSON.parse(
+            sessionStorage.getItem("fb_attribution") || "{}",
+          );
           const res = await fetch("/api/boost/create-checkout", {
             method: "POST",
             headers: { "content-type": "application/json" },
-            body: JSON.stringify({ videoSlug: slug, amount, locale }),
+            body: JSON.stringify({ videoSlug: slug, amount, locale, ...attribution }),
           });
           if (!res.ok) throw new Error(String(res.status));
           const { url } = (await res.json()) as { url?: string };

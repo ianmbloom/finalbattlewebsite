@@ -45,6 +45,14 @@ const t = useTranslations(lang);
 // PUBLIC_CF_BEACON_TOKEN in the Pages build env to turn on privacy-friendly,
 // cookieless traffic stats; when unset (e.g. local dev) the beacon is omitted.
 const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
+
+// X (Twitter) Pixel IDs for ad conversion tracking. Supports multiple pixels
+// for separate Ads Manager accounts. Set PUBLIC_X_PIXEL_IDS as comma-separated
+// values (e.g. "pixel1,pixel2") in Cloudflare Pages env; omitted when unset.
+const xPixelIds = (import.meta.env.PUBLIC_X_PIXEL_IDS ?? "")
+  .split(",")
+  .map((id: string) => id.trim())
+  .filter(Boolean);
 ---
 
 <!doctype html>
@@ -66,6 +74,20 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
           defer
           src="https://static.cloudflareinsights.com/beacon.min.js"
           data-cf-beacon={JSON.stringify({ token: beaconToken })}
+        />
+      )
+    }
+    {
+      xPixelIds.length > 0 && (
+        <script
+          is:inline
+          data-x-pixel-ids={xPixelIds.join(",")}
+          set:html={`
+            !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+            },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',
+            a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+            ${xPixelIds.map((id: string) => `twq('config', '${id}');`).join("\n            ")}
+          `}
         />
       )
     }
@@ -96,6 +118,10 @@ const beaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
         <EngagementPopup lang={lang} trackVideoId={trackVideoId} />
       )
     }
+    <script>
+      import { captureAttribution } from "@/lib/attribution";
+      captureAttribution();
+    </script>
   </body>
 </html>
 

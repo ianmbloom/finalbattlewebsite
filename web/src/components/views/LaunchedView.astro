@@ -76,6 +76,14 @@ for (const entry of entries) {
     repost.setAttribute("href", url);
     repost.hidden = false;
   }
+
+  if (typeof twq === "function" && slug) {
+    const conversionId = `${slug}-${Date.now()}`;
+    twq("event", "tw-purchase", {
+      content_ids: [slug],
+      conversion_id: conversionId,
+    });
+  }
 </script>
 
 <style>

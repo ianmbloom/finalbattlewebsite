@@ -22,6 +22,10 @@ interface BoostBody {
   videoSlug?: unknown;
   amount?: unknown;
   locale?: unknown;
+  utm_source?: unknown;
+  utm_medium?: unknown;
+  utm_campaign?: unknown;
+  twclid?: unknown;
 }
 
 interface VideoIndexEntry {
@@ -51,6 +55,11 @@ export const onRequestPost = async (context: {
   const amount = typeof body.amount === "number" ? body.amount : Number(body.amount);
   const videoSlug = typeof body.videoSlug === "string" ? body.videoSlug : "";
   const loc = body.locale === "fa" ? "fa" : "en";
+
+  const utmSource = typeof body.utm_source === "string" ? body.utm_source : undefined;
+  const utmMedium = typeof body.utm_medium === "string" ? body.utm_medium : undefined;
+  const utmCampaign = typeof body.utm_campaign === "string" ? body.utm_campaign : undefined;
+  const twclid = typeof body.twclid === "string" ? body.twclid : undefined;
 
   // 1. Amount must be one of the fixed tiers (shared allowlist).
   if (!BOOST.tiers.includes(amount as (typeof BOOST.tiers)[number])) {
@@ -89,6 +98,10 @@ export const onRequestPost = async (context: {
       videoSlug,
       amount: String(amount),
       locale: loc,
+      ...(utmSource && { utm_source: utmSource }),
+      ...(utmMedium && { utm_medium: utmMedium }),
+      ...(utmCampaign && { utm_campaign: utmCampaign }),
+      ...(twclid && { twclid }),
     },
     success_url: `${origin}${prefix}/launched?slug=${encodeURIComponent(videoSlug)}`,
     cancel_url: `${origin}${prefix}/videos/${videoSlug}`,

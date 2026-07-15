@@ -20,6 +20,12 @@
   "name": "finalbattle-films",
   "compatibility_date": "2026-06-24",
   "pages_build_output_dir": "./dist",
+
+  // Public environment variables (available at build time for client-side code).
+  // X Pixel IDs for ad conversion tracking — comma-separated for multiple accounts.
+  "vars": {
+    "PUBLIC_X_PIXEL_IDS": "rdvo6"
+  },
   "d1_databases": [
     {
       "binding": "DB",

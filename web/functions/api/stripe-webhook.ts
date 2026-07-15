@@ -55,6 +55,10 @@ interface StripeSession {
     type?: string;
     videoSlug?: string;
     amount?: string;
+    utm_source?: string;
+    utm_medium?: string;
+    utm_campaign?: string;
+    twclid?: string;
   } | null;
   _embedded?: never;
 }
@@ -207,10 +211,17 @@ async function recordBoost(
     .run();
 }
 
+interface Attribution {
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  twclid?: string;
+}
+
 /**
  * Log an individual boost transaction for spend reporting. Each completed
  * Launch payment gets one row; `allocated` starts at 0 and is set to 1 when
- * the funds are spent on ads.
+ * the funds are spent on ads. Attribution data enables X.com ad campaign ROI.
  */
 async function recordBoostTransaction(
   db: D1Database | undefined,
@@ -219,16 +230,29 @@ async function recordBoostTransaction(
   cents: number,
   email: string | undefined,
   locale: string | undefined,
+  attribution: Attribution = {},
 ): Promise<void> {
   if (!db || !sessionId) return;
   const now = new Date().toISOString();
   await db
     .prepare(
       `INSERT OR IGNORE INTO boost_transactions
-         (video_slug, amount_cents, stripe_session_id, buyer_email, locale, created_at)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+         (video_slug, amount_cents, stripe_session_id, buyer_email, locale, created_at,
+          utm_source, utm_medium, utm_campaign, twclid)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
-    .bind(slug, cents, sessionId, email ?? null, locale ?? null, now)
+    .bind(
+      slug,
+      cents,
+      sessionId,
+      email ?? null,
+      locale ?? null,
+      now,
+      attribution.utm_source ?? null,
+      attribution.utm_medium ?? null,
+      attribution.utm_campaign ?? null,
+      attribution.twclid ?? null,
+    )
     .run();
 }
 
@@ -269,9 +293,15 @@ export const onRequestPost = async (context: {
     const cents = (parseInt(obj.metadata.amount ?? "0", 10) || 0) * 100;
     const email = obj.customer_details?.email ?? "";
     const locale = obj.metadata.locale === "fa" ? "fa" : "en";
+    const attribution: Attribution = {
+      utm_source: obj.metadata.utm_source,
+      utm_medium: obj.metadata.utm_medium,
+      utm_campaign: obj.metadata.utm_campaign,
+      twclid: obj.metadata.twclid,
+    };
 
     await recordBoost(env.DB, slug, cents);
-    await recordBoostTransaction(env.DB, obj.id, slug, cents, email || undefined, locale);
+    await recordBoostTransaction(env.DB, obj.id, slug, cents, email || undefined, locale, attribution);
 
     // Capture the buyer's email + newsletter opt-in collected in the funnel.
     if (email) {
