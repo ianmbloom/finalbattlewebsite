@@ -103,7 +103,7 @@ export const onRequestPost = async (context: {
       ...(utmCampaign && { utm_campaign: utmCampaign }),
       ...(twclid && { twclid }),
     },
-    success_url: `${origin}${prefix}/launched?slug=${encodeURIComponent(videoSlug)}`,
+    success_url: `${origin}${prefix}/launched?slug=${encodeURIComponent(videoSlug)}&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}${prefix}/videos/${videoSlug}`,
   };
 

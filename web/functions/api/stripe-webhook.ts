@@ -33,6 +33,8 @@ interface Env {
   /** Set to "true" to auto-send Printify orders to production (default: draft for review). */
   PRINTIFY_SEND_TO_PRODUCTION?: string;
   DB?: D1Database;
+  /** X Conversion API token for server-side purchase tracking. */
+  X_CONVERSION_API_TOKEN?: string;
 }
 
 interface StripeAddress {
@@ -218,6 +220,89 @@ interface Attribution {
   twclid?: string;
 }
 
+const X_PIXEL_ID = "rdvo6";
+
+/**
+ * Hash a string with SHA-256 and return lowercase hex. Used for hashing
+ * email addresses before sending to X Conversion API.
+ */
+async function sha256Hex(input: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input.toLowerCase().trim());
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+/**
+ * Send a Purchase conversion event to X's server-side Conversion API.
+ * This complements the client-side pixel and works even when blocked.
+ * Uses the same conversion_id format as the client for deduplication.
+ */
+async function sendXConversion(
+  token: string,
+  opts: {
+    sessionId: string;
+    slug: string;
+    amountCents: number;
+    email?: string;
+    twclid?: string;
+  },
+): Promise<void> {
+  const conversionTime = new Date().toISOString();
+  const conversionId = `${opts.slug}-${opts.sessionId}`;
+
+  const identifiers: Record<string, string>[] = [];
+  const id: Record<string, string> = {};
+
+  if (opts.twclid) {
+    id.twclid = opts.twclid;
+  }
+  if (opts.email) {
+    id.hashed_email = await sha256Hex(opts.email);
+  }
+
+  if (Object.keys(id).length > 0) {
+    identifiers.push(id);
+  }
+
+  if (identifiers.length === 0) {
+    return;
+  }
+
+  const body = {
+    conversions: [
+      {
+        conversion_time: conversionTime,
+        event_id: `tw-${X_PIXEL_ID}-purchase`,
+        conversion_id: conversionId,
+        value: String(opts.amountCents / 100),
+        currency: "USD",
+        identifiers,
+      },
+    ],
+  };
+
+  try {
+    const res = await fetch(
+      `https://ads-api.x.com/12/measurement/conversions/${X_PIXEL_ID}`,
+      {
+        method: "POST",
+        headers: {
+          "X-Pixel-Token": token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      },
+    );
+    if (!res.ok) {
+      console.error("X CAPI error:", res.status, await res.text());
+    }
+  } catch (err) {
+    console.error("X CAPI fetch failed:", err);
+  }
+}
+
 /**
  * Log an individual boost transaction for spend reporting. Each completed
  * Launch payment gets one row; `allocated` starts at 0 and is set to 1 when
@@ -302,6 +387,17 @@ export const onRequestPost = async (context: {
 
     await recordBoost(env.DB, slug, cents);
     await recordBoostTransaction(env.DB, obj.id, slug, cents, email || undefined, locale, attribution);
+
+    // Send server-side conversion to X for reliable attribution (bypasses ad blockers).
+    if (env.X_CONVERSION_API_TOKEN) {
+      await sendXConversion(env.X_CONVERSION_API_TOKEN, {
+        sessionId: obj.id,
+        slug,
+        amountCents: cents,
+        email: email || undefined,
+        twclid: attribution.twclid,
+      });
+    }
 
     // Capture the buyer's email + newsletter opt-in collected in the funnel.
     if (email) {

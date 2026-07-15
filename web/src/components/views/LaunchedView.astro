@@ -78,7 +78,8 @@ for (const entry of entries) {
   }
 
   if (typeof twq === "function" && slug) {
-    const conversionId = `${slug}-${Date.now()}`;
+    const sessionId = params.get("session_id");
+    const conversionId = sessionId ? `${slug}-${sessionId}` : `${slug}-${Date.now()}`;
     twq("event", "tw-purchase", {
       content_ids: [slug],
       conversion_id: conversionId,
