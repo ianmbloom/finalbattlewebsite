@@ -6,7 +6,7 @@
  * (source=newsletter, marketing opt-in). No third-party email SaaS: the list is
  * exported to a sender when campaigns run.
  */
-import { jsonResponse, recordEmail, type D1Database } from "./_lib";
+import { jsonResponse, recordEmail, generateSwitchToken, type D1Database } from "./_lib";
 
 interface Env {
   DB?: D1Database;

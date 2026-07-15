@@ -1,0 +1,404 @@
+---
+/**
+ * Admin dashboard home - BI metrics overview with EN vs FA comparison.
+ * LOCAL-ONLY: API endpoints guard with ADMIN_ENABLED; pages always render.
+ */
+import AdminLayout from "@/layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Dashboard">
+  <div class="dashboard">
+    <section class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-label">Total Videos</span>
+        <span class="stat-value" id="total-videos">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Posts Pending</span>
+        <span class="stat-value" id="posts-pending">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Posts Complete</span>
+        <span class="stat-value" id="posts-complete">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Total Boosts</span>
+        <span class="stat-value" id="total-boosts">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">EN Subscribers</span>
+        <span class="stat-value" id="subscribers-en">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">FA Subscribers</span>
+        <span class="stat-value" id="subscribers-fa">—</span>
+      </div>
+    </section>
+
+    <section class="comparison-section">
+      <h2>EN vs FA Performance</h2>
+      <div class="comparison-table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Video</th>
+              <th colspan="4" class="lang-header lang-en">English</th>
+              <th colspan="4" class="lang-header lang-fa">Farsi</th>
+            </tr>
+            <tr class="subheader">
+              <th></th>
+              <th>Views</th>
+              <th>Likes</th>
+              <th>Comments</th>
+              <th>Shares</th>
+              <th>Views</th>
+              <th>Likes</th>
+              <th>Comments</th>
+              <th>Shares</th>
+            </tr>
+          </thead>
+          <tbody id="comparison-tbody">
+            <tr>
+              <td colspan="9" class="loading">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="quick-actions">
+      <h2>Quick Actions</h2>
+      <div class="action-grid">
+        <a href="/admin/publish" class="action-card">
+          <span class="action-icon">📤</span>
+          <span class="action-title">Publish Videos</span>
+          <span class="action-desc">Generate copy and post to platforms</span>
+        </a>
+        <a href="/admin/newsletter" class="action-card">
+          <span class="action-icon">📧</span>
+          <span class="action-title">Newsletter</span>
+          <span class="action-desc">Draft and send newsletters</span>
+        </a>
+        <a href="/admin/metrics" class="action-card">
+          <span class="action-icon">📊</span>
+          <span class="action-title">Metrics</span>
+          <span class="action-desc">View platform performance</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="top-performers">
+      <h2>Top Performers</h2>
+      <div class="performers-list" id="performers-list">
+        <p class="loading">Loading...</p>
+      </div>
+    </section>
+
+    <section class="recent-activity">
+      <h2>Recent Ingestion Runs</h2>
+      <div class="activity-list" id="activity-list">
+        <p class="loading">Loading...</p>
+      </div>
+    </section>
+  </div>
+</AdminLayout>
+
+<script>
+  async function loadDashboard() {
+    try {
+      const res = await fetch("/api/admin/dashboard");
+      if (!res.ok) {
+        console.error("Failed to load dashboard:", res.status);
+        return;
+      }
+      
+      const data = await res.json();
+      
+      if (data.stats) {
+        document.getElementById("total-videos")!.textContent = String(data.stats.totalVideos);
+        document.getElementById("posts-pending")!.textContent = String(data.stats.postsPending);
+        document.getElementById("posts-complete")!.textContent = String(data.stats.postsComplete);
+        document.getElementById("total-boosts")!.textContent = String(data.stats.totalBoosts);
+        document.getElementById("subscribers-en")!.textContent = String(data.stats.subscribersEN);
+        document.getElementById("subscribers-fa")!.textContent = String(data.stats.subscribersFA);
+      }
+      
+      if (data.comparison && data.comparison.length > 0) {
+        const tbody = document.getElementById("comparison-tbody")!;
+        tbody.innerHTML = data.comparison.map((row: any) => `
+          <tr>
+            <td class="video-slug">${row.videoSlug}</td>
+            <td>${row.en?.views ?? "—"}</td>
+            <td>${row.en?.likes ?? "—"}</td>
+            <td>${row.en?.comments ?? "—"}</td>
+            <td>${row.en?.shares ?? "—"}</td>
+            <td>${row.fa?.views ?? "—"}</td>
+            <td>${row.fa?.likes ?? "—"}</td>
+            <td>${row.fa?.comments ?? "—"}</td>
+            <td>${row.fa?.shares ?? "—"}</td>
+          </tr>
+        `).join("");
+      } else {
+        document.getElementById("comparison-tbody")!.innerHTML = `
+          <tr><td colspan="9" class="empty">No metrics data yet. Post videos and run metrics ingestion.</td></tr>
+        `;
+      }
+      
+      if (data.topPerformers && data.topPerformers.length > 0) {
+        const list = document.getElementById("performers-list")!;
+        list.innerHTML = data.topPerformers.map((p: any) => `
+          <div class="performer-card">
+            <span class="performer-video">${p.videoSlug}</span>
+            <span class="performer-lang lang-${p.language}">${p.language.toUpperCase()}</span>
+            <span class="performer-stats">
+              ${p.totalViews} views • ${p.totalLikes} likes
+            </span>
+          </div>
+        `).join("");
+      } else {
+        document.getElementById("performers-list")!.innerHTML = `<p class="empty">No performance data yet.</p>`;
+      }
+      
+      if (data.recentRuns && data.recentRuns.length > 0) {
+        const list = document.getElementById("activity-list")!;
+        list.innerHTML = data.recentRuns.map((r: any) => `
+          <div class="activity-card status-${r.status}">
+            <span class="activity-source">${r.source}</span>
+            <span class="activity-status">${r.status}</span>
+            <span class="activity-rows">${r.rowsWritten} rows</span>
+            <span class="activity-time">${new Date(r.ranAt).toLocaleString()}</span>
+          </div>
+        `).join("");
+      } else {
+        document.getElementById("activity-list")!.innerHTML = `<p class="empty">No ingestion runs yet.</p>`;
+      }
+      
+    } catch (err) {
+      console.error("Error loading dashboard:", err);
+    }
+  }
+  
+  loadDashboard();
+</script>
+
+<style>
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-card {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--admin-muted);
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+
+  .comparison-section,
+  .quick-actions,
+  .top-performers,
+  .recent-activity {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+  }
+
+  .comparison-section h2,
+  .quick-actions h2,
+  .top-performers h2,
+  .recent-activity h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+  }
+
+  .comparison-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid var(--admin-border);
+  }
+
+  .comparison-table th {
+    font-weight: 600;
+    color: var(--admin-muted);
+  }
+
+  .comparison-table .lang-header {
+    border-bottom: 2px solid;
+  }
+
+  .comparison-table .lang-header.lang-en {
+    border-color: #3b82f6;
+    color: #3b82f6;
+  }
+
+  .comparison-table .lang-header.lang-fa {
+    border-color: #10b981;
+    color: #10b981;
+  }
+
+  .comparison-table .subheader th {
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .comparison-table .video-slug {
+    text-align: left;
+    font-weight: 500;
+  }
+
+  .loading,
+  .empty {
+    color: var(--admin-muted);
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .action-card {
+    background: var(--admin-bg);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .action-card:hover {
+    border-color: var(--admin-accent);
+    transform: translateY(-2px);
+  }
+
+  .action-icon {
+    font-size: 2rem;
+  }
+
+  .action-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .action-desc {
+    font-size: 0.875rem;
+    color: var(--admin-muted);
+  }
+
+  .performers-list,
+  .activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .performer-card,
+  .activity-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--admin-bg);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.375rem;
+  }
+
+  .performer-video,
+  .activity-source {
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .performer-lang {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+
+  .performer-lang.lang-en {
+    background: #3b82f6;
+    color: white;
+  }
+
+  .performer-lang.lang-fa {
+    background: #10b981;
+    color: white;
+  }
+
+  .performer-stats {
+    font-size: 0.875rem;
+    color: var(--admin-muted);
+  }
+
+  .activity-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+
+  .activity-card.status-success .activity-status {
+    background: var(--admin-success);
+    color: black;
+  }
+
+  .activity-card.status-partial .activity-status {
+    background: var(--admin-warning);
+    color: black;
+  }
+
+  .activity-card.status-error .activity-status {
+    background: #dc2626;
+    color: white;
+  }
+
+  .activity-rows {
+    font-size: 0.875rem;
+    color: var(--admin-muted);
+  }
+
+  .activity-time {
+    font-size: 0.75rem;
+    color: var(--admin-muted);
+  }
+</style>

@@ -1,36 +1,80 @@
 {
   "captive-nation": {
+    "slug": "captive-nation",
+    "languages": [
+      "en",
+      "fa"
+    ],
     "title": {
       "en": "A Captive Nation",
       "fa": "ملتی در اسارت"
     },
+    "description": {
+      "en": "Over 80% of the people reject I.R. rule. A government that must kill its own people to survive is not a government.",
+      "fa": "بیش از ۸۰٪ مردم حکومت ج.ا. را رد می‌کنند. حکومتی که برای بقا باید مردم خود را بکشد، حکومت نیست."
+    },
     "boostTier": 3
   },
   "returning-to-democracy": {
+    "slug": "returning-to-democracy",
+    "languages": [
+      "en",
+      "fa"
+    ],
     "title": {
       "en": "Returning to Democracy",
       "fa": "بازگشت به دموکراسی"
     },
+    "description": {
+      "en": "A century ago the people built a constitutional democracy. Today they are risking everything to win it back.",
+      "fa": "یک قرن پیش مردم یک دموکراسی مشروطه ساختند. امروز همه‌چیز را به خطر می‌اندازند تا آن را بازپس گیرند."
+    },
     "boostTier": 2
   },
   "see-you-in-a-free-nation": {
+    "slug": "see-you-in-a-free-nation",
+    "languages": [
+      "en"
+    ],
     "title": {
       "en": "We Will See Each Other in a Free Nation",
       "fa": "We Will See Each Other in a Free Nation"
     },
+    "description": {
+      "en": "A statement from inside the country, recorded one hundred days after the January 8–9 protests and massacre.",
+      "fa": ""
+    },
     "boostTier": 3
   },
   "the-nation-has-a-future": {
+    "slug": "the-nation-has-a-future",
+    "languages": [
+      "en",
+      "fa"
+    ],
     "title": {
       "en": "Vision of a Bright Future",
       "fa": "چشم‌اندازِ آینده‌ای روشن"
     },
+    "description": {
+      "en": "When the I.R. collapses, chaos will not follow. The IPP is the plan to reach what comes next.",
+      "fa": "وقتی ج.ا. فرو بپاشد، هرج‌ومرج در پی نخواهد آمد. IPP، نقشهٔ رسیدن به آنچه در پی می‌آید است."
+    },
     "boostTier": 1
   },
   "transitional-leader": {
+    "slug": "transitional-leader",
+    "languages": [
+      "en",
+      "fa"
+    ],
     "title": {
       "en": "What Is a Transitional Leader?",
       "fa": "رهبر گذار چیست؟"
+    },
+    "description": {
+      "en": "Rebuilding a nation needs someone trusted to hold power, and hand it back. Why the people chant Reza Pahlavi's name.",
+      "fa": "بازسازی یک ملت به کسی نیاز دارد که مورد اعتماد باشد تا قدرت را در دست بگیرد و بازپس دهد. چرا مردم نام رضا پهلوی را فریاد می‌زنند."
     },
     "boostTier": 2
   }

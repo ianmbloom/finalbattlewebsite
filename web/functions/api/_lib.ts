@@ -147,9 +147,21 @@ export interface D1Database {
 export type EmailSource = "newsletter" | "purchase";
 
 /**
+ * Generate a URL-safe random token for newsletter language preference switching.
+ */
+export function generateSwitchToken(): string {
+  const bytes = new Uint8Array(24);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+/**
  * Upsert an email into the unified `subscribers` table. A `purchase` source is
  * "sticky" (it never gets downgraded back to `newsletter`), and the marketing
  * opt-in flag only ever ratchets up. Returns false if no DB is bound.
+ * Also generates a switch_token if one doesn't exist for language preference changes.
  */
 export async function recordEmail(
   db: D1Database | undefined,
@@ -157,18 +169,20 @@ export async function recordEmail(
 ): Promise<boolean> {
   if (!db) return false;
   const now = new Date().toISOString();
+  const switchToken = generateSwitchToken();
   await db
     .prepare(
-      `INSERT INTO subscribers (email, source, locale, marketing, created_at, updated_at)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?5)
+      `INSERT INTO subscribers (email, source, locale, marketing, switch_token, created_at, updated_at)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?6)
        ON CONFLICT(email) DO UPDATE SET
          source = CASE WHEN subscribers.source = 'purchase' OR excluded.source = 'purchase'
                        THEN 'purchase' ELSE excluded.source END,
          locale = COALESCE(excluded.locale, subscribers.locale),
          marketing = MAX(subscribers.marketing, excluded.marketing),
+         switch_token = COALESCE(subscribers.switch_token, excluded.switch_token),
          updated_at = excluded.updated_at`,
     )
-    .bind(params.email, params.source, params.locale, params.marketing ? 1 : 0, now)
+    .bind(params.email, params.source, params.locale, params.marketing ? 1 : 0, switchToken, now)
     .run();
   return true;
 }

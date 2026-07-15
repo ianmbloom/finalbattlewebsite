@@ -1,0 +1,26 @@
+{
+  // Cloudflare Worker for scheduled metrics ingestion.
+  // Pulls metrics from YouTube and X (via TwitterAPI.io) for posted videos.
+  //
+  // Deploy: wrangler deploy (from cron-worker/)
+  // Secrets: wrangler secret put YOUTUBE_API_KEY
+  //          wrangler secret put TWITTERAPI_IO_KEY
+
+  "name": "finalbattle-metrics-cron",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-06-24",
+
+  // Cron triggers: run daily at 06:00 UTC
+  "triggers": {
+    "crons": ["0 6 * * *"]
+  },
+
+  // D1 database binding (same as the Pages project)
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "finalbattle-emails",
+      "database_id": "acdbf46c-48dc-498e-95a3-b1021238183b"
+    }
+  ]
+}

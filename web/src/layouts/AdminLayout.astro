@@ -1,0 +1,116 @@
+---
+/**
+ * Minimal layout for local-only admin pages.
+ * These pages are only accessible via `wrangler pages dev` with ADMIN_ENABLED=true.
+ */
+import "@/styles/global.css";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} | Admin</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,5 61,40 98,40 68,62 79,97 50,75 21,97 32,62 2,40 39,40' fill='%23ff6600' stroke='%23ffcc00' stroke-width='3'/></svg>" />
+    <style>
+      :root {
+        --admin-bg: #1a1a2e;
+        --admin-surface: #16213e;
+        --admin-border: #0f3460;
+        --admin-accent: #e94560;
+        --admin-text: #eaeaea;
+        --admin-muted: #a0a0a0;
+        --admin-success: #4ade80;
+        --admin-warning: #fbbf24;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-shell">
+      <nav class="admin-nav">
+        <a href="/admin" class="admin-logo">⚙️ Final Battle Admin</a>
+        <div class="admin-links">
+          <a href="/admin">Dashboard</a>
+          <a href="/admin/publish">Publish</a>
+          <a href="/admin/newsletter">Newsletter</a>
+          <a href="/admin/metrics">Metrics</a>
+        </div>
+      </nav>
+      <main class="admin-main">
+        <h1>{title}</h1>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  body {
+    margin: 0;
+    background: var(--admin-bg);
+    color: var(--admin-text);
+    font-family: system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+  }
+
+  .admin-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .admin-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 2rem;
+    background: var(--admin-surface);
+    border-bottom: 1px solid var(--admin-border);
+  }
+
+  .admin-logo {
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: var(--admin-text);
+    text-decoration: none;
+  }
+
+  .admin-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .admin-links a {
+    color: var(--admin-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.15s;
+  }
+
+  .admin-links a:hover {
+    color: var(--admin-text);
+  }
+
+  .admin-main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .admin-main h1 {
+    margin: 0 0 2rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+</style>

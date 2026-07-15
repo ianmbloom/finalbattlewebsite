@@ -6,7 +6,6 @@ import { shareablePlatforms, withUtm, encodeHex } from "@/lib/videos";
 interface Platforms {
   x?: string;
   instagram?: string;
-  tiktok?: string;
   youtube?: string;
   linkedin?: string;
 }
@@ -19,9 +18,14 @@ interface Props {
   lang: Locale;
   /** Compact trigger used inside cards. */
   compact?: boolean;
+  /** Video slug for fetching confirmed URLs from database. */
+  videoSlug?: string;
+  /** Raw video path for download (e.g. /videos/foo.mp4), before CDN resolution. */
+  videoPath?: string;
 }
 
-const { title, pageUrl, lang, compact = false } = Astro.props;
+const { title, pageUrl, lang, compact = false, videoSlug, videoPath } = Astro.props;
+const downloadFilename = videoPath ? `${title.replace(/[^a-zA-Z0-9\u0600-\u06FF\s]/g, "").replace(/\s+/g, "-")}.mp4` : "";
 const t = useTranslations(lang);
 
 // Native-post links stay on their platform (no UTM — they leave our domain).
@@ -34,13 +38,19 @@ const nativeRows = [
   { key: "x", label: t("share.x"), url: platforms.x },
   { key: "instagram", label: t("share.instagram"), url: platforms.instagram },
   { key: "youtube", label: t("share.youtube"), url: platforms.youtube },
-  { key: "tiktok", label: t("share.tiktok"), url: platforms.tiktok },
   { key: "linkedin", label: t("share.linkedin"), url: platforms.linkedin },
 ]
   .filter((row): row is { key: string; label: string; url: string } =>
     Boolean(row.url),
   )
   .map((row) => ({ key: row.key, label: row.label, enc: encodeHex(row.url) }));
+
+// Platform labels for dynamically loaded links
+const platformLabels: Record<string, string> = {
+  x: t("share.x"),
+  youtube: t("share.youtube"),
+  linkedin: t("share.linkedin"),
+};
 
 // Telegram + Copy share the site page URL (tagged) — Telegram renders the video
 // inline from our Open Graph metadata, and both are attributable via UTM.
@@ -55,7 +65,12 @@ const uid = `repost-${Math.random().toString(36).slice(2, 9)}`;
 const titleId = `${uid}-title`;
 ---
 
-<div class:list={["repost", { compact }]}>
+<div 
+  class:list={["repost", { compact }]}
+  data-video-slug={videoSlug}
+  data-video-lang={lang}
+  data-platform-labels={JSON.stringify(platformLabels)}
+>
   <button
     type="button"
     class="repost-trigger"
@@ -99,6 +114,7 @@ const titleId = `${uid}-title`;
               <a
                 class="repost-link"
                 data-href={row.enc}
+                data-platform={row.key}
                 target="_blank"
                 rel="noopener nofollow"
               >
@@ -121,6 +137,20 @@ const titleId = `${uid}-title`;
             <span class="repost-cue" aria-hidden="true">↗</span>
           </a>
         </li>
+        {videoPath && (
+          <li class="download-item">
+            <button
+              type="button"
+              class="repost-link download-link"
+              data-download-btn
+              data-video-path={videoPath}
+              data-filename={downloadFilename}
+            >
+              <span class="repost-name download-label">{t("video.download")}</span>
+              <span class="repost-cue" aria-hidden="true">↓</span>
+            </button>
+          </li>
+        )}
       </ul>
 
       <button
@@ -157,6 +187,65 @@ const titleId = `${uid}-title`;
         );
       });
 
+    // Fetch confirmed platform URLs from the database and add/update links
+    document.querySelectorAll<HTMLElement>(".repost[data-video-slug]").forEach(async (repost) => {
+      const slug = repost.dataset.videoSlug;
+      const lang = repost.dataset.videoLang || "en";
+      const labels = JSON.parse(repost.dataset.platformLabels || "{}");
+      
+      if (!slug) return;
+      
+      try {
+        const res = await fetch(`/api/video-platforms?slug=${encodeURIComponent(slug)}&lang=${encodeURIComponent(lang)}`);
+        if (!res.ok) return;
+        
+        const data = await res.json();
+        const platforms = data.platforms || {};
+        
+        const list = repost.querySelector(".repost-list");
+        if (!list) return;
+        
+        // Check which platforms we already have links for
+        const existingPlatforms = new Set<string>();
+        list.querySelectorAll(".repost-link[data-platform]").forEach((link) => {
+          existingPlatforms.add((link as HTMLElement).dataset.platform || "");
+        });
+        
+        // Add new links for confirmed platforms not already in the list
+        // (skip TikTok - no longer supported)
+        for (const [platform, url] of Object.entries(platforms)) {
+          if (existingPlatforms.has(platform) || !url || platform === "tiktok") continue;
+          
+          const label = labels[platform] || platform;
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <a class="repost-link" href="${url}" target="_blank" rel="noopener nofollow" data-platform="${platform}">
+              <span class="repost-name">${label}</span>
+              <span class="repost-cue" aria-hidden="true">↗</span>
+            </a>
+          `;
+          // Insert before Telegram (last item)
+          const lastItem = list.querySelector("li:last-child");
+          if (lastItem) {
+            list.insertBefore(li, lastItem);
+          } else {
+            list.appendChild(li);
+          }
+        }
+        
+        // Also update any existing links that might have placeholder URLs
+        for (const [platform, url] of Object.entries(platforms)) {
+          if (!url) continue;
+          const existingLink = list.querySelector(`.repost-link[data-platform="${platform}"]`) as HTMLAnchorElement;
+          if (existingLink && !existingLink.href.startsWith("http")) {
+            existingLink.href = url as string;
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch video platforms:", e);
+      }
+    });
+
     let lastTrigger: HTMLElement | null = null;
 
     const overlayFor = (id: string | null): HTMLElement | null =>
@@ -190,7 +279,7 @@ const titleId = `${uid}-title`;
         .forEach(closeOverlay);
     };
 
-    document.addEventListener("click", (e) => {
+    document.addEventListener("click", async (e) => {
       const target = e.target as HTMLElement;
 
       const openBtn = target.closest<HTMLElement>("[data-repost-open]");
@@ -216,6 +305,24 @@ const titleId = `${uid}-title`;
         setTimeout(() => {
           delete copyBtn.dataset.copied;
         }, 1500);
+      }
+
+      const downloadBtn = target.closest<HTMLElement>("[data-download-btn]");
+      if (downloadBtn) {
+        const videoPath = downloadBtn.dataset.videoPath;
+        const filename = downloadBtn.dataset.filename || "video.mp4";
+        if (!videoPath) return;
+
+        // Use the download proxy endpoint which adds Content-Disposition header
+        const downloadUrl = `/api/download?path=${encodeURIComponent(videoPath)}&filename=${encodeURIComponent(filename)}`;
+        
+        // Create a hidden link and click it to trigger download
+        const a = document.createElement("a");
+        a.href = downloadUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       }
     });
   }
@@ -403,6 +510,29 @@ const titleId = `${uid}-title`;
   .repost-link:hover,
   .repost-link:hover .repost-cue {
     color: var(--color-emerald);
+  }
+
+  /* Download button at the bottom of the list */
+  .download-item {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+  }
+  .download-link {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .download-link .repost-cue {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .download-link[disabled] {
+    cursor: wait;
+    opacity: 0.6;
   }
 
   /* Quiet, secondary copy-link affordance. */

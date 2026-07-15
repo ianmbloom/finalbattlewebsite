@@ -43,10 +43,19 @@ for (const file of files) {
   }
 
   const langs = v.languages ?? {};
+  const availableLanguages = ["en"];
+  if (langs.fa) availableLanguages.push("fa");
+  
   map[slug] = {
+    slug,
+    languages: availableLanguages,
     title: {
       en: langs.en?.title ?? slug,
       fa: langs.fa?.title ?? langs.en?.title ?? slug,
+    },
+    description: {
+      en: langs.en?.description ?? "",
+      fa: langs.fa?.description ?? "",
     },
     boostTier,
   };

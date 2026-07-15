@@ -1,0 +1,663 @@
+---
+/**
+ * Publishing assist page - generate copy and track posts per platform/language.
+ * LOCAL-ONLY: API endpoints guard with ADMIN_ENABLED; pages always render.
+ * 
+ * This page embeds all video data and uses client-side JS for video selection.
+ */
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import { getCollection } from "astro:content";
+import {
+  generateAllPlatformCopy,
+  getVideoLanguages,
+  getChannelUrl,
+  getComposeUrl,
+  PLATFORMS,
+  type Platform,
+} from "@/lib/platforms";
+import type { Locale } from "@/consts";
+
+const videos = await getCollection("videos");
+const publishableVideos = videos
+  .filter((v) => !v.data.draft && !v.data.comingSoon)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+
+const platformLabels: Record<Platform, string> = {
+  x: "X (Twitter)",
+  youtube: "YouTube",
+  linkedin: "LinkedIn",
+};
+
+const langLabels: Record<Locale, string> = {
+  en: "English",
+  fa: "فارسی (Farsi)",
+};
+
+// Pre-compute all video data for client-side rendering
+const allVideoData = publishableVideos.map((video) => ({
+  id: video.id,
+  title: video.data.languages.en.title,
+  publishedAt: video.data.publishedAt.toISOString(),
+  languages: getVideoLanguages(video),
+  copy: generateAllPlatformCopy(video),
+  channels: Object.fromEntries(
+    getVideoLanguages(video).flatMap((lang) =>
+      PLATFORMS.map((p) => [`${p}_${lang}_channel`, getChannelUrl(p, lang)])
+    )
+  ),
+  compose: Object.fromEntries(
+    getVideoLanguages(video).flatMap((lang) =>
+      PLATFORMS.map((p) => [`${p}_${lang}_compose`, getComposeUrl(p, lang)])
+    )
+  ),
+}));
+---
+
+<AdminLayout title="Publish Videos">
+  <div class="publish-container">
+    <aside class="video-list">
+      <h2>Videos</h2>
+      <ul id="video-list-ul">
+        {publishableVideos.map((video) => (
+          <li>
+            <a
+              href="#"
+              class="video-item"
+              data-video-id={video.id}
+            >
+              <span class="video-title">{video.data.languages.en.title}</span>
+              <span class="video-langs">
+                {getVideoLanguages(video).map((l) => (
+                  <span class={`lang-badge lang-${l}`}>{l.toUpperCase()}</span>
+                ))}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+
+    <main class="publish-main" id="publish-main">
+      <p class="no-video">Select a video from the list to begin.</p>
+    </main>
+  </div>
+  
+  <!-- Embed all video data for client-side rendering -->
+  <script 
+    id="video-data" 
+    type="application/json"
+    is:inline
+    set:html={JSON.stringify({ videos: allVideoData, platformLabels, langLabels })}
+  />
+</AdminLayout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Parse embedded video data
+    const dataScript = document.getElementById("video-data");
+    const { videos, platformLabels, langLabels } = JSON.parse(dataScript?.textContent || "{}");
+    
+    const mainEl = document.getElementById("publish-main")!;
+    const listEl = document.getElementById("video-list-ul")!;
+    let currentVideoId: string | null = null;
+    
+    // Get initial video from URL or default to first
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialVideo = urlParams.get("video") || videos[0]?.id;
+    
+    // Render the selected video
+    function renderVideo(videoId: string) {
+      const video = videos.find((v: any) => v.id === videoId);
+      if (!video) {
+        mainEl.innerHTML = '<p class="no-video">Video not found.</p>';
+        return;
+      }
+      
+      currentVideoId = videoId;
+      
+      // Update active state in sidebar
+      listEl.querySelectorAll(".video-item").forEach((item) => {
+        item.classList.toggle("active", (item as HTMLElement).dataset.videoId === videoId);
+      });
+      
+      // Update URL without reload
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.set("video", videoId);
+      history.replaceState(null, "", newUrl.toString());
+      
+      // Build HTML for the video
+      let html = `
+        <header class="video-header">
+          <h2>${video.title}</h2>
+          <p class="video-meta">
+            Published: ${new Date(video.publishedAt).toLocaleDateString()}
+            &nbsp;|&nbsp;
+            Languages: ${video.languages.map((l: string) => langLabels[l]).join(", ")}
+          </p>
+        </header>
+      `;
+      
+      for (const lang of video.languages) {
+        const copy = video.copy[lang];
+        if (!copy) continue;
+        
+        html += `
+          <section class="language-section lang-${lang}">
+            <h3 class="lang-header">
+              <span class="lang-badge lang-${lang}">${lang.toUpperCase()}</span>
+              ${langLabels[lang]}
+              <span class="progress-badge" data-video="${video.id}" data-lang="${lang}">0/4 posted</span>
+            </h3>
+            <div class="platform-grid">
+        `;
+        
+        const platforms = ["x", "youtube", "linkedin"];
+        for (const platform of platforms) {
+          const platformCopy = copy[platform];
+          const channelUrl = video.channels[`${platform}_${lang}_channel`];
+          const composeUrl = video.compose[`${platform}_${lang}_compose`];
+          
+          // Platform icons
+          const icons: Record<string, string> = { x: "𝕏", youtube: "▶", linkedin: "in" };
+          
+          let copyFields = "";
+          if (platform === "youtube") {
+            copyFields = `
+              <input type="text" readonly class="copy-input" data-copy-title value="${escapeHtml(platformCopy.title)}" title="Title" />
+              <textarea readonly class="copy-text" data-copy-desc title="Description">${escapeHtml(platformCopy.description)}</textarea>
+            `;
+          } else {
+            const text = platformCopy.text;
+            copyFields = `
+              <textarea readonly class="copy-text" data-copy title="Copy">${escapeHtml(text)}</textarea>
+            `;
+          }
+          
+          html += `
+            <div class="platform-card" data-platform="${platform}" data-lang="${lang}" data-video="${video.id}">
+              <div class="platform-toolbar">
+                <span class="platform-icon">${icons[platform]}</span>
+                <span class="status-indicator pending">PENDING</span>
+                <div class="toolbar-actions">
+                  ${platform === "youtube" ? `
+                    <button class="icon-btn" data-copy-title-btn title="Copy title">T</button>
+                    <button class="icon-btn" data-copy-desc-btn title="Copy description">D</button>
+                  ` : `
+                    <button class="icon-btn" data-copy-btn title="Copy">📋</button>
+                  `}
+                  <a href="${channelUrl}" target="_blank" class="icon-btn" title="View channel">👁</a>
+                  <a href="${composeUrl}" target="_blank" class="icon-btn" title="Compose post">✎</a>
+                </div>
+              </div>
+              ${copyFields}
+              <div class="url-row">
+                <input type="url" class="post-url-input" placeholder="Paste post URL here..." data-post-url />
+                <button class="icon-btn confirm-btn" data-confirm-btn title="Confirm posted">✓</button>
+              </div>
+            </div>
+          `;
+        }
+        
+        html += `</div></section>`;
+      }
+      
+      mainEl.innerHTML = html;
+      
+      // Rebind event handlers
+      bindEventHandlers();
+      
+      // Load saved post statuses
+      loadPostStatuses(videoId);
+    }
+    
+    function escapeHtml(str: string): string {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+    
+    function bindEventHandlers() {
+      // Copy to clipboard handlers
+      mainEl.querySelectorAll("[data-copy-btn]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const card = btn.closest(".platform-card");
+          const textarea = card?.querySelector("[data-copy]") as HTMLTextAreaElement;
+          if (textarea) {
+            navigator.clipboard.writeText(textarea.value);
+            btn.textContent = "✓ Copied!";
+            setTimeout(() => (btn.textContent = "📋 Copy to Clipboard"), 2000);
+          }
+        });
+      });
+
+      // YouTube title copy handlers
+      mainEl.querySelectorAll("[data-copy-title-btn]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const card = btn.closest(".platform-card");
+          const input = card?.querySelector("[data-copy-title]") as HTMLInputElement;
+          if (input) {
+            navigator.clipboard.writeText(input.value);
+            btn.textContent = "✓ Copied!";
+            setTimeout(() => (btn.textContent = "📋 Copy Title"), 2000);
+          }
+        });
+      });
+
+      // YouTube description copy handlers
+      mainEl.querySelectorAll("[data-copy-desc-btn]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const card = btn.closest(".platform-card");
+          const textarea = card?.querySelector("[data-copy-desc]") as HTMLTextAreaElement;
+          if (textarea) {
+            navigator.clipboard.writeText(textarea.value);
+            btn.textContent = "✓ Copied!";
+            setTimeout(() => (btn.textContent = "📋 Copy Description"), 2000);
+          }
+        });
+      });
+
+      // Confirm post handlers
+      mainEl.querySelectorAll("[data-confirm-btn]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const card = btn.closest(".platform-card") as HTMLElement;
+          if (!card) return;
+          
+          const urlInput = card.querySelector("[data-post-url]") as HTMLInputElement;
+          const externalUrl = urlInput?.value?.trim();
+          
+          if (!externalUrl) {
+            alert("Please enter the post URL first.");
+            return;
+          }
+          
+          const { video, platform, lang } = card.dataset;
+          
+          try {
+            const res = await fetch("/api/admin/confirm-post", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                videoSlug: video,
+                platform,
+                language: lang,
+                externalUrl,
+              }),
+            });
+            
+            if (res.ok) {
+              const statusEl = card.querySelector(".status-indicator");
+              if (statusEl) {
+                statusEl.textContent = "POSTED";
+                statusEl.classList.remove("pending");
+                statusEl.classList.add("posted");
+              }
+              card.classList.add("is-posted");
+              (btn as HTMLButtonElement).disabled = true;
+              updateProgressBadges();
+            } else {
+              const err = await res.json();
+              alert(`Error: ${err.error || "Failed to confirm"}`);
+            }
+          } catch (e) {
+            alert("Network error. Please try again.");
+          }
+        });
+      });
+    }
+    
+    async function loadPostStatuses(videoId: string) {
+      try {
+        const res = await fetch(`/api/admin/publish-plan?slug=${encodeURIComponent(videoId)}`);
+        if (res.ok) {
+          const data = await res.json();
+          const posts = data.posts || [];
+          
+          for (const post of posts) {
+            const card = mainEl.querySelector(
+              `.platform-card[data-platform="${post.platform}"][data-lang="${post.language}"]`
+            ) as HTMLElement;
+            
+            if (!card) continue;
+            
+            const urlInput = card.querySelector("[data-post-url]") as HTMLInputElement;
+            const statusEl = card.querySelector(".status-indicator");
+            const confirmBtn = card.querySelector("[data-confirm-btn]") as HTMLButtonElement;
+            
+            if (post.external_url && urlInput) {
+              urlInput.value = post.external_url;
+            }
+            
+            if (post.status === "posted") {
+              if (statusEl) {
+                statusEl.textContent = "POSTED";
+                statusEl.classList.remove("pending");
+                statusEl.classList.add("posted");
+              }
+              card.classList.add("is-posted");
+              if (confirmBtn) {
+                confirmBtn.disabled = true;
+              }
+            }
+          }
+          
+          updateProgressBadges();
+        }
+      } catch (e) {
+        console.error("Failed to load post statuses:", e);
+      }
+    }
+    
+    function updateProgressBadges() {
+      mainEl.querySelectorAll(".progress-badge").forEach((badge) => {
+        const el = badge as HTMLElement;
+        const video = el.dataset.video;
+        const lang = el.dataset.lang;
+        
+        const cards = mainEl.querySelectorAll(
+          `.platform-card[data-video="${video}"][data-lang="${lang}"]`
+        );
+        const postedCount = Array.from(cards).filter((card) =>
+          card.classList.contains("is-posted")
+        ).length;
+        
+        el.textContent = `${postedCount}/${cards.length} posted`;
+      });
+    }
+    
+    // Handle video selection clicks
+    listEl.addEventListener("click", (e) => {
+      e.preventDefault();
+      const link = (e.target as HTMLElement).closest(".video-item") as HTMLElement;
+      if (link?.dataset.videoId) {
+        renderVideo(link.dataset.videoId);
+      }
+    });
+    
+    // Initial render
+    if (initialVideo) {
+      renderVideo(initialVideo);
+    }
+  });
+</script>
+
+<style is:global>
+  .publish-container {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1rem;
+  }
+
+  .video-list {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    position: sticky;
+    top: 0.5rem;
+    z-index: 10;
+  }
+
+  .video-list h2 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-bottom: 1px solid var(--admin-border);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--admin-muted);
+  }
+
+  .video-list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .video-item {
+    display: block;
+    padding: 0.4rem 0.5rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  
+  .video-item .video-title {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+  
+  .video-item .video-langs {
+    display: none;
+  }
+
+  .video-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .video-item.active {
+    background: var(--admin-accent);
+  }
+
+  .video-title {
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .video-langs {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .lang-badge {
+    font-size: 0.5rem;
+    font-weight: 600;
+    padding: 0.1rem 0.25rem;
+    border-radius: 0.2rem;
+    text-transform: uppercase;
+  }
+
+  .lang-badge.lang-en {
+    background: #3b82f6;
+    color: white;
+  }
+
+  .lang-badge.lang-fa {
+    background: #10b981;
+    color: white;
+  }
+
+  .publish-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .video-header h2 {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .video-meta {
+    margin: 0.25rem 0 0;
+    font-size: 0.7rem;
+    color: var(--admin-muted);
+  }
+
+  .language-section {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+  }
+
+  .lang-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0 0 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .progress-badge {
+    margin-left: auto;
+    font-size: 0.6rem;
+    font-weight: normal;
+    color: var(--admin-muted);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.15rem 0.35rem;
+    border-radius: 0.2rem;
+  }
+
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .platform-card {
+    background: var(--admin-bg);
+    border: 2px solid var(--admin-border);
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .platform-card.is-posted {
+    border-color: var(--admin-success);
+    background: rgba(74, 222, 128, 0.08);
+  }
+
+  .platform-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--admin-border);
+  }
+
+  .platform-icon {
+    font-size: 0.85rem;
+    font-weight: bold;
+    width: 1.2rem;
+    text-align: center;
+  }
+
+  .status-indicator {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+  }
+
+  .status-indicator.pending {
+    background: var(--admin-warning);
+    color: black;
+  }
+
+  .status-indicator.posted {
+    background: var(--admin-success);
+    color: black;
+  }
+
+  .toolbar-actions {
+    display: flex;
+    gap: 0.2rem;
+    margin-left: auto;
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    padding: 0;
+    border: none;
+    border-radius: 0.2rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--admin-text);
+    font-size: 0.7rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.1s;
+  }
+
+  .icon-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .icon-btn.confirm-btn {
+    background: var(--admin-success);
+    color: black;
+    font-weight: bold;
+  }
+
+  .icon-btn.confirm-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .copy-input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.2rem;
+    padding: 0.25rem 0.4rem;
+    color: var(--admin-text);
+    font-family: monospace;
+    font-size: 0.7rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .copy-text {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.2rem;
+    padding: 0.3rem;
+    color: var(--admin-text);
+    font-family: monospace;
+    font-size: 0.65rem;
+    line-height: 1.35;
+    resize: none;
+    min-height: 55px;
+    max-height: 80px;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .url-row {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+  }
+
+  .post-url-input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--admin-border);
+    border-radius: 0.2rem;
+    padding: 0.25rem 0.4rem;
+    color: var(--admin-text);
+    font-size: 0.65rem;
+  }
+
+  .no-video {
+    color: var(--admin-muted);
+    text-align: center;
+    padding: 4rem;
+  }
+</style>

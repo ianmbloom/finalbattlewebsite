@@ -83,6 +83,8 @@ const boostTier = getBoostTier(entry);
         platforms={variant.platforms}
         pageUrl={pageUrl}
         lang={lang}
+        videoSlug={entry.id}
+        videoPath={variant.videoSrc}
       />
       <Transcript variant={variant} lang={lang} />
       <StoryPanel variant={variant} lang={lang} />

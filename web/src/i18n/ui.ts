@@ -58,7 +58,6 @@ export const ui = {
 
     "share.x": "Repost on X",
     "share.instagram": "Share on Instagram",
-    "share.tiktok": "Repost on TikTok",
     "share.youtube": "Share on YouTube",
     "share.linkedin": "Repost on LinkedIn",
 
@@ -69,6 +68,8 @@ export const ui = {
     "share.copyLink": "Copy link",
     "share.copied": "Copied",
     "share.close": "Close",
+
+    "video.download": "Download and share anywhere",
 
     "about.title": "Who We Are",
     "about.image_alt":
@@ -241,7 +242,6 @@ export const ui = {
 
     "share.x": "بازنشر در ایکس",
     "share.instagram": "هم‌رسانی در اینستاگرام",
-    "share.tiktok": "بازنشر در تیک‌تاک",
     "share.youtube": "هم‌رسانی در یوتیوب",
     "share.linkedin": "بازنشر در لینکدین",
 
@@ -252,6 +252,8 @@ export const ui = {
     "share.copyLink": "کپی لینک",
     "share.copied": "کپی شد",
     "share.close": "بستن",
+
+    "video.download": "دانلود و هم‌رسانی در هر جا",
 
     "about.title": "ما که هستیم",
     "about.image_alt":
