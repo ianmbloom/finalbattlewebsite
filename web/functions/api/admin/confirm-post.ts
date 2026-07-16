@@ -46,7 +46,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     );
   }
 
-  const validPlatforms = ["x", "youtube", "linkedin"];
+  const validPlatforms = ["x", "youtube", "linkedin", "instagram"];
   if (!validPlatforms.includes(platform)) {
     return jsonResponse({ error: `Invalid platform: ${platform}` }, 400);
   }

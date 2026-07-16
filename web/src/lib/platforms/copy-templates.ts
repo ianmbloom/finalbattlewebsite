@@ -1,15 +1,15 @@
 /**
  * Platform-specific copy generation for bilingual video publishing.
- * Generates post copy for X, YouTube, and LinkedIn in both EN and FA.
+ * Generates post copy for X, YouTube, LinkedIn, and Instagram in both EN and FA.
  */
 
 import type { Locale } from "@/consts";
 import type { VideoEntry, VideoVariant } from "@/lib/videos";
 import { getVariant } from "@/lib/videos";
 
-export type Platform = "x" | "youtube" | "linkedin";
+export type Platform = "x" | "youtube" | "linkedin" | "instagram";
 
-export const PLATFORMS: Platform[] = ["x", "youtube", "linkedin"];
+export const PLATFORMS: Platform[] = ["x", "youtube", "linkedin", "instagram"];
 
 export interface XCopy {
   text: string;
@@ -26,10 +26,16 @@ export interface LinkedInCopy {
   url: string;
 }
 
+export interface InstagramCopy {
+  text: string;
+  url: string;
+}
+
 export interface PlatformCopy {
   x: XCopy;
   youtube: YouTubeCopy;
   linkedin: LinkedInCopy;
+  instagram: InstagramCopy;
 }
 
 interface ChannelHandles {
@@ -41,6 +47,7 @@ const CHANNEL_HANDLES: Record<Platform, ChannelHandles> = {
   x: { en: "seeuinfreeiran", fa: "ta_didar_azadi" },
   youtube: { en: "seeuinfreeiran", fa: "ta_didar_azadi" },
   linkedin: { en: "seeuinfreeiran", fa: "ta_didar_azadi" },
+  instagram: { en: "seeuinfreeiran", fa: "seeuinfreeiran" },
 };
 
 const HASHTAGS = {
@@ -189,6 +196,28 @@ function generateLinkedInCopy(
 }
 
 /**
+ * Generate Instagram post copy.
+ * Short caption with hashtags - no clickable links in Instagram posts.
+ */
+function generateInstagramCopy(
+  variant: VideoVariant,
+  slug: string,
+  language: Locale
+): InstagramCopy {
+  const hashtags = HASHTAGS[language].slice(0, 4).join(" ");
+  const title = sanitizeText(variant.title, language);
+  const description = sanitizeText(variant.description ?? "", language);
+
+  const text = language === "fa"
+    ? `🎬 ${title}\n\n${truncate(description, 200)}\n\n${hashtags}`
+    : `🎬 ${title}\n\n${truncate(description, 200)}\n\n${hashtags}`;
+
+  const url = withUtmParams(getVideoUrl(slug, language), "instagram", language);
+
+  return { text, url };
+}
+
+/**
  * Generate platform-specific copy for a video in a given language.
  * Returns undefined if the video doesn't have a variant for that language.
  */
@@ -205,6 +234,7 @@ export function generatePlatformCopy(
     x: generateXCopy(variant, slug, language),
     youtube: generateYouTubeCopy(variant, slug, language),
     linkedin: generateLinkedInCopy(variant, slug, language),
+    instagram: generateInstagramCopy(variant, slug, language),
   };
 }
 
@@ -252,6 +282,8 @@ export function getComposeUrl(platform: Platform, language: Locale): string {
       return "https://studio.youtube.com/channel/upload";
     case "linkedin":
       return "https://www.linkedin.com/feed/?shareActive=true";
+    case "instagram":
+      return `https://www.instagram.com/${handle}/`;
     default:
       return "";
   }
@@ -270,6 +302,8 @@ export function getChannelUrl(platform: Platform, language: Locale): string {
       return `https://youtube.com/@${handle}`;
     case "linkedin":
       return `https://linkedin.com/company/${handle}`;
+    case "instagram":
+      return `https://instagram.com/${handle}`;
     default:
       return "";
   }

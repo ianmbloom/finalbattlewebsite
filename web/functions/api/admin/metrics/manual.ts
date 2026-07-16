@@ -45,7 +45,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return jsonResponse({ error: "Missing required fields: videoSlug, platform, language" }, 400);
   }
 
-  const validPlatforms = ["x", "youtube", "linkedin"];
+  const validPlatforms = ["x", "youtube", "linkedin", "instagram"];
   if (!validPlatforms.includes(platform)) {
     return jsonResponse({ error: `Invalid platform: ${platform}` }, 400);
   }

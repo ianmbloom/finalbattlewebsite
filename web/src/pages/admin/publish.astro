@@ -26,6 +26,7 @@ const platformLabels: Record<Platform, string> = {
   x: "X (Twitter)",
   youtube: "YouTube",
   linkedin: "LinkedIn",
+  instagram: "Instagram",
 };
 
 const langLabels: Record<Locale, string> = {
@@ -151,14 +152,14 @@ const allVideoData = publishableVideos.map((video) => ({
             <div class="platform-grid">
         `;
         
-        const platforms = ["x", "youtube", "linkedin"];
+        const platforms = ["x", "youtube", "linkedin", "instagram"];
         for (const platform of platforms) {
           const platformCopy = copy[platform];
           const channelUrl = video.channels[`${platform}_${lang}_channel`];
           const composeUrl = video.compose[`${platform}_${lang}_compose`];
           
           // Platform icons
-          const icons: Record<string, string> = { x: "𝕏", youtube: "▶", linkedin: "in" };
+          const icons: Record<string, string> = { x: "𝕏", youtube: "▶", linkedin: "in", instagram: "📷" };
           
           let copyFields = "";
           if (platform === "youtube") {
@@ -521,7 +522,7 @@ const allVideoData = publishableVideos.map((video) => ({
 
   .platform-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 0.5rem;
   }
 

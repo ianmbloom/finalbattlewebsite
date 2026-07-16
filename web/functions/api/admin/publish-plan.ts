@@ -61,7 +61,7 @@ function generateCopy(video: VideoMapEntry, language: "en" | "fa") {
     : (video.description.en ?? "");
   const hashtags = HASHTAGS[language];
 
-  const platforms = ["x", "youtube", "linkedin"] as const;
+  const platforms = ["x", "youtube", "linkedin", "instagram"] as const;
   const copy: Record<string, unknown> = {};
 
   for (const platform of platforms) {
@@ -80,6 +80,11 @@ function generateCopy(video: VideoMapEntry, language: "en" | "fa") {
     } else if (platform === "linkedin") {
       copy.linkedin = {
         text: `🎬 ${title}\n\n${description}\n\n${hashtags.slice(0, 4).join(" ")}\n\n🔗 ${url}`,
+        url,
+      };
+    } else if (platform === "instagram") {
+      copy.instagram = {
+        text: `🎬 ${title}\n\n${truncate(description, 200)}\n\n${hashtags.slice(0, 4).join(" ")}`,
         url,
       };
     }

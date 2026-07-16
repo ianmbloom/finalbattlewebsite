@@ -25,3 +25,10 @@ VALUES ('linkedin', 'en', 'seeuinfreeiran', 'https://linkedin.com/company/seeuin
 
 INSERT OR REPLACE INTO platform_channels (platform, language, channel_id, channel_url)
 VALUES ('linkedin', 'fa', 'ta_didar_azadi', 'https://linkedin.com/company/ta-didar-azadi');
+
+-- Instagram
+INSERT OR REPLACE INTO platform_channels (platform, language, channel_id, channel_url)
+VALUES ('instagram', 'en', 'seeuinfreeiran', 'https://instagram.com/seeuinfreeiran');
+
+INSERT OR REPLACE INTO platform_channels (platform, language, channel_id, channel_url)
+VALUES ('instagram', 'fa', 'seeuinfreeiran', 'https://instagram.com/seeuinfreeiran');
