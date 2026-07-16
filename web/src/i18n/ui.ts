@@ -69,6 +69,8 @@ export const ui = {
     "share.copied": "Copied",
     "share.close": "Close",
 
+    "social.follow": "Follow our channels:",
+
     "video.download": "Download and share anywhere",
 
     "about.title": "Who We Are",
@@ -252,6 +254,8 @@ export const ui = {
     "share.copyLink": "کپی لینک این صفحه",
     "share.copied": "کپی شد",
     "share.close": "بستن",
+
+    "social.follow": "کانال‌های ما را دنبال کنید:",
 
     "video.download": "دانلود و هم‌رسانی در هر جا",
 
