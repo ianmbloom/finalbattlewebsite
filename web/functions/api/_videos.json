@@ -1,4 +1,20 @@
 {
+  "by-the-people": {
+    "slug": "by-the-people",
+    "languages": [
+      "en",
+      "fa"
+    ],
+    "title": {
+      "en": "By the People",
+      "fa": "به دستِ مردم"
+    },
+    "description": {
+      "en": "People under a dictatorship wrote the plan for their own freedom: the I.P.P., built by experts inside and out and refined by thousands at home.",
+      "fa": "مردمی که زیر دیکتاتوری زندگی می‌کنند طرح آزادی خود را نوشتند: «پروژهٔ شکوفایی» (I.P.P.)، ساختهٔ متخصصان داخل و خارج و بازبینی‌شده به دست هزاران نفر در وطن."
+    },
+    "boostTier": 3
+  },
   "captive-nation": {
     "slug": "captive-nation",
     "languages": [
