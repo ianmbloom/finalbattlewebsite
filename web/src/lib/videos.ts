@@ -39,12 +39,6 @@ export function shareablePlatforms(platforms?: Platforms): Platforms {
   };
 }
 
-/** Whether a video has at least one real (non-placeholder) platform link. */
-export function hasShareLinks(platforms?: Platforms): boolean {
-  const p = shareablePlatforms(platforms);
-  return Boolean(p.x || p.instagram || p.youtube || p.linkedin);
-}
-
 /**
  * Tag a *site* URL with UTM params so we can attribute traffic that comes back
  * through Telegram shares and copied links. Native-platform reposts leave our

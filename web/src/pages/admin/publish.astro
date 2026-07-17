@@ -295,7 +295,7 @@ const allVideoData = publishableVideos.map((video) => ({
                 statusEl.classList.add("posted");
               }
               card.classList.add("is-posted");
-              (btn as HTMLButtonElement).disabled = true;
+              (btn as HTMLButtonElement).textContent = "✓";
               updateProgressBadges();
             } else {
               const err = await res.json();
@@ -337,9 +337,6 @@ const allVideoData = publishableVideos.map((video) => ({
                 statusEl.classList.add("posted");
               }
               card.classList.add("is-posted");
-              if (confirmBtn) {
-                confirmBtn.disabled = true;
-              }
             }
           }
           

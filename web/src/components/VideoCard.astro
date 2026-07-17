@@ -5,7 +5,6 @@ import {
   formatDuration,
   getBlurb,
   getVariant,
-  hasShareLinks,
   isComingSoon,
   type VideoEntry,
 } from "@/lib/videos";
@@ -23,7 +22,6 @@ const href = localizedPath(`/videos/${entry.id}`, lang);
 const pageUrl = new URL(href, SITE_URL).href;
 const duration = formatDuration(variant.durationSeconds);
 const blurb = getBlurb(variant);
-const hasPlatforms = hasShareLinks(variant.platforms);
 const comingSoon = isComingSoon(entry);
 ---
 
@@ -130,13 +128,13 @@ const comingSoon = isComingSoon(entry);
   }
 
   {
-    hasPlatforms && !comingSoon && (
+    !comingSoon && (
       <div class="card-share">
         <RepostMenu
           title={variant.title}
-          platforms={variant.platforms}
           pageUrl={pageUrl}
           lang={lang}
+          videoSlug={entry.id}
           compact
         />
       </div>

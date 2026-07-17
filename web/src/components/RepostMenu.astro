@@ -50,6 +50,7 @@ const platformLabels: Record<string, string> = {
   x: t("share.x"),
   youtube: t("share.youtube"),
   linkedin: t("share.linkedin"),
+  instagram: t("share.instagram"),
 };
 
 // Telegram + Copy share the site page URL (tagged) — Telegram renders the video
@@ -213,6 +214,9 @@ const titleId = `${uid}-title`;
         
         // Add new links for confirmed platforms not already in the list
         // (skip TikTok - no longer supported)
+        // Find the Telegram link to insert platform links before it
+        const telegramItem = list.querySelector('a[href^="https://t.me/"]')?.closest("li");
+        
         for (const [platform, url] of Object.entries(platforms)) {
           if (existingPlatforms.has(platform) || !url || platform === "tiktok") continue;
           
@@ -224,10 +228,9 @@ const titleId = `${uid}-title`;
               <span class="repost-cue" aria-hidden="true">↗</span>
             </a>
           `;
-          // Insert before Telegram (last item)
-          const lastItem = list.querySelector("li:last-child");
-          if (lastItem) {
-            list.insertBefore(li, lastItem);
+          // Insert before Telegram so platform links come first
+          if (telegramItem) {
+            list.insertBefore(li, telegramItem);
           } else {
             list.appendChild(li);
           }
@@ -485,30 +488,35 @@ const titleId = `${uid}-title`;
     display: flex;
     flex-direction: column;
   }
-  .repost-link {
+  .repost-list :global(li) {
+    display: flex;
+    width: 100%;
+  }
+  .repost-list :global(.repost-link) {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 0.5rem;
+    width: 100%;
     padding: 0.6rem 0;
     color: var(--text);
     border-bottom: 1px solid
       color-mix(in srgb, var(--text) 8%, transparent);
     transition: color 300ms var(--ease-editorial);
   }
-  .repost-list li:last-child .repost-link {
+  .repost-list :global(li:last-child .repost-link) {
     border-bottom: 0;
   }
-  .repost-name {
+  .repost-list :global(.repost-name) {
     font-size: 0.95rem;
     letter-spacing: 0.01em;
   }
-  .repost-cue {
+  .repost-list :global(.repost-cue) {
     color: var(--text-muted);
     font-size: 0.85rem;
   }
-  .repost-link:hover,
-  .repost-link:hover .repost-cue {
+  .repost-list :global(.repost-link:hover),
+  .repost-list :global(.repost-link:hover .repost-cue) {
     color: var(--color-emerald);
   }
 
