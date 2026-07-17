@@ -16,7 +16,7 @@ console.log("📖 Reading confirmed posts from local D1...\n");
 
 // Read all posted entries from local D1
 const localResult = execSync(
-  `npx wrangler d1 execute ${DB_NAME} --local --json --command "SELECT video_slug, platform, language, external_url, external_id, posted_at, status FROM platform_posts WHERE status = 'posted'"`,
+  `npx wrangler d1 execute ${DB_NAME} --local --persist-to .wrangler/state --json --command "SELECT video_slug, platform, language, external_url, external_id, posted_at, status FROM platform_posts WHERE status = 'posted'"`,
   { encoding: "utf-8" }
 );
 
