@@ -46,8 +46,8 @@ interface ChannelHandles {
 const CHANNEL_HANDLES: Record<Platform, ChannelHandles> = {
   x: { en: "seeuinfreeiran", fa: "ta_didar_azadi" },
   youtube: { en: "seeuinfreeiran", fa: "ta_didar_azadi" },
-  linkedin: { en: "seeuinfreeiran", fa: "ta_didar_azadi" },
-  instagram: { en: "seeuinfreeiran", fa: "seeuinfreeiran" },
+  linkedin: { en: "final-battle-for-iran-39585941a", fa: "ta_didar_azadi" },
+  instagram: { en: "seeuinfreeiran", fa: "ta_didar_azadi" },
 };
 
 const HASHTAGS = {
