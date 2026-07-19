@@ -3,7 +3,7 @@
   "category": "truth",
   "boostTier": 3,
   "publishedAt": "2026-07-19",
-  "order": 8,
+  "order": -1,
   "featured": false,
   "comingSoon": true,
   "tags": ["strategy", "democracy", "resistance"],
