@@ -1,0 +1,26 @@
+{
+  "series": "prosperity-project",
+  "category": "truth",
+  "boostTier": 3,
+  "publishedAt": "2026-07-19",
+  "order": 7,
+  "featured": false,
+  "comingSoon": true,
+  "tags": ["diaspora", "mindset", "change"],
+  "languages": {
+    "en": {
+      "title": "Something Has Changed",
+      "videoSrc": "/videos/something-has-changed.mp4",
+      "description": "In the past several months something fundamental has changed in the minds of many...",
+      "durationSeconds": 44,
+      "thumbnailUrl": "/videos/thumbs/something-has-changed.webp"
+    },
+    "fa": {
+      "title": "چیزی در ایران تغییر کرده",
+      "videoSrc": "/videos/something-has-changed-fa.mp4",
+      "description": "در چند ماه گذشته، چیزی بنیادین در ذهنِ بسیاری از مردم تغییر کرده است...",
+      "durationSeconds": 44,
+      "thumbnailUrl": "/videos/thumbs/something-has-changed-fa.webp"
+    }
+  }
+}

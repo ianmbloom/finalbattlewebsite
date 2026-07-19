@@ -1,6 +1,6 @@
-# Transcode July_12 masters to web-friendly MP4s in public/videos/ and extract
-# 9:16 WebP poster thumbnails. Masters are high-bitrate H.264 (12-27 Mbps), so
-# every clip is transcoded down to a capped web bitrate (not remuxed).
+# Transcode July_19 masters to web-friendly MP4s in public/videos/ and extract
+# 9:16 WebP poster thumbnails. Masters are high-bitrate H.264, so every clip is
+# transcoded down to a capped web bitrate (not remuxed).
 #
 # On Windows, invoke ffmpeg via Start-Process (or redirect stderr) — calling
 # ffmpeg directly from PowerShell can deadlock on progress-output buffering.
@@ -9,7 +9,14 @@
 # Usage: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/encode-videos.ps1
 
 $ErrorActionPreference = "Stop"
-$SourceDir = "D:\FinalBattle\Output\July_12"
+$SourceDir = "D:\FinalBattle\Output\July_19"
+# macOS / local checkout fallback (override with $env:FINALBATTLE_VIDEO_SOURCE)
+if ($env:FINALBATTLE_VIDEO_SOURCE) {
+  $SourceDir = $env:FINALBATTLE_VIDEO_SOURCE
+} elseif (-not (Test-Path $SourceDir)) {
+  $RepoVideos = Join-Path $PSScriptRoot "..\..\videos\July_19"
+  if (Test-Path $RepoVideos) { $SourceDir = (Resolve-Path $RepoVideos).Path }
+}
 
 $OutDir = Join-Path $PSScriptRoot "..\public\videos"
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
@@ -22,18 +29,10 @@ $TmpDir = Join-Path $OutDir "_tmp"
 New-Item -ItemType Directory -Force -Path $TmpDir | Out-Null
 
 $Jobs = @(
-  @{ In = "Captive_Nation_English_July_12.mov";      Out = "captive-nation.mp4" },
-  @{ In = "Captive_Nation_Farsi_July_12.mov";        Out = "captive-nation-fa.mp4" },
-  @{ In = "Return_To_Democracy_English_July_12.mov"; Out = "returning-to-democracy.mp4" },
-  @{ In = "Return_To_Democracy_Farsi_July_12.mov";   Out = "returning-to-democracy-fa.mp4" },
-  @{ In = "Transitional_Leader_English_July_12.mov"; Out = "transitional-leader.mp4" },
-  @{ In = "Transitional_Leader_Farsi_July_12.mov";   Out = "transitional-leader-fa.mp4" },
-  @{ In = "Bright_Future_English_July_12.mov";       Out = "the-nation-has-a-future.mp4" },
-  @{ In = "Bright_Future_Farsi_July_12.mov";         Out = "the-nation-has-a-future-fa.mp4" },
-  @{ In = "By_The_People_English_July_12.mov";       Out = "by-the-people.mp4" },
-  @{ In = "By_The_People_Farsi_July_12.mov";         Out = "by-the-people-fa.mp4" },
-  @{ In = "Far_From_Home_English_July_12.mov";       Out = "far-from-home.mp4" },
-  @{ In = "Far_From_Home_Farsi_July_12.mov";         Out = "far-from-home-fa.mp4" }
+  @{ In = "Far_From_Home_English_July_19.mov";      Out = "far-from-home.mp4" },
+  @{ In = "Far_From_Home_Farsi_July_19.mov";        Out = "far-from-home-fa.mp4" },
+  @{ In = "Iran_Has_A_Future_English_July_19.mov";  Out = "the-nation-has-a-future.mp4" },
+  @{ In = "Iran_Has_A_Future_Farsi_July_19.mov";    Out = "the-nation-has-a-future-fa.mp4" }
 )
 
 try {

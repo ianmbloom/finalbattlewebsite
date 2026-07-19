@@ -31,6 +31,22 @@
     },
     "boostTier": 3
   },
+  "far-from-home": {
+    "slug": "far-from-home",
+    "languages": [
+      "en",
+      "fa"
+    ],
+    "title": {
+      "en": "Far From Home",
+      "fa": "دور از خانه"
+    },
+    "description": {
+      "en": "The I.R. drives out as many as 200,000 people a year. The diaspora isn't separate. It's the same people, kept apart by exile, not by heart.",
+      "fa": "این رژیم سالانه تا دویست هزار نفر را از وطن بیرون می‌راند. دیاسپورا جدا نیست؛ همان مردم است، جدا افتاده با تبعید، نه با دل."
+    },
+    "boostTier": 3
+  },
   "returning-to-democracy": {
     "slug": "returning-to-democracy",
     "languages": [

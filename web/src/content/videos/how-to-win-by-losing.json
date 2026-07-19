@@ -1,0 +1,26 @@
+{
+  "series": "prosperity-project",
+  "category": "truth",
+  "boostTier": 3,
+  "publishedAt": "2026-07-19",
+  "order": 8,
+  "featured": false,
+  "comingSoon": true,
+  "tags": ["strategy", "democracy", "resistance"],
+  "languages": {
+    "en": {
+      "title": "How To Win By Losing",
+      "videoSrc": "/videos/how-to-win-by-losing.mp4",
+      "description": "Some believe that the I.R. will prevent the nation from becoming a secular democracy in our lifetime...",
+      "durationSeconds": 62,
+      "thumbnailUrl": "/videos/thumbs/how-to-win-by-losing.webp"
+    },
+    "fa": {
+      "title": "آنها چگونه با باختن می‌برند",
+      "videoSrc": "/videos/how-to-win-by-losing-fa.mp4",
+      "description": "برخی باور دارند که جمهوری اسلامی نمی‌گذارد این ملت در طول عمر ما به یک دموکراسی سکولار برسد...",
+      "durationSeconds": 62,
+      "thumbnailUrl": "/videos/thumbs/how-to-win-by-losing-fa.webp"
+    }
+  }
+}

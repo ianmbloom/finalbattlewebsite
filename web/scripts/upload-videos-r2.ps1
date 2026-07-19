@@ -1,6 +1,5 @@
-# Upload the July_12 encodes from public/videos/ to Cloudflare R2 under the
-# `videos/` prefix, then delete the superseded `-jun27` objects. Public CDN:
-# https://videos.finalbattle.video/videos/<file>.mp4
+# Upload encodes from public/videos/ to Cloudflare R2 under the `videos/`
+# prefix. Public CDN: https://videos.finalbattle.video/videos/<file>.mp4
 #
 # Usage: pwsh scripts/upload-videos-r2.ps1
 
@@ -12,19 +11,12 @@ Set-Location $Root
 $Bucket = "finalbattleiran-media"
 $VideoDir = Join-Path $Root "public\videos"
 
+# July_19 batch (Far From Home + Vision of a Bright Future / Iran Has A Future)
 $Uploads = @(
-  "captive-nation.mp4",
-  "captive-nation-fa.mp4",
-  "returning-to-democracy.mp4",
-  "returning-to-democracy-fa.mp4",
-  "transitional-leader.mp4",
-  "transitional-leader-fa.mp4",
-  "the-nation-has-a-future.mp4",
-  "the-nation-has-a-future-fa.mp4",
-  "by-the-people.mp4",
-  "by-the-people-fa.mp4",
   "far-from-home.mp4",
-  "far-from-home-fa.mp4"
+  "far-from-home-fa.mp4",
+  "the-nation-has-a-future.mp4",
+  "the-nation-has-a-future-fa.mp4"
 )
 
 foreach ($file in $Uploads) {
