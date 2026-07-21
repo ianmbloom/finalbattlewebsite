@@ -14,8 +14,8 @@ const t = useTranslations(lang);
 
 const links = [
   { href: localizedPath("/videos", lang), label: t("nav.videos"), ready: true },
-  { href: localizedPath("/fund", lang), label: t("nav.support"), ready: true },
   { href: localizedPath("/about", lang), label: t("nav.about"), ready: true },
+  { href: localizedPath("/fund", lang), label: t("nav.support"), ready: true },
 ];
 const current = Astro.url.pathname.replace(/\/$/, "");
 ---

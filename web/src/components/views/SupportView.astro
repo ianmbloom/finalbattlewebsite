@@ -11,10 +11,29 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const shopHref = localizedPath("/shop", lang);
+const riseIranHref =
+  lang === "fa" ? "https://iranopasmigirim.com/" : "https://iranopasmigirim.com/en";
+
+// Obscure the outbound link in served HTML (restored client-side), matching
+// the footer's social links.
+function obfuscate(str: string): string {
+  return str.split("").reverse().join("");
+}
 ---
 
 <BaseLayout lang={lang} title={t("support.title")} description={t("support.lead")}>
   <section class="support">
+    <div class="block rise">
+      <div class="actions">
+        <a class="btn-outline rise-cta obf-link" data-u={obfuscate(riseIranHref)} href="#" target="_blank" rel="noopener noreferrer">
+          {t("support.riseIran.title")}
+        </a>
+      </div>
+      <p class="body">{t("support.riseIran.body")}</p>
+    </div>
+
+    <hr class="rule" />
+
     <h1 class="support-lead font-display">{t("support.lead")}</h1>
 
     <div class="block fund">
@@ -40,6 +59,15 @@ const shopHref = localizedPath("/shop", lang);
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>(".obf-link").forEach((link) => {
+    const obfuscated = link.dataset.u;
+    if (obfuscated) {
+      link.href = obfuscated.split("").reverse().join("");
+    }
+  });
+</script>
 
 <style>
   .support {
@@ -70,13 +98,15 @@ const shopHref = localizedPath("/shop", lang);
     align-items: center;
     gap: 1rem;
   }
-  .shop .body {
+  .shop .body,
+  .rise .body {
     margin: 0;
     max-width: 52ch;
     color: var(--text-muted);
     line-height: 1.6;
   }
-  .shop-cta {
+  .shop-cta,
+  .rise-cta {
     align-self: flex-start;
     cursor: pointer;
   }

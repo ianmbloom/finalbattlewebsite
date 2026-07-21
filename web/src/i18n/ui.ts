@@ -70,7 +70,7 @@ export const ui = {
     "share.close": "Close",
 
     "social.follow": "Follow our channels:",
-    "social.riseIran": "Support Iran's democratic transition",
+    "social.riseIran": "Support the democratic transition",
 
     "video.download": "Download and share anywhere",
 
@@ -155,6 +155,9 @@ export const ui = {
     "support.shop.title": "Wear the message",
     "support.shop.body":
       "Grab a shirt or a print. Every order helps fund the next video.",
+    "support.riseIran.title": "Support the democratic transition",
+    "support.riseIran.body":
+      "The best way to back the transition to a free, democratic nation is to please support the campaign led by Prince Reza Pahlavi directly.",
 
     "shop.title": "The Shop",
     "shop.intro": "Wear the message. Every order funds more videos.",
@@ -257,7 +260,7 @@ export const ui = {
     "share.close": "بستن",
 
     "social.follow": "کانال‌های ما را دنبال کنید:",
-    "social.riseIran": "از گذار دموکراتیک ایران حمایت کنید",
+    "social.riseIran": "از گذار دموکراتیک حمایت کنید",
 
     "video.download": "دانلود و هم‌رسانی در هر جا",
 
@@ -342,6 +345,9 @@ export const ui = {
     "support.shop.title": "پیام را بپوش",
     "support.shop.body":
       "یک تی‌شرت یا پوستر بگیر. هر سفارش به تأمین ویدیوی بعدی کمک می‌کند.",
+    "support.riseIran.title": "از گذار دموکراتیک حمایت کنید",
+    "support.riseIran.body":
+      "بهترین راه برای پشتیبانی از گذار به میهنی آزاد و دموکراتیک این است که لطفاً مستقیماً از کارزار به رهبری شاهزاده رضا پهلوی حمایت کنی.",
 
     "shop.title": "فروشگاه",
     "shop.intro": "پیام را بپوش. هر سفارش ویدیوهای بیشتری را می‌سازد.",

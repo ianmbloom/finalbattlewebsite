@@ -31,6 +31,12 @@ const channels = {
 const socialChannels = channels[lang];
 const riseIranHref =
   lang === "fa" ? "https://iranopasmigirim.com/" : "https://iranopasmigirim.com/en";
+
+// Obscure the outbound link in served HTML (restored client-side), matching
+// the footer's social links.
+function obfuscate(str: string): string {
+  return str.split("").reverse().join("");
+}
 ---
 
 <BaseLayout lang={lang} title={t("site.name")} description={t("home.statement.p1")}>
@@ -46,7 +52,7 @@ const riseIranHref =
   </section>
 
   <p class="rise-link font-display">
-    <a href={riseIranHref} target="_blank" rel="noopener noreferrer">{t("social.riseIran")}</a>
+    <a class="obf-link" data-u={obfuscate(riseIranHref)} href="#" target="_blank" rel="noopener noreferrer">{t("social.riseIran")}</a>
   </p>
 
   <section class="channels font-display">
@@ -54,7 +60,7 @@ const riseIranHref =
     {socialChannels.map((ch, i) => (
       <>
         {i > 0 && <span class="channels-dot" aria-hidden="true">·</span>}
-        <a href={ch.url} target="_blank" rel="noopener noreferrer">{ch.name}</a>
+        <a class="obf-link" data-u={obfuscate(ch.url)} href="#" target="_blank" rel="noopener noreferrer">{ch.name}</a>
       </>
     ))}
   </section>
@@ -79,6 +85,15 @@ const riseIranHref =
     )
   }
 </BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>(".obf-link").forEach((link) => {
+    const obfuscated = link.dataset.u;
+    if (obfuscated) {
+      link.href = obfuscated.split("").reverse().join("");
+    }
+  });
+</script>
 
 <style>
   .statement-inner {
