@@ -70,6 +70,7 @@ export const ui = {
     "share.close": "Close",
 
     "social.follow": "Follow our channels:",
+    "social.riseIran": "Support Iran's democratic transition",
 
     "video.download": "Download and share anywhere",
 
@@ -256,6 +257,7 @@ export const ui = {
     "share.close": "بستن",
 
     "social.follow": "کانال‌های ما را دنبال کنید:",
+    "social.riseIran": "از گذار دموکراتیک ایران حمایت کنید",
 
     "video.download": "دانلود و هم‌رسانی در هر جا",
 

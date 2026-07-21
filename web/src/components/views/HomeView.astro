@@ -29,6 +29,8 @@ const channels = {
   ],
 };
 const socialChannels = channels[lang];
+const riseIranHref =
+  lang === "fa" ? "https://iranopasmigirim.com/" : "https://iranopasmigirim.com/en";
 ---
 
 <BaseLayout lang={lang} title={t("site.name")} description={t("home.statement.p1")}>
@@ -42,6 +44,10 @@ const socialChannels = channels[lang];
       }
     </div>
   </section>
+
+  <p class="rise-link font-display">
+    <a href={riseIranHref} target="_blank" rel="noopener noreferrer">{t("social.riseIran")}</a>
+  </p>
 
   <section class="channels font-display">
     <span class="channels-label">{t("social.follow")}</span>
@@ -148,5 +154,28 @@ const socialChannels = channels[lang];
   }
   .channels a:hover {
     color: var(--accent);
+  }
+  .rise-link {
+    margin: 0;
+    padding: 0.75rem 1.5rem 0;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+  .rise-link a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+    transition: color 300ms var(--ease-editorial);
+  }
+  .rise-link a::after {
+    content: " \2197";
+  }
+  html[dir="rtl"] .rise-link a::after {
+    content: " \2196";
+  }
+  .rise-link a:hover {
+    color: var(--text);
   }
 </style>
